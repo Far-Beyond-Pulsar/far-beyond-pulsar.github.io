@@ -2,10 +2,12 @@
 import CoverDemo from "@/components/example/cover-demo";
 import TabsDemo from "@/components/example/tabs-demo";
 import BentoGridThirdDemo from "@/components/blocks/features-section-demo-3";
+import ConstructionOverlay from "./construction";
 
 export default function Home() {
   return (
     <div className="dark min-h-screen flex flex-col">
+      <ConstructionOverlay show={false} />
       {/* Navbar */}
       <nav className="sticky top-0 z-50 backdrop-blur-sm bg-black/50 border-b border-neutral-800">
         <div className="container mx-auto px-4">
@@ -108,7 +110,6 @@ export default function Home() {
           <h2 className="text-2xl sm:text-3xl font-semibold text-center mb-8 text-neutral-200">
             Core Features
           </h2>
-          <TabsDemo />
         </div>
 
         {/* Detailed Features Grid */}
