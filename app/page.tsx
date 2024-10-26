@@ -1,6 +1,5 @@
 "use client";
 import React, { useRef, useCallback } from "react";
-import { Header, Footer } from "@/components/layout";
 import { SparklesCore } from "@/components/ui/sparkles";
 import BentoGridThirdDemo from "@/components/blocks/features-section-demo-3";
 import TabsDemo from "@/components/blocks/code-tabs";
@@ -30,7 +29,6 @@ export default function Home() {
   return (
     <div className="dark min-h-screen flex flex-col">
       <ConstructionOverlay show={false} />
-      <Header />
 
       <main className="flex-grow">
         <section className="min-h-screen relative flex items-center justify-center overflow-hidden">
@@ -84,8 +82,6 @@ export default function Home() {
           </>
         )}
       </main>
-
-      <Footer />
     </div>
   );
 }

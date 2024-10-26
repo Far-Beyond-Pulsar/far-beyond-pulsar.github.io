@@ -1,3 +1,5 @@
+"use client"
+
 import React from 'react';
 import { IconBrandGithub } from "@tabler/icons-react";
 
@@ -28,7 +30,7 @@ export const Header = () => {
             <a href="#features" className="text-neutral-300 hover:text-neutral-100 transition-colors">
               Features
             </a>
-            <a href="#docs" className="text-neutral-300 hover:text-neutral-100 transition-colors">
+            <a href="/docs" className="text-neutral-300 hover:text-neutral-100 transition-colors">
               Documentation
             </a>
             <a href="#community" className="text-neutral-300 hover:text-neutral-100 transition-colors">
