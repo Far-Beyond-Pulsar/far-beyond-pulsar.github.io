@@ -46,7 +46,7 @@ export const Header = () => {
           {/* Call to Action Buttons */}
           <div className="flex items-center gap-4">
             <a 
-              href="https://github.com/pulsar-engine" 
+              href="https://github.com/Far-Beyond-Pulsar/Pulsar-Engine" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="text-neutral-300 hover:text-neutral-100 transition-colors"

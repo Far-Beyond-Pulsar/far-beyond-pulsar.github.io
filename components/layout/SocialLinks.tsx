@@ -22,13 +22,13 @@ import {
   
   export const SocialLinks = () => (
     <div className="flex gap-4 pt-2">
-      <SocialIcon href="https://github.com/pulsar-engine" icon={<IconBrandGithub />} label="GitHub" />
-      <SocialIcon href="https://discord.gg/pulsar-engine" icon={<IconBrandDiscord />} label="Discord" />
-      <SocialIcon href="https://x.com/PulsarEngine" icon={<IconBrandX />} label="X (Twitter)" />
-      <SocialIcon href="https://youtube.com/@PulsarEngine" icon={<IconBrandYoutube />} label="YouTube" />
-      <SocialIcon href="https://twitch.tv/PulsarEngine" icon={<IconBrandTwitch />} label="Twitch" />
-      <SocialIcon href="https://linkedin.com/company/pulsar-engine" icon={<IconBrandLinkedin />} label="LinkedIn" />
-      <SocialIcon href="https://reddit.com/r/PulsarEngine" icon={<IconBrandReddit />} label="Reddit" />
+      <SocialIcon href="https://github.com/Far-Beyond-Pulsar/Pulsar-Engine" icon={<IconBrandGithub />} label="GitHub" />
+      <SocialIcon href="https://discord.gg/NM4awJWGWu" icon={<IconBrandDiscord />} label="Discord" />
+      <SocialIcon href="#" icon={<IconBrandX />} label="X (Twitter)" />
+      <SocialIcon href="#" icon={<IconBrandYoutube />} label="YouTube" />
+      <SocialIcon href="#" icon={<IconBrandTwitch />} label="Twitch" />
+      <SocialIcon href="#" icon={<IconBrandLinkedin />} label="LinkedIn" />
+      <SocialIcon href="#" icon={<IconBrandReddit />} label="Reddit" />
     </div>
   );
   

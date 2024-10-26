@@ -47,7 +47,7 @@ export default function Home() {
           </div>
 
           <div className="relative z-10 text-center px-4">
-            <h1 className="text-4xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
+            <h1 className="text-4xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r p-5 from-blue-400 to-purple-400">
               Build Amazing Games at Light Speed
             </h1>
             
