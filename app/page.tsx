@@ -7,7 +7,7 @@ import ConstructionOverlay from "./construction";
 export default function Home() {
   return (
     <div className="dark min-h-screen flex flex-col">
-      <ConstructionOverlay show={false} />
+      <ConstructionOverlay show={true} />
       {/* Navbar */}
       <nav className="sticky top-0 z-50 backdrop-blur-sm bg-black/50 border-b border-neutral-800">
         <div className="container mx-auto px-4">
