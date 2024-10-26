@@ -20,10 +20,12 @@ export const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo and Brand */}
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg"></div>
-            <span className="text-xl font-bold text-neutral-100">Pulsar</span>
-          </div>
+          <a href="/">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg"></div>
+              <span className="text-xl font-bold text-neutral-100">Pulsar</span>
+            </div>
+          </a>
 
           {/* Navigation Links - Desktop */}
           <div className="hidden md:flex items-center gap-8">
