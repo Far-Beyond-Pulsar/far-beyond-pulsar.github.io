@@ -170,16 +170,16 @@ export default function DocsPage() {
   )
 }
 
-function StabilityBadge({ stability }: { stability: string }) {
-  const colors = {
-    stable: "bg-green-500/10 text-green-500 border-green-500/20",
-    "in-dev": "bg-yellow-500/10 text-yellow-500 border-yellow-500/20",
-    experimental: "bg-red-500/10 text-red-500 border-red-500/20"
-  } as const
-  
-  return (
-    <span className={`px-2 py-1 text-xs rounded-md border ${colors[stability] || colors.experimental}`}>
-      {stability}
-    </span>
-  )
+function StabilityBadge({ stability }: { stability: 'stable' | 'in-dev' | 'experimental' }) {
+    const colors = {
+      stable: "bg-green-500/10 text-green-500 border-green-500/20",
+      "in-dev": "bg-yellow-500/10 text-yellow-500 border-yellow-500/20",
+      experimental: "bg-red-500/10 text-red-500 border-red-500/20"
+    } as const
+    
+    return (
+      <span className={`px-2 py-1 text-xs rounded-md border ${colors[stability]}`}>
+        {stability}
+      </span>
+    )
 }
