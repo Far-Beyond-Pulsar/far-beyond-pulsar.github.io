@@ -32,7 +32,7 @@ const ConstructionOverlay = ({ show = true }) => {
         
         <div className="flex justify-center gap-4">
           <a 
-            href="https://github.com/pulsar-engine" 
+            href="https://github.com/Far-Beyond-Pulsar" 
             target="_blank"
             rel="noopener noreferrer"
             className="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 text-neutral-100 rounded-lg transition-all"
@@ -40,7 +40,7 @@ const ConstructionOverlay = ({ show = true }) => {
             Visit GitHub
           </a>
           <a 
-            href="https://discord.gg/pulsar-engine" 
+            href="https://discord.gg/NM4awJWGWu" 
             target="_blank"
             rel="noopener noreferrer"
             className="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 text-neutral-100 rounded-lg transition-all"
