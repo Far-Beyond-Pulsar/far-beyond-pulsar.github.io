@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react';
-import { Github, Book, Users } from 'lucide-react';
+import { Github, Book, Users, FileQuestionIcon, HomeIcon } from 'lucide-react';
 
 const MobileNavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
   <a
@@ -24,6 +24,12 @@ export const Header = () => {
             <div className="text-blue-500 font-bold text-xl">◆ PULSAR ENGINE</div>
           </div>
           <nav className="hidden md:flex space-x-6">
+            <a href='/' className="text-gray-400 hover:text-blue-500 transition-colors flex items-center gap-2">
+              <HomeIcon className="w-4 h-4" /> Home
+            </a>
+            <a href="/why" className="text-gray-400 hover:text-blue-500 transition-colors flex items-center gap-2">
+              <FileQuestionIcon className="w-4 h-4" /> Why
+            </a>
             <a href="/docs" className="text-gray-400 hover:text-blue-500 transition-colors flex items-center gap-2">
               <Book className="w-4 h-4" /> Docs
             </a>
