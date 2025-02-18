@@ -222,6 +222,160 @@ export default function PulsarHomepage() {
         </div>
       </Section>
 
+{/* Resource Usage Section */}
+<Section>
+  <div className="text-center mb-12">
+    <h2 className="text-3xl font-bold mb-4 text-white">
+      Efficient By Design
+    </h2>
+    <p className="text-neutral-400 max-w-2xl mx-auto">
+      Smart resource management for optimal performance
+    </p>
+  </div>
+  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+    {[
+      { value: "2MB", label: "Engine Footprint", trend: "-99% vs 30GB+" },
+      { value: "120MB", label: "Memory Usage", trend: "-99% vs 16GB+" },
+      { value: "120fps", label: "Sample Project", trend: "+40% vs Industry" },
+      { value: "10s", label: "Cold Start", trend: "-95% vs 5min+" }
+    ].map((metric, index) => (
+      <div key={index} className="relative group">
+        <div className="bg-neutral-900/50 px-6 py-4 rounded-lg border border-neutral-800 group-hover:border-blue-500/30 transition-all">
+          <div className="flex flex-col gap-1">
+            <div className="text-2xl font-bold text-white">{metric.value}</div>
+            <div className="text-sm text-neutral-400">{metric.label}</div>
+            <div className="mt-2 text-xs text-emerald-500 font-medium">{metric.trend}</div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</Section>
+
+{/* Development Process Section */}
+<Section>
+  <div className="text-center mb-12">
+    <h2 className="text-3xl font-bold mb-4 text-white">
+      Streamlined Development
+    </h2>
+    <p className="text-neutral-400 max-w-2xl mx-auto">
+      Modern workflows that adapt to your team
+    </p>
+  </div>
+  <div className="relative max-w-4xl mx-auto">
+    <div className="absolute top-[50%] left-4 right-4 h-0.5 bg-blue-500/20" />
+    <div className="grid md:grid-cols-3 gap-6">
+      {[
+        { step: "01", title: "Design", desc: "Visual tools for rapid prototyping" },
+        { step: "02", title: "Implement", desc: "Hot reloading for instant feedback" },
+        { step: "03", title: "Ship", desc: "One-click deployment to all platforms" }
+      ].map((item, index) => (
+        <div key={index} className="relative bg-neutral-900/50 rounded-xl border border-neutral-800 p-6 group hover:border-blue-500/30 transition-all">
+          <div className="absolute -top-3 left-6 px-2 py-1 bg-blue-500 rounded text-xs font-bold text-white">
+            {item.step}
+          </div>
+          <div className="pt-4">
+            <h3 className="text-lg font-semibold text-white mb-2">{item.title}</h3>
+            <p className="text-sm text-neutral-400">{item.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</Section>
+
+{/* Technology Stack Section */}
+<Section>
+  <div className="text-center mb-12">
+    <h2 className="text-3xl font-bold mb-4 text-white">
+      Modern Technology Stack
+    </h2>
+    <p className="text-neutral-400 max-w-2xl mx-auto">
+      Built with cutting-edge tools and frameworks
+    </p>
+  </div>
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+    {[
+      { name: "Vulkan", logo: "/logos/vulkan.png" },
+      { name: "Rust", logo: "/logos/rust.png" },
+      { name: "WGPU", logo: "/logos/wgpu.png" },
+      { name: "WebAssembly", logo: "/logos/wasm.png" },
+      { name: "DirectX 12", logo: "/logos/dx.png" },
+      { name: "Metal", logo: "/logos/metal.png" },
+      { name: "OpenXR", logo: "/logos/openxr.png" },
+      { name: "Zed GPUI", logo: "/logos/zed.jpg" }
+    ].map((tech, index) => (
+      <div key={index} className="relative group">
+        <div className="bg-neutral-900/50 p-6 rounded-lg border border-neutral-800 
+          group-hover:border-blue-500/30 transition-all duration-300">
+          <div className="flex flex-col items-center justify-center gap-4">
+            <div className="h-16 flex items-center justify-center">
+              <img 
+                src={tech.logo} 
+                alt={`${tech.name} logo`}
+                className="max-h-full max-w-full object-contain"
+              />
+            </div>
+            <span className="text-sm font-medium text-neutral-400 group-hover:text-white transition-colors">
+              {tech.name}
+            </span>
+          </div>
+          <div className="absolute inset-0 rounded-lg bg-blue-500/5 opacity-0 
+            group-hover:opacity-100 transition-opacity duration-300" />
+        </div>
+      </div>
+    ))}
+  </div>
+</Section>
+
+{/* Feature Comparison Section */}
+<Section>
+  <div className="text-center mb-12">
+    <h2 className="text-3xl font-bold mb-4 text-white">
+      Why Choose Pulsar
+    </h2>
+    <p className="text-neutral-400 max-w-2xl mx-auto">
+      Modern features that set us apart
+    </p>
+  </div>
+  <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+    {[
+      {
+        feature: "Engine Size",
+        pulsar: "2MB",
+        others: "20-50MB",
+        winner: true
+      },
+      {
+        feature: "Compile Times",
+        pulsar: "30s",
+        others: "2-5min",
+        winner: true
+      },
+      {
+        feature: "Memory Usage",
+        pulsar: "50MB",
+        others: "200MB+",
+        winner: true
+      }
+    ].map((item, index) => (
+      <div key={index} className="bg-neutral-900/50 rounded-lg border border-neutral-800 p-6">
+        <h3 className="text-lg font-medium text-white mb-4">{item.feature}</h3>
+        <div className="space-y-3">
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-neutral-400">Pulsar</span>
+            <span className="text-sm font-medium text-emerald-500">{item.pulsar}</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-neutral-400">Others</span>
+            <span className="text-sm font-medium text-neutral-500">{item.others}</span>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</Section>
+
       {/* Platform Support Section */}
       <Section dark>
         <div className="text-center mb-12">
