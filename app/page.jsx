@@ -27,10 +27,10 @@ const AnimatedBackground = () => (
   <div className="absolute inset-0 z-0">
     {/* Gradient overlay */}
     <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-transparent opacity-20" />
-    
+
     {/* Radial gradient */}
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]" />
-    
+
     {/* Animated dots */}
     <div className="absolute inset-0 overflow-hidden">
       {[...Array(50)].map((_, i) => (
@@ -46,7 +46,7 @@ const AnimatedBackground = () => (
         />
       ))}
     </div>
-    
+
     {/* Animated lines */}
     <div className="absolute inset-0">
       {[...Array(3)].map((_, i) => (
@@ -64,7 +64,7 @@ const AnimatedBackground = () => (
 );
 
 const FloatingIcon = ({ children, delay = 0 }) => (
-  <div 
+  <div
     className="animate-float"
     style={{ animationDelay: `${delay}s` }}
   >
@@ -81,87 +81,87 @@ export default function PulsarHomepage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-neutral-950 to-black text-neutral-200">
-{/* Hero Section with Vortex Animation */}
-<div className="relative overflow-hidden">
-  <Vortex 
-    particleCount={500}
-    baseSpeed={0.2}
-    rangeSpeed={1}
-    baseRadius={0.5}
-    rangeRadius={1}
-    baseHue={210}
-    backgroundColor="transparent"
-    containerClassName="absolute inset-0"
-  >
-    {/* Additional gradient overlays for depth */}
-    <div className="absolute inset-0 bg-gradient-to-b from-neutral-950 via-transparent to-neutral-950/80" />
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]" />
-  </Vortex>
-  
-  <Section className="pt-32 pb-24 relative z-10">
-    <div className="max-w-4xl mx-auto text-center relative">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="relative"
-      >
-        <div className="relative inline-block mb-6">
-          <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-blue-700 leading-tight pb-5">
-            Pulsar Engine
-          </h1>
-          <div className="absolute -left-12 bottom-0">
-            <FloatingIcon delay={1}>
-              <Code2 className="w-10 h-10 text-blue-400/80 mb-8"/>
-            </FloatingIcon>
-          </div>
-        </div>
-
-        <div className="space-y-6 mb-12">
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-2xl md:text-3xl font-medium text-white px-4"
-          >
-            Next-Generation Game Development
-          </motion.p>
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="text-lg md:text-xl text-neutral-400 max-w-2xl mx-auto px-4"
-          >
-            An open-source game engine built for the future. Powered by Rust, 
-            driven by the community.
-          </motion.p>
-        </div>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="flex flex-col sm:flex-row justify-center gap-4 px-4"
+      {/* Hero Section with Vortex Animation */}
+      <div className="relative overflow-hidden">
+        <Vortex
+          particleCount={500}
+          baseSpeed={0.2}
+          rangeSpeed={1}
+          baseRadius={0.5}
+          rangeRadius={1}
+          baseHue={210}
+          backgroundColor="transparent"
+          containerClassName="absolute inset-0"
         >
-          <Button disabled className="sm:min-w-[180px] relative overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-blue-700/20 group-hover:opacity-75 transition-opacity" />
-            <Zap className="w-5 h-5" />
-            Download Pulsar
-          </Button>
-          <Button 
-            variant="secondary" 
-            href="https://github.com/Far-Beyond-Pulsar/Pulsar-Engine" 
-            className="sm:min-w-[180px] relative overflow-hidden group"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-neutral-800/50 to-neutral-900/50 group-hover:opacity-75 transition-opacity" />
-            <GithubIcon className="w-5 h-5" />
-            GitHub Repository
-          </Button>
-        </motion.div>
-      </motion.div>
-    </div>
-  </Section>
-</div>
+          {/* Additional gradient overlays for depth */}
+          <div className="absolute inset-0 bg-gradient-to-b from-neutral-950 via-transparent to-neutral-950/80" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]" />
+        </Vortex>
+
+        <Section className="pt-32 pb-24 relative z-10">
+          <div className="max-w-4xl mx-auto text-center relative">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="relative inline-block mb-6">
+                <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-blue-700 leading-tight pb-5">
+                  Pulsar Engine
+                </h1>
+                <div className="absolute -left-12 bottom-0">
+                  <FloatingIcon delay={1}>
+                    <Code2 className="w-10 h-10 text-blue-400/80 mb-8" />
+                  </FloatingIcon>
+                </div>
+              </div>
+
+              <div className="space-y-6 mb-12">
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                  className="text-2xl md:text-3xl font-medium text-white px-4"
+                >
+                  Next-Generation Game Development
+                </motion.p>
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.6 }}
+                  className="text-lg md:text-xl text-neutral-400 max-w-2xl mx-auto px-4"
+                >
+                  An open-source game engine built for the future. Powered by Rust,
+                  driven by the community.
+                </motion.p>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+                className="flex flex-col sm:flex-row justify-center gap-4 px-4"
+              >
+                <Button disabled className="sm:min-w-[180px] relative overflow-hidden group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-blue-700/20 group-hover:opacity-75 transition-opacity" />
+                  <Zap className="w-5 h-5" />
+                  Download Pulsar
+                </Button>
+                <Button
+                  variant="secondary"
+                  href="https://github.com/Far-Beyond-Pulsar/Pulsar-Engine"
+                  className="sm:min-w-[180px] relative overflow-hidden group"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-neutral-800/50 to-neutral-900/50 group-hover:opacity-75 transition-opacity" />
+                  <GithubIcon className="w-5 h-5" />
+                  GitHub Repository
+                </Button>
+              </motion.div>
+            </motion.div>
+          </div>
+        </Section>
+      </div>
 
       {/* Code Demo Section */}
       <Section>
@@ -191,6 +191,7 @@ export default function PulsarHomepage() {
         <FeatureExplorer />
       </Section>
 
+
       {/* Performance Metrics Section */}
       <Section>
         <div className="text-center mb-12">
@@ -201,20 +202,20 @@ export default function PulsarHomepage() {
             Built from the ground up with performance as a core principle
           </p>
         </div>
-        
+
         <div className="flex flex-wrap justify-center gap-12">
-          <PerformanceMetric 
-            value="<1ms" 
+          <PerformanceMetric
+            value="<1ms"
             label="Frame Overhead"
             description="Minimal engine overhead ensures your game logic gets maximum CPU time"
           />
-          <PerformanceMetric 
-            value="0%" 
+          <PerformanceMetric
+            value="0%"
             label="GC Pauses"
             description="No garbage collection means consistent, predictable performance"
           />
-          <PerformanceMetric 
-            value="100%" 
+          <PerformanceMetric
+            value="100%"
             label="GPU Utilization"
             description="Efficient rendering system maximizes available graphics hardware"
           />
