@@ -137,7 +137,7 @@ void main() {
           <div className="w-3 h-3 rounded-full bg-yellow-500" />
           <div className="w-3 h-3 rounded-full bg-green-500" />
         </div>
-        <span className="text-neutral-500 text-sm">Game Engine Code Examples</span>
+        <span className="text-neutral-500 text-sm">Pulsar Engine Code Examples</span>
       </div>
 
       {/* Tab bar */}
