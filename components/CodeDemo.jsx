@@ -69,6 +69,18 @@ const CodeDemo = () => {
       css.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css';
       document.head.appendChild(css);
 
+      // Add custom style to override hljs background
+      const customStyle = document.createElement('style');
+      customStyle.textContent = `
+        .hljs {
+          background: transparent !important;
+        }
+        pre code.hljs {
+          background: transparent !important;
+        }
+      `;
+      document.head.appendChild(customStyle);
+
       script.onload = () => {
         setHljs(window.hljs);
       };
@@ -150,7 +162,7 @@ void main() {
       <div className="p-4 font-mono text-[13px] leading-6 relative min-h-[200px]">
         <CopyButton code={codeExamples[activeTab]} />
         <pre className="!bg-transparent !m-0">
-          <code className={activeTab === 'rust' ? 'language-rust' : 'language-glsl'}>
+          <code className={`${activeTab === 'rust' ? 'language-rust' : 'language-glsl'} !bg-transparent`}>
             {codeExamples[activeTab]}
           </code>
         </pre>
