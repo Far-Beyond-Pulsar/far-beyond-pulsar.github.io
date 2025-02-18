@@ -20,7 +20,7 @@ const FooterSection = ({
     <ul className="space-y-3">
       {links.map(({ href, label }) => (
         <li key={href}>
-          <FooterLink href={href}>{label}</FooterLink>
+          <FooterLink href={href} target={''}>{label}</FooterLink>
         </li>
       ))}
     </ul>
