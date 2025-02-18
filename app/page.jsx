@@ -15,7 +15,6 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-
 import Button from '@/components/ui/Button';
 import Section from '@/components/ui/Section';
 import CodeDemo from '@/components/CodeDemo';
