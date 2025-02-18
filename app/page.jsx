@@ -291,23 +291,55 @@ export default function PulsarHomepage() {
       Modern Technology Stack
     </h2>
     <p className="text-neutral-400 max-w-2xl mx-auto">
-      Built with cutting-edge tools and frameworks
+      Built with cutting-edge tools and frameworks. Hover on the cards to see details about each part of our tech stack
     </p>
   </div>
   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
     {[
-      { name: "Vulkan", logo: "/logos/vulkan.png" },
-      { name: "Rust", logo: "/logos/rust.png" },
-      { name: "WGPU", logo: "/logos/wgpu.png" },
-      { name: "WebAssembly", logo: "/logos/wasm.png" },
-      { name: "DirectX 12", logo: "/logos/dx.png" },
-      { name: "Metal", logo: "/logos/metal.png" },
-      { name: "OpenXR", logo: "/logos/openxr.png" },
-      { name: "Zed GPUI", logo: "/logos/zed.jpg" }
+      { 
+        name: "Vulkan", 
+        logo: "/logos/vulkan.png",
+        details: "Low-level graphics API providing direct GPU control for maximum performance and advanced rendering features"
+      },
+      { 
+        name: "Rust", 
+        logo: "/logos/rust.png",
+        details: "Systems programming language ensuring memory safety and thread safety without garbage collection"
+      },
+      { 
+        name: "WGPU", 
+        logo: "/logos/wgpu.png",
+        details: "Cross-platform, safe graphics API abstracting Vulkan, Metal, D3D12, and WebGPU"
+      },
+      { 
+        name: "WebAssembly", 
+        logo: "/logos/wasm.png",
+        details: "Enables near-native performance in web browsers with direct compilation from Rust"
+      },
+      { 
+        name: "DirectX 12", 
+        logo: "/logos/dx.png",
+        details: "Microsoft's latest graphics API for Windows platforms with enhanced performance and lower CPU overhead"
+      },
+      { 
+        name: "Metal", 
+        logo: "/logos/metal.png",
+        details: "Apple's modern graphics API optimized for iOS and macOS platforms"
+      },
+      { 
+        name: "OpenXR", 
+        logo: "/logos/openxr.png",
+        details: "Standard API for virtual and augmented reality development across multiple platforms"
+      },
+      { 
+        name: "Zed GPUI", 
+        logo: "/logos/zed.jpg",
+        details: "GPU-accelerated UI framework for building high-performance developer tools"
+      }
     ].map((tech, index) => (
       <div key={index} className="relative group">
         <div className="bg-neutral-900/50 p-6 rounded-lg border border-neutral-800 
-          group-hover:border-blue-500/30 transition-all duration-300">
+          group-hover:border-blue-500/30 transition-all duration-300 relative overflow-hidden">
           <div className="flex flex-col items-center justify-center gap-4">
             <div className="h-16 flex items-center justify-center">
               <img 
@@ -322,6 +354,14 @@ export default function PulsarHomepage() {
           </div>
           <div className="absolute inset-0 rounded-lg bg-blue-500/5 opacity-0 
             group-hover:opacity-100 transition-opacity duration-300" />
+          
+          {/* Animated details panel */}
+          <div className="absolute inset-0 p-4 bg-neutral-900/95 transform translate-y-full 
+            group-hover:translate-y-0 transition-transform duration-300 flex items-center justify-center">
+            <p className="text-sm text-neutral-300 text-center">
+              {tech.details}
+            </p>
+          </div>
         </div>
       </div>
     ))}
