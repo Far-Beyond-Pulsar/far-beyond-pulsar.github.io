@@ -1,318 +1,299 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  CodeIcon,
   GithubIcon,
-  CpuIcon,
-  ZapIcon,
-  LayersIcon,
-  ServerIcon,
-  DatabaseIcon,
-  TerminalIcon,
-  LayoutGridIcon,
-  NetworkIcon,
-  CloudIcon,
-  BrushIcon,
-  PlayIcon
+  Zap,
+  MonitorIcon,
+  Share2Icon,
+  ShieldIcon,
+  MessageSquareIcon,
+  BookOpenIcon,
+  ChevronRightIcon,
+  Sparkles,
+  Code2
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
-const AnimatedSection = ({ children, className = '', delay = 0 }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => setIsVisible(true), delay);
-        }
-      },
-      { threshold: 0.1 }
-    );
+import Button from '@/components/ui/Button';
+import Section from '@/components/ui/Section';
+import CodeDemo from '@/components/CodeDemo';
+import FeatureExplorer from '@/components/ui/FeatureSection/FeatureExplorer';
+import PerformanceMetric from '@/components/ui/Metrics/PerformanceMetric';
+import PlatformCard from '@/components/ui/Metrics/PlatformCard';
+import { Vortex } from '@/components/ui/Vortex';
 
-    if (ref.current) observer.observe(ref.current);
-    return () => {
-      if (ref.current) observer.disconnect();
-    };
-  }, [delay]);
-
-  return (
-    <div
-      ref={ref}
-      className={`transform transition-all duration-700 ease-apple content-center mx-auto ${isVisible
-          ? 'opacity-100 translate-y-0'
-          : 'opacity-0 translate-y-10'
-        } ${className}`}
-    >
-      {children}
+const AnimatedBackground = () => (
+  <div className="absolute inset-0 z-0">
+    {/* Gradient overlay */}
+    <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-transparent opacity-20" />
+    
+    {/* Radial gradient */}
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]" />
+    
+    {/* Animated dots */}
+    <div className="absolute inset-0 overflow-hidden">
+      {[...Array(50)].map((_, i) => (
+        <div
+          key={i}
+          className="absolute w-1 h-1 bg-blue-500/30 rounded-full animate-float"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            animationDelay: `${Math.random() * 5}s`,
+            animationDuration: `${5 + Math.random() * 10}s`
+          }}
+        />
+      ))}
     </div>
-  );
-};
-
-const FeatureCard = ({ icon: Icon, title, description, features }) => (
-  <div className="group p-6 bg-neutral-900/50 rounded-2xl border border-neutral-800 
-    hover:border-blue-500/50 transition-all duration-300 
-    hover:shadow-[0_15px_30px_rgba(59,130,246,0.1)] 
-    hover:-translate-y-2 ease-apple">
-    <div className="w-16 h-16 bg-blue-500/10 rounded-xl flex items-center justify-center mb-4 
-      group-hover:bg-blue-500/20 transition-colors">
-      <Icon className="w-8 h-8 text-blue-500" />
+    
+    {/* Animated lines */}
+    <div className="absolute inset-0">
+      {[...Array(3)].map((_, i) => (
+        <div
+          key={i}
+          className="absolute w-full h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent animate-pulse"
+          style={{
+            top: `${30 + i * 20}%`,
+            animationDelay: `${i * 0.5}s`
+          }}
+        />
+      ))}
     </div>
-    <h3 className="text-xl font-semibold text-white mb-3">{title}</h3>
-    <p className="text-neutral-400 mb-4">{description}</p>
-    {features && (
-      <ul className="text-neutral-500 text-sm space-y-2">
-        {features.map((feature, index) => (
-          <li key={index} className="flex items-center">
-            <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
-            {feature}
-          </li>
-        ))}
-      </ul>
-    )}
+  </div>
+);
+
+const FloatingIcon = ({ children, delay = 0 }) => (
+  <div 
+    className="animate-float"
+    style={{ animationDelay: `${delay}s` }}
+  >
+    {children}
   </div>
 );
 
 export default function PulsarHomepage() {
-  const [scrollY, setScrollY] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    setIsVisible(true);
   }, []);
 
   return (
-    <div className="bg-black text-neutral-200 overflow-x-hidden relative">
-      {/* Parallax Background Image for Sections After Hero */}
-      <div
-        className="fixed inset-0 z-0 bg-cover bg-center opacity-30 pointer-events-none"
-        style={{
-          backgroundImage: 'url(/engine-bp-with-newtab.png)',
-          transform: `translateY(${scrollY * 0.5}px)`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-
-        }}
-      />
-
-      {/* Subtle Background Grid */}
-      <div
-        className="fixed inset-0 pointer-events-none opacity-5 z-[1]"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(59, 130, 246, 0.05) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(59, 130, 246, 0.05) 1px, transparent 1px)
-          `,
-          backgroundSize: '20px 20px'
-        }}
-      />
-
-      {/* Hero Section */}
-      <section className="relative container mx-auto pt-24 pb-16 z-10 flex items-center bg-neutral-800/20 backdrop-blur-lg rounded-3xl border border-neutral-800 my-96">
-        <AnimatedSection>
-          <div className="max-w-4xl mx-auto text-center relative z-10">
-            <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-96 h-96 
-              bg-blue-500/10 rounded-full blur-3xl opacity-30"></div>
-
-            <h1 className="text-5xl font-bold mb-5 text-white relative">
-              <span className="text-blue-500">Pulsar Engine:</span>
-              <br />
-              Next-Generation Game Development
-            </h1>
-
-            <p className="text-lg text-neutral-400 max-w-2xl mx-auto mb-8">
-              A cutting-edge, Rust-powered game engine designed for high-performance,
-              cross-platform game development with an intuitive, modular architecture.
-            </p>
-
-            <div className="flex justify-center space-x-4">
-              <button
-                disabled
-                className="px-8 py-3 bg-blue-600 text-white rounded-xl 
-                  hover:bg-blue-700 transition-all duration-300 
-                  cursor-not-allowed opacity-50 
-                  shadow-[0_10px_30px_rgba(59,130,246,0.2)] hover:shadow-[0_15px_40px_rgba(59,130,246,0.3)]"
-              >
-                Coming Soon
-              </button>
-              <a
-                href="https://github.com/Far-Beyond-Pulsar/Pulsar-Engine"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-8 py-3 border border-neutral-700 
-                  text-neutral-300 rounded-xl 
-                  hover:bg-neutral-900 transition-all duration-300 
-                  flex items-center gap-2
-                  hover:shadow-[0_10px_30px_rgba(255,255,255,0.05)]"
-              >
-                <GithubIcon className="w-5 h-5" />
-                GitHub Repository
-              </a>
-            </div>
+    <div className="min-h-screen bg-gradient-to-b from-neutral-950 to-black text-neutral-200">
+{/* Hero Section with Vortex Animation */}
+<div className="relative overflow-hidden">
+  <Vortex 
+    particleCount={500}
+    baseSpeed={0.2}
+    rangeSpeed={1}
+    baseRadius={0.5}
+    rangeRadius={1}
+    baseHue={210}
+    backgroundColor="transparent"
+    containerClassName="absolute inset-0"
+  >
+    {/* Additional gradient overlays for depth */}
+    <div className="absolute inset-0 bg-gradient-to-b from-neutral-950 via-transparent to-neutral-950/80" />
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]" />
+  </Vortex>
+  
+  <Section className="pt-32 pb-24 relative z-10">
+    <div className="max-w-4xl mx-auto text-center relative">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="relative"
+      >
+        <div className="relative inline-block mb-6">
+          <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-blue-700 leading-tight pb-5">
+            Pulsar Engine
+          </h1>
+          <div className="absolute -left-12 bottom-0">
+            <FloatingIcon delay={1}>
+              <Code2 className="w-10 h-10 text-blue-400/80 mb-8"/>
+            </FloatingIcon>
           </div>
-        </AnimatedSection>
-      </section>
+        </div>
 
-      <div className='bg-black text-neutral-200 overflow-x-hidden relative'>
-        {/* Core Architecture */}
-        <section className="container mx-auto px-6 my-24 py-24 bg-black/70 relative z-20">
-          <AnimatedSection>
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold mb-3 text-white">
-                Core Architecture
-              </h2>
-              <p className="text-neutral-400 max-w-2xl mx-auto">
-                A modular, performance-driven design built from the ground up in Rust
-              </p>
-            </div>
+        <div className="space-y-6 mb-12">
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-2xl md:text-3xl font-medium text-white px-4"
+          >
+            Next-Generation Game Development
+          </motion.p>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="text-lg md:text-xl text-neutral-400 max-w-2xl mx-auto px-4"
+          >
+            An open-source game engine built for the future. Powered by Rust, 
+            driven by the community.
+          </motion.p>
+        </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-              <FeatureCard
-                icon={CpuIcon}
-                title="High-Performance Core"
-                description="Leveraging Rust's zero-cost abstractions"
-                features={[
-                  "Memory-safe system design",
-                  "Lock-free concurrency",
-                  "Compile-time optimizations"
-                ]}
-              />
-              <FeatureCard
-                icon={LayoutGridIcon}
-                title="Modular Components"
-                description="Flexible, composable architecture"
-                features={[
-                  "Entity-Component-System",
-                  "Dynamic plugin support",
-                  "Hot-reloadable modules"
-                ]}
-              />
-              <FeatureCard
-                icon={NetworkIcon}
-                title="Advanced Networking"
-                description="Robust multiplayer infrastructure"
-                features={[
-                  "UDP and TCP support",
-                  "Low-latency synchronization",
-                  "Scalable architecture"
-                ]}
-              />
-              <FeatureCard
-                icon={ServerIcon}
-                title="Cross-Platform"
-                description="Deploy everywhere with ease"
-                features={[
-                  "Windows, macOS, Linux",
-                  "Mobile and Web export",
-                  "Native performance"
-                ]}
-              />
-            </div>
-          </AnimatedSection>
-        </section>
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="flex flex-col sm:flex-row justify-center gap-4 px-4"
+        >
+          <Button disabled className="sm:min-w-[180px] relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-blue-700/20 group-hover:opacity-75 transition-opacity" />
+            <Zap className="w-5 h-5" />
+            Download Pulsar
+          </Button>
+          <Button 
+            variant="secondary" 
+            href="https://github.com/Far-Beyond-Pulsar/Pulsar-Engine" 
+            className="sm:min-w-[180px] relative overflow-hidden group"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-neutral-800/50 to-neutral-900/50 group-hover:opacity-75 transition-opacity" />
+            <GithubIcon className="w-5 h-5" />
+            GitHub Repository
+          </Button>
+        </motion.div>
+      </motion.div>
+    </div>
+  </Section>
+</div>
 
-        {/* Rendering Capabilities */}
-        <section className="container mx-auto px-6 my-24 py-24 bg-black/70 relative z-20">
-          <AnimatedSection>
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold mb-3 text-white">
-                Rendering & Graphics
-              </h2>
-              <p className="text-neutral-400 max-w-2xl mx-auto">
-                Next-generation rendering with advanced real-time capabilities
-              </p>
-            </div>
+      {/* Code Demo Section */}
+      <Section>
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold mb-4 text-white">
+              Built for Modern Development
+            </h2>
+            <p className="text-neutral-400">
+              Experience the power of Rust with intuitive APIs and modern graphics
+            </p>
+          </div>
+          <CodeDemo />
+        </div>
+      </Section>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-              <FeatureCard
-                icon={LayersIcon}
-                title="Physically Based Rendering"
-                description="Advanced graphics with real-time illumination"
-                features={[
-                  "Metallic/Roughness workflow",
-                  "Advanced material system",
-                  "Real-time ray tracing"
-                ]}
-              />
-              <FeatureCard
-                icon={BrushIcon}
-                title="Material Editor"
-                description="Powerful node-based material creation"
-                features={[
-                  "Visual shader graph",
-                  "Custom shader support",
-                  "Real-time preview"
-                ]}
-              />
-              <FeatureCard
-                icon={CloudIcon}
-                title="Advanced Lighting"
-                description="Sophisticated lighting technologies"
-                features={[
-                  "Dynamic global illumination",
-                  "Volumetric lighting",
-                  "Cascaded shadow maps"
-                ]}
-              />
-              <FeatureCard
-                icon={PlayIcon}
-                title="Particle System"
-                description="GPU-accelerated particle simulation"
-                features={[
-                  "Compute shader based",
-                  "Multi-threaded simulation",
-                  "Complex behavior graphs"
-                ]}
-              />
-            </div>
-          </AnimatedSection>
-        </section>
+      {/* Feature Explorer Section */}
+      <Section dark>
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4 text-white">
+            Explore Key Features
+          </h2>
+          <p className="text-neutral-400 max-w-2xl mx-auto">
+            Discover the technologies that make Pulsar Engine unique
+          </p>
+        </div>
+        <FeatureExplorer />
+      </Section>
 
-        {/* Call to Action */}
-        <section className="container mx-auto px-6 my-24 py-24 bg-black/70 relative z-20">
-          <AnimatedSection>
-            <div className="text-center max-w-3xl mx-auto">
-              <h2 className="text-4xl font-bold mb-5 text-white">
-                Transform Your Game Development
-              </h2>
-              <p className="text-xl text-neutral-400 mb-8">
-                Empower your creativity with a high-performance engine
-                designed for modern game development.
-              </p>
-              <div className="flex justify-center space-x-4">
-                <button
-                  disabled
-                  className="px-8 py-3 bg-blue-600 text-white rounded-xl
-                    hover:bg-blue-700 transition-all duration-300
-                    cursor-not-allowed opacity-50
-                    shadow-[0_10px_30px_rgba(59,130,246,0.2)] hover:shadow-[0_15px_40px_rgba(59,130,246,0.3)]"
-                >
-                  Download Pulsar
-                </button>
-                <a
-                  href="https://github.com/Far-Beyond-Pulsar/Pulsar-Engine"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-8 py-3 border border-neutral-700
-                    text-neutral-300 rounded-xl
-                    hover:bg-neutral-900 transition-all duration-300
-                    hover:shadow-[0_10px_30px_rgba(255,255,255,0.05)]"
-                >
-                  <GithubIcon className="w-5 h-5 mr-2 inline-block" />
-                  Explore Repository
-                </a>
-              </div>
-            </div>
-          </AnimatedSection>
-        </section>
-      </div>
+      {/* Performance Metrics Section */}
+      <Section>
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4 text-white">
+            Performance First
+          </h2>
+          <p className="text-neutral-400 max-w-2xl mx-auto">
+            Built from the ground up with performance as a core principle
+          </p>
+        </div>
+        
+        <div className="flex flex-wrap justify-center gap-12">
+          <PerformanceMetric 
+            value="<1ms" 
+            label="Frame Overhead"
+            description="Minimal engine overhead ensures your game logic gets maximum CPU time"
+          />
+          <PerformanceMetric 
+            value="0%" 
+            label="GC Pauses"
+            description="No garbage collection means consistent, predictable performance"
+          />
+          <PerformanceMetric 
+            value="100%" 
+            label="GPU Utilization"
+            description="Efficient rendering system maximizes available graphics hardware"
+          />
+        </div>
+      </Section>
+
+      {/* Platform Support Section */}
+      <Section dark>
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4 text-white">
+            Deploy Everywhere
+          </h2>
+          <p className="text-neutral-400 max-w-2xl mx-auto">
+            Built for cross-platform development from the ground up
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <PlatformCard
+            icon={MonitorIcon}
+            platform="Desktop"
+            features={[
+              "Windows, macOS, and Linux",
+              "Native performance",
+              "Hardware-specific optimizations"
+            ]}
+          />
+          <PlatformCard
+            icon={Share2Icon}
+            platform="Mobile & Web"
+            features={[
+              "iOS and Android support",
+              "WebAssembly deployment",
+              "Progressive web apps"
+            ]}
+          />
+          <PlatformCard
+            icon={ShieldIcon}
+            platform="Consoles"
+            features={[
+              "Console certification ready",
+              "Platform-specific features",
+              "Optimized performance"
+            ]}
+          />
+        </div>
+      </Section>
+
+      {/* Community Section */}
+      <Section dark>
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4 text-white">Join the Community</h2>
+          <p className="text-neutral-400 max-w-2xl mx-auto">
+            Be part of a growing ecosystem of developers building the future of gaming
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="bg-neutral-900 rounded-xl border border-neutral-800 p-6 hover:border-blue-500/50 transition-all">
+            <MessageSquareIcon className="w-8 h-8 text-blue-500 mb-4" />
+            <h3 className="text-lg font-semibold text-white mb-2">Discord Community</h3>
+            <p className="text-neutral-400 mb-4">Join our active Discord community for real-time discussions and support.</p>
+            <Button variant="secondary" className="w-full" href="#">Join Discord</Button>
+          </div>
+          <div className="bg-neutral-900 rounded-xl border border-neutral-800 p-6 hover:border-blue-500/50 transition-all">
+            <GithubIcon className="w-8 h-8 text-blue-500 mb-4" />
+            <h3 className="text-lg font-semibold text-white mb-2">GitHub Project</h3>
+            <p className="text-neutral-400 mb-4">Contribute to the engine's development and help shape its future.</p>
+            <Button variant="secondary" className="w-full" href="#">View Repository</Button>
+          </div>
+          <div className="bg-neutral-900 rounded-xl border border-neutral-800 p-6 hover:border-blue-500/50 transition-all">
+            <BookOpenIcon className="w-8 h-8 text-blue-500 mb-4" />
+            <h3 className="text-lg font-semibold text-white mb-2">Documentation</h3>
+            <p className="text-neutral-400 mb-4">Comprehensive guides and API documentation to get you started.</p>
+            <Button variant="secondary" className="w-full" href="#">Read Docs</Button>
+          </div>
+        </div>
+      </Section>
     </div>
   );
 }

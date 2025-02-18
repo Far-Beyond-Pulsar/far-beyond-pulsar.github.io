@@ -1,8 +1,9 @@
 import React from 'react';
 import SocialLinks from './SocialLinks';
+import { Target } from 'lucide-react';
 
-const FooterLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
-  <a href={href} className="text-neutral-400 hover:text-neutral-100 transition-colors">
+const FooterLink = ({ href, target, children }: { href: string; target:string; children: React.ReactNode }) => (
+  <a href={href} target={target} className="text-neutral-400 hover:text-neutral-100 transition-colors">
     {children}
   </a>
 );
@@ -89,11 +90,11 @@ export const Footer = () => {
               © 2024 Pulsar Engine. All rights reserved.
             </div>
             <div className="flex gap-6 text-sm">
-              <FooterLink href="/status">Status</FooterLink>
+              <FooterLink target="_" href="https://www.githubstatus.com/">Status</FooterLink>
               <span className="text-neutral-700">•</span>
-              <FooterLink href="/support">Support</FooterLink>
+              <FooterLink target="_" href="https://github.com/Far-Beyond-Pulsar/Pulsar-Engine/issues">Support</FooterLink>
               <span className="text-neutral-700">•</span>
-              <FooterLink href="/security">Security</FooterLink>
+              <FooterLink target="_" href="https://github.com/Far-Beyond-Pulsar/Pulsar-Engine/security">Security</FooterLink>
             </div>
           </div>
         </div>
