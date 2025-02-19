@@ -293,7 +293,7 @@ export default function LibrariesPage() {
             Libraries & Dependencies
           </h1>
           <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
-            Explore the core technologies and libraries that power Pulsar Engine
+            Explore the core technologies and libraries that power Pulsar Engine behind the scenes. Many of these are maintained by communities of developers just like you! Thanks to all the library developers for making projects like Pulsar possible.
           </p>
         </div>
 
