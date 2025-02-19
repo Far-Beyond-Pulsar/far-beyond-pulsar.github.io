@@ -1,4 +1,3 @@
-// app/docs/page.tsx
 "use client"
 
 import { useState, useMemo } from 'react'
@@ -36,11 +35,14 @@ export default function DocsPage() {
   }, [selectedTag, selectedStability, searchQuery])
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div className="min-h-screen bg-neutral-950 text-neutral-200">
+      {/* Subtle gradient background */}
+      <div className="fixed inset-0 bg-gradient-to-b from-blue-500/5 to-transparent opacity-20 pointer-events-none" />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative">
         {/* Header */}
         <div className="mb-16 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-neutral-100 to-neutral-400">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-blue-700">
             Documentation
           </h1>
           <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
@@ -60,7 +62,9 @@ export default function DocsPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search documentation..."
-              className="block w-full pl-10 pr-10 py-2 bg-neutral-900 border border-neutral-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-neutral-100 placeholder-neutral-500"
+              className="block w-full pl-10 pr-10 py-2 bg-neutral-900/50 border border-neutral-800 rounded-lg 
+                focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors
+                text-neutral-100 placeholder-neutral-500 hover:border-neutral-700"
             />
             {searchQuery && (
               <button
@@ -75,7 +79,7 @@ export default function DocsPage() {
           {/* Filters */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Select value={selectedTag} onValueChange={setSelectedTag}>
-              <SelectTrigger className="w-full sm:w-[200px]">
+              <SelectTrigger className="w-full sm:w-[200px] bg-neutral-900/50 border-neutral-800 hover:border-neutral-700">
                 <SelectValue placeholder="Filter by tag" />
               </SelectTrigger>
               <SelectContent>
@@ -87,7 +91,7 @@ export default function DocsPage() {
             </Select>
 
             <Select value={selectedStability} onValueChange={setSelectedStability}>
-              <SelectTrigger className="w-full sm:w-[200px]">
+              <SelectTrigger className="w-full sm:w-[200px] bg-neutral-900/50 border-neutral-800 hover:border-neutral-700">
                 <SelectValue placeholder="Filter by stability" />
               </SelectTrigger>
               <SelectContent>
@@ -113,9 +117,10 @@ export default function DocsPage() {
             <Link 
               key={doc.slug} 
               href={`/docs/${doc.slug}`}
-              className="transition-all hover:scale-[1.02]"
+              className="group"
             >
-              <Card>
+              <Card className="bg-neutral-900/50 border-neutral-800 transition-colors
+                hover:border-blue-500/30">
                 <CardHeader>
                   <div className="flex justify-between items-start gap-4">
                     <CardTitle className="text-xl text-neutral-100">
@@ -128,7 +133,8 @@ export default function DocsPage() {
                       {doc.tags.map(tag => (
                         <span 
                           key={tag}
-                          className="px-2 py-1 text-xs rounded-full bg-neutral-800 text-neutral-300"
+                          className="px-2 py-1 text-xs rounded-full bg-neutral-800 text-neutral-300
+                            group-hover:bg-neutral-700/50 transition-colors"
                         >
                           {tag}
                         </span>
@@ -159,7 +165,8 @@ export default function DocsPage() {
                 setSelectedTag('all')
                 setSelectedStability('all')
               }}
-              className="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 rounded-lg text-neutral-100 transition-colors"
+              className="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700
+                hover:border-blue-500/30 rounded-lg text-neutral-100 transition-colors"
             >
               Reset all filters
             </button>

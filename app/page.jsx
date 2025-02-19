@@ -306,10 +306,30 @@ export default function PulsarHomepage() {
         logo: "/logos/rust.png",
         details: "Systems programming language ensuring memory safety and thread safety without garbage collection"
       },
+      {
+        name: "Horizon", 
+        logo: "/logos/horizon.png",
+        details: "First of it's kind publicly availible fully distributed game server built for extreme scale and performance"
+      },
+      {
+        name: "Rapier",
+        logo: "/logos/rapier.png",
+        details: "High-performance 2D and 3D physics engine written in Rust"
+      },
       { 
         name: "WGPU", 
         logo: "/logos/wgpu.png",
         details: "Cross-platform, safe graphics API abstracting Vulkan, Metal, D3D12, and WebGPU"
+      },
+      { 
+        name: "WebGPU", 
+        logo: "/logos/webgpu.svg",
+        details: "Next-generation web graphics API providing modern GPU features and enhanced performance"
+      },
+      { 
+        name: "WebGL2", 
+        logo: "/logos/webgl.png",
+        details: "High-performance browser graphics API with broad support across modern browsers"
       },
       { 
         name: "WebAssembly", 
@@ -365,6 +385,19 @@ export default function PulsarHomepage() {
         </div>
       </div>
     ))}
+  </div>
+
+  <div>
+    <h1 className="text-3xl font-bold text-white text-center mt-8">
+      Open Source Libraries
+    </h1>
+    <p className="text-center text-neutral-400 mt-8">
+      On top of the more major technologies, we also use a variety of open source libraries to help us achieve the user experience provided by Pulsar Engine.
+    </p>
+
+    <Button variant="primary" href="/libs" className="mx-auto mt-6 w-44">
+      View all libraries
+    </Button>
   </div>
 </Section>
 
