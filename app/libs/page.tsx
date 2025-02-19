@@ -258,7 +258,7 @@ const libraries: Library[] = [
     logo: "/logos/horizon.png",
     details: "First of its kind publicly available fully distributed game server built for extreme scale and performance",
     type: "platform",
-    githubUrl: "https://github.com/Far-Beyond-Pulsar/Horizon"
+    githubUrl: "https://github.com/Far-Beyond-Dev/Horizon"
   }
 ]
 
