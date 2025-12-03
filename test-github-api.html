@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub API Test</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+        .card { border: 1px solid #ccc; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .loading { color: #666; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>GitHub API Integration Test</h1>
+    
+    <div class="card">
+        <h2>Repository Stats</h2>
+        <div id="stats" class="loading">Loading...</div>
+    </div>
+    
+    <div class="card">
+        <h2>Latest Release</h2>
+        <div id="release" class="loading">Loading...</div>
+    </div>
+
+    <script>
+        const GITHUB_API = 'https://api.github.com';
+        const ORG = 'Far-Beyond-Pulsar';
+        const REPO = 'Pulsar-Native';
+
+        async function fetchRepoStats() {
+            try {
+                const response = await fetch(`${GITHUB_API}/repos/${ORG}/${REPO}`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                
+                document.getElementById('stats').innerHTML = `
+                    <p class="success">✓ Successfully fetched</p>
+                    <ul>
+                        <li><strong>Stars:</strong> ${data.stargazers_count}</li>
+                        <li><strong>Forks:</strong> ${data.forks_count}</li>
+                        <li><strong>Watchers:</strong> ${data.watchers_count}</li>
+                        <li><strong>Open Issues:</strong> ${data.open_issues_count}</li>
+                    </ul>
+                `;
+            } catch (error) {
+                document.getElementById('stats').innerHTML = `
+                    <p class="error">✗ Error: ${error.message}</p>
+                `;
+            }
+        }
+
+        async function fetchLatestRelease() {
+            try {
+                let response = await fetch(`${GITHUB_API}/repos/${ORG}/${REPO}/releases/latest`);
+                
+                if (!response.ok) {
+                    response = await fetch(`${GITHUB_API}/repos/${ORG}/${REPO}/releases?per_page=1`);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const releases = await response.json();
+                    if (releases.length === 0) throw new Error('No releases found');
+                    const data = releases[0];
+                    
+                    document.getElementById('release').innerHTML = `
+                        <p class="success">✓ Successfully fetched</p>
+                        <ul>
+                            <li><strong>Version:</strong> ${data.tag_name}</li>
+                            <li><strong>Name:</strong> ${data.name}</li>
+                            <li><strong>Published:</strong> ${new Date(data.published_at).toLocaleDateString()}</li>
+                            <li><strong>URL:</strong> <a href="${data.html_url}" target="_blank">View on GitHub</a></li>
+                        </ul>
+                    `;
+                    return;
+                }
+                
+                const data = await response.json();
+                document.getElementById('release').innerHTML = `
+                    <p class="success">✓ Successfully fetched</p>
+                    <ul>
+                        <li><strong>Version:</strong> ${data.tag_name}</li>
+                        <li><strong>Name:</strong> ${data.name}</li>
+                        <li><strong>Published:</strong> ${new Date(data.published_at).toLocaleDateString()}</li>
+                        <li><strong>URL:</strong> <a href="${data.html_url}" target="_blank">View on GitHub</a></li>
+                    </ul>
+                `;
+            } catch (error) {
+                document.getElementById('release').innerHTML = `
+                    <p class="error">✗ Error: ${error.message}</p>
+                `;
+            }
+        }
+
+        // Run tests
+        fetchRepoStats();
+        fetchLatestRelease();
+    </script>
+</body>
+</html>

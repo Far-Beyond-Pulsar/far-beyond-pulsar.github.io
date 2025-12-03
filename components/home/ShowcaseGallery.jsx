@@ -2,26 +2,26 @@ import Link from "next/link";
 
 const projects = [
   {
-    emoji: "🎮",
-    title: "Starfall Chronicles",
-    desc: "Epic space RPG with stunning visuals and massive open-world exploration.",
-    tags: [{ text: "RPG", color: "0ea5e9" }, { text: "Multiplayer", color: "6366f1" }],
+    emoji: "🧪",
+    title: "Engine Test Suite",
+    desc: "Development test scenarios showcasing engine capabilities and feature demonstrations.",
+    tags: [{ text: "Demo", color: "0ea5e9" }, { text: "Alpha", color: "yellow" }],
     gradient: "from-[#0ea5e9]/20 to-[#6366f1]/20",
     hoverColor: "0ea5e9"
   },
   {
-    emoji: "🏎️",
-    title: "Velocity Racers",
-    desc: "High-octane racing with realistic physics and dynamic weather systems.",
-    tags: [{ text: "Racing", color: "6366f1" }, { text: "Simulation", color: "f472b6" }],
+    emoji: "🚧",
+    title: "Prototype Projects",
+    desc: "Early community experiments and proof-of-concept projects testing Pulsar features.",
+    tags: [{ text: "Experimental", color: "6366f1" }, { text: "WIP", color: "yellow" }],
     gradient: "from-[#6366f1]/20 to-[#f472b6]/20",
     hoverColor: "6366f1"
   },
   {
-    emoji: "⚔️",
-    title: "Kingdom Siege",
-    desc: "Medieval strategy game with thousands of units and intelligent AI.",
-    tags: [{ text: "Strategy", color: "f472b6" }, { text: "RTS", color: "0ea5e9" }],
+    emoji: "🔬",
+    title: "Technical Demos",
+    desc: "Performance tests, rendering samples, and technical demonstrations of engine systems.",
+    tags: [{ text: "Testing", color: "f472b6" }, { text: "Dev", color: "0ea5e9" }],
     gradient: "from-[#f472b6]/20 to-[#0ea5e9]/20",
     hoverColor: "f472b6"
   }
@@ -30,10 +30,11 @@ const projects = [
 export default function ShowcaseGallery() {
   return (
     <section className="max-w-6xl mx-auto py-20 px-4">
-      <div className="flex justify-between items-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold">Built with Pulsar</h2>
-        <Link href="/showcase" className="text-[#0ea5e9] hover:text-[#0284c7] font-semibold">View All Projects →</Link>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-3xl md:text-4xl font-bold">Development Projects</h2>
+        <Link href="/showcase" className="text-[#0ea5e9] hover:text-[#0284c7] font-semibold">View All →</Link>
       </div>
+      <p className="text-slate-400 text-sm mb-12">Early experiments and demos by the community</p>
       <div className="grid md:grid-cols-3 gap-8">
         {projects.map((project, i) => (
           <div key={i} className={`bg-black border border-white/10 rounded-xl overflow-hidden hover:border-[#${project.hoverColor}]/50 transition group`}>

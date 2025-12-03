@@ -1,11 +1,11 @@
 const faqs = [
   {
     q: "Is Pulsar production-ready?",
-    a: "Yes! Pulsar is currently in version 0.3 and is being used in several commercial projects. While we're still adding features, the core engine is stable and performant."
+    a: "No, Pulsar is currently in early development (version 0.1.x). We're actively building core features and the API is subject to change. It's not recommended for production game development yet, but we welcome early adopters to test and provide feedback!"
   },
   {
     q: "How does Pulsar compare to Unity or Unreal?",
-    a: "Pulsar focuses on performance and safety through Rust. It's faster than Unity and more memory-safe than Unreal, but has a smaller ecosystem. Best for developers who value performance and want to work with Rust."
+    a: "Pulsar aims to provide high performance through Rust and modern architecture. However, it's still in early development with a smaller feature set and ecosystem compared to established engines. Unity and Unreal are currently better choices for production projects."
   },
   {
     q: "Do I need to know Rust to use Pulsar?",
@@ -21,7 +21,7 @@ const faqs = [
   },
   {
     q: "What's the licensing model?",
-    a: "Pulsar is completely free and open-source under the MIT license. No royalties, no subscription fees, no restrictions on commercial use."
+    a: "Pulsar is completely free and open-source under the MIT license. No royalties, no subscription fees, no restrictions. However, please note the engine is in early development and not yet suitable for commercial game production."
   },
   {
     q: "How can I contribute to Pulsar?",

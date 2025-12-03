@@ -18,10 +18,12 @@ import {
   FAQ,
   CTASection
 } from "@/components/home";
+import WIPBanner from "@/components/WIPBanner";
 
 export default function Page() {
   return (
     <main className="relative min-h-screen bg-black text-white overflow-x-hidden">
+      <WIPBanner />
       <HeroSection />
       <FeaturesSection />
       <UseCasesGallery />
