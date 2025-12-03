@@ -1,245 +1,27 @@
 import Image from "next/image";
 import Link from "next/link";
+import {
+  HeroSection,
+  FeaturesSection,
+  UseCasesGallery,
+  MetricsSection,
+  PlatformSupport,
+  DemoSection,
+  QuickWins,
+  CTASection
+} from "@/components/home";
 
 export default function Page() {
   return (
     <main className="relative min-h-screen bg-black text-white overflow-x-hidden">
-      {/* Hero Section */}
-      <section className="relative flex flex-col items-center justify-center h-[80vh] text-center z-10">
-        <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#0ea5e9]/30 via-[#6366f1]/20 to-[#f472b6]/10 blur-2xl animate-pulse -z-10" />
-        <Image src="/logos/pulsar.png" alt="Pulsar Logo" width={120} height={120} className="mx-auto mb-6 drop-shadow-lg" />
-        <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight bg-gradient-to-r from-[#0ea5e9] via-[#6366f1] to-[#f472b6] bg-clip-text text-transparent animate-fade-in">
-          Pulsar Engine
-        </h1>
-        <p className="mt-6 text-2xl md:text-3xl max-w-2xl mx-auto text-slate-200 animate-fade-in delay-200">
-          The next-generation, Rust-powered game engine. <br />
-          <span className="text-[#0ea5e9] font-bold">Faster</span>, <span className="text-[#6366f1] font-bold">smarter</span>, <span className="text-[#f472b6] font-bold">limitless</span>.
-        </p>
-        <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center animate-fade-in delay-300">
-          <Link href="/docs/installation">
-            <button className="px-8 py-3 rounded-lg bg-[#0ea5e9] hover:bg-[#0369a1] text-white font-semibold shadow-lg transition">Get Started</button>
-          </Link>
-          <Link href="/docs">
-            <button className="px-8 py-3 rounded-lg bg-[#6366f1] hover:bg-[#4338ca] text-white font-semibold shadow-lg transition">Read the Docs</button>
-          </Link>
-          <a href="https://github.com/Far-Beyond-Pulsar/pulsar" target="_blank" rel="noopener" className="px-8 py-3 rounded-lg bg-[#f472b6] hover:bg-[#be185d] text-white font-semibold shadow-lg transition">GitHub</a>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="max-w-6xl mx-auto py-24 px-4 grid md:grid-cols-3 gap-12">
-        <div className="bg-black rounded-2xl p-8 shadow-xl border border-[#0ea5e9]/50">
-          <Image src="/logos/rust.png" alt="Rust" width={48} height={48} className="mb-4" />
-          <h3 className="text-2xl font-bold mb-2">Built with Rust</h3>
-          <p className="text-slate-300">Harness the power, safety, and speed of Rust for modern game development.</p>
-        </div>
-        <div className="bg-black rounded-2xl p-8 shadow-xl border border-[#6366f1]/50">
-          <Image src="/logos/vulkan.png" alt="Vulkan" width={48} height={48} className="mb-4" />
-          <h3 className="text-2xl font-bold mb-2">Cutting-edge Graphics</h3>
-          <p className="text-slate-300">Vulkan, WebGPU, and more. Stunning visuals, cross-platform, and future-proof.</p>
-        </div>
-        <div className="bg-black rounded-2xl p-8 shadow-xl border border-[#f472b6]/50">
-          <Image src="/logos/rapier.png" alt="Physics" width={48} height={48} className="mb-4" />
-          <h3 className="text-2xl font-bold mb-2">Physics & Performance</h3>
-          <p className="text-slate-300">Lightning-fast physics, blazing benchmarks, and real-time performance.</p>
-        </div>
-      </section>
-
-      {/* Use Cases Gallery Section */}
-      <section className="max-w-6xl mx-auto py-20 px-4">
-        <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">What You Can Build</h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-black border border-[#0ea5e9]/50 rounded-xl p-6 hover:border-[#0ea5e9] transition group">
-            <div className="text-4xl mb-4">🎮</div>
-            <h3 className="text-xl font-bold mb-2 group-hover:text-[#0ea5e9] transition">FPS Games</h3>
-            <p className="text-sm text-slate-400">High-performance first-person shooters with advanced physics and networking.</p>
-          </div>
-          <div className="bg-black border border-[#6366f1]/50 rounded-xl p-6 hover:border-[#6366f1] transition group">
-            <div className="text-4xl mb-4">🌍</div>
-            <h3 className="text-xl font-bold mb-2 group-hover:text-[#6366f1] transition">Open World RPGs</h3>
-            <p className="text-sm text-slate-400">Massive worlds with complex systems, quests, and dynamic environments.</p>
-          </div>
-          <div className="bg-black border border-[#f472b6]/50 rounded-xl p-6 hover:border-[#f472b6] transition group">
-            <div className="text-4xl mb-4">🚀</div>
-            <h3 className="text-xl font-bold mb-2 group-hover:text-[#f472b6] transition">Space Simulators</h3>
-            <p className="text-sm text-slate-400">Realistic space physics, massive scale, and beautiful procedural generation.</p>
-          </div>
-          <div className="bg-black border border-[#0ea5e9]/50 rounded-xl p-6 hover:border-[#0ea5e9] transition group">
-            <div className="text-4xl mb-4">🏎️</div>
-            <h3 className="text-xl font-bold mb-2 group-hover:text-[#0ea5e9] transition">Racing Games</h3>
-            <p className="text-sm text-slate-400">Ultra-realistic physics, vehicle dynamics, and stunning visual effects.</p>
-          </div>
-          <div className="bg-black border border-[#6366f1]/50 rounded-xl p-6 hover:border-[#6366f1] transition group">
-            <div className="text-4xl mb-4">⚔️</div>
-            <h3 className="text-xl font-bold mb-2 group-hover:text-[#6366f1] transition">Strategy Games</h3>
-            <p className="text-sm text-slate-400">Complex AI, large-scale battles, and efficient pathfinding systems.</p>
-          </div>
-          <div className="bg-black border border-[#f472b6]/50 rounded-xl p-6 hover:border-[#f472b6] transition group">
-            <div className="text-4xl mb-4">🧩</div>
-            <h3 className="text-xl font-bold mb-2 group-hover:text-[#f472b6] transition">Indie Projects</h3>
-            <p className="text-sm text-slate-400">Perfect for small teams and solo developers with minimal overhead.</p>
-          </div>
-          <div className="bg-black border border-[#0ea5e9]/50 rounded-xl p-6 hover:border-[#0ea5e9] transition group">
-            <div className="text-4xl mb-4">🎯</div>
-            <h3 className="text-xl font-bold mb-2 group-hover:text-[#0ea5e9] transition">VR/AR Experiences</h3>
-            <p className="text-sm text-slate-400">Low-latency rendering and spatial audio for immersive experiences.</p>
-          </div>
-          <div className="bg-black border border-[#6366f1]/50 rounded-xl p-6 hover:border-[#6366f1] transition group">
-            <div className="text-4xl mb-4">🌐</div>
-            <h3 className="text-xl font-bold mb-2 group-hover:text-[#6366f1] transition">MMO Games</h3>
-            <p className="text-sm text-slate-400">Scalable server architecture for thousands of concurrent players.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Metrics Section */}
-      <section className="max-w-5xl mx-auto py-16 px-4 grid md:grid-cols-3 gap-8 text-center">
-        <div>
-          <h4 className="text-4xl font-extrabold text-[#0ea5e9]">2x</h4>
-          <p className="text-slate-300 mt-2">Faster than leading engines*</p>
-        </div>
-        <div>
-          <h4 className="text-4xl font-extrabold text-[#6366f1]">100%</h4>
-          <p className="text-slate-300 mt-2">Rust safety & performance</p>
-        </div>
-        <div>
-          <h4 className="text-4xl font-extrabold text-[#f472b6]">Open</h4>
-          <p className="text-slate-300 mt-2">Open-source, community-driven</p>
-        </div>
-      </section>
-
-      {/* Platform Support Matrix Section */}
-      <section className="max-w-6xl mx-auto py-20 px-4">
-        <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Cross-Platform by Design</h2>
-        <div className="bg-black border border-white/10 rounded-xl p-8">
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="space-y-6">
-              <h3 className="text-xl font-bold text-[#0ea5e9] mb-4">Desktop</h3>
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                <div>
-                  <div className="font-semibold">Windows</div>
-                  <div className="text-sm text-slate-400">Vulkan, DirectX 12</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                <div>
-                  <div className="font-semibold">Linux</div>
-                  <div className="text-sm text-slate-400">Vulkan, OpenGL</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                <div>
-                  <div className="font-semibold">macOS</div>
-                  <div className="text-sm text-slate-400">Metal, MoltenVK</div>
-                </div>
-              </div>
-            </div>
-            <div className="space-y-6">
-              <h3 className="text-xl font-bold text-[#6366f1] mb-4">Mobile</h3>
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                <div>
-                  <div className="font-semibold">iOS</div>
-                  <div className="text-sm text-slate-400">Metal backend</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                <div>
-                  <div className="font-semibold">Android</div>
-                  <div className="text-sm text-slate-400">Vulkan, OpenGL ES</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
-                <div>
-                  <div className="font-semibold">AR/VR Headsets</div>
-                  <div className="text-sm text-slate-400">In Development</div>
-                </div>
-              </div>
-            </div>
-            <div className="space-y-6">
-              <h3 className="text-xl font-bold text-[#f472b6] mb-4">Console</h3>
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
-                <div>
-                  <div className="font-semibold">PlayStation 5</div>
-                  <div className="text-sm text-slate-400">Planned</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
-                <div>
-                  <div className="font-semibold">Xbox Series X/S</div>
-                  <div className="text-sm text-slate-400">Planned</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="mt-8 pt-6 border-t border-white/10 flex gap-6 text-sm">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-green-500"></div>
-              <span className="text-slate-400">Fully Supported</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
-              <span className="text-slate-400">In Development</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Demo Section */}
-      <section className="max-w-4xl mx-auto py-20 px-4 flex flex-col items-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-6">See Pulsar in Action</h2>
-        <div className="w-full bg-black border border-white/10 rounded-xl shadow-2xl p-6 flex flex-col md:flex-row gap-8 items-center">
-          <Image src="/engine_bps.png" alt="Engine Screenshot" width={400} height={240} className="rounded-lg shadow-lg" />
-          <div className="flex-1">
-            <pre className="bg-black border border-white/10 rounded-lg p-4 text-left text-sm overflow-x-auto text-[#0ea5e9] font-mono">
-{`fn main() {
-    pulsar::run();
-}`}
-            </pre>
-            <p className="mt-4 text-slate-300">Minimal code, maximum power. Build your next world with Pulsar.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Quick Wins Section */}
-      <section className="max-w-6xl mx-auto py-20 px-4">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">From Zero to Game in 5 Minutes</h2>
-        <p className="text-center text-slate-400 mb-12">Get up and running with Pulsar in just a few simple steps</p>
-        <div className="grid md:grid-cols-5 gap-6">
-          <div className="bg-black border border-[#0ea5e9]/50 rounded-xl p-6 relative">
-            <div className="absolute -top-4 -left-4 w-10 h-10 bg-[#0ea5e9] rounded-full flex items-center justify-center font-bold text-lg">1</div>
-            <h3 className="text-lg font-bold mb-2 mt-2">Install Rust</h3>
-            <p className="text-sm text-slate-400">Download and install the Rust toolchain from rustup.rs</p>
-          </div>
-          <div className="bg-black border border-[#6366f1]/50 rounded-xl p-6 relative">
-            <div className="absolute -top-4 -left-4 w-10 h-10 bg-[#6366f1] rounded-full flex items-center justify-center font-bold text-lg">2</div>
-            <h3 className="text-lg font-bold mb-2 mt-2">Install Pulsar CLI</h3>
-            <p className="text-sm text-slate-400 font-mono">cargo install pulsar-cli</p>
-          </div>
-          <div className="bg-black border border-[#f472b6]/50 rounded-xl p-6 relative">
-            <div className="absolute -top-4 -left-4 w-10 h-10 bg-[#f472b6] rounded-full flex items-center justify-center font-bold text-lg">3</div>
-            <h3 className="text-lg font-bold mb-2 mt-2">Create Project</h3>
-            <p className="text-sm text-slate-400 font-mono">pulsar new my-game</p>
-          </div>
-          <div className="bg-black border border-[#0ea5e9]/50 rounded-xl p-6 relative">
-            <div className="absolute -top-4 -left-4 w-10 h-10 bg-[#0ea5e9] rounded-full flex items-center justify-center font-bold text-lg">4</div>
-            <h3 className="text-lg font-bold mb-2 mt-2">Navigate & Build</h3>
-            <p className="text-sm text-slate-400 font-mono">cd my-game && cargo run</p>
-          </div>
-          <div className="bg-black border border-[#6366f1]/50 rounded-xl p-6 relative">
-            <div className="absolute -top-4 -left-4 w-10 h-10 bg-[#6366f1] rounded-full flex items-center justify-center font-bold text-lg">5</div>
-            <h3 className="text-lg font-bold mb-2 mt-2">Start Building!</h3>
-            <p className="text-sm text-slate-400">Your game window is now running. Time to create!</p>
-          </div>
-        </div>
-      </section>
+      <HeroSection />
+      <FeaturesSection />
+      <UseCasesGallery />
+      <MetricsSection />
+      <PlatformSupport />
+      <DemoSection />
+      <QuickWins />
+      <CTASection />
 
       {/* Showcase/Game Gallery Section */}
       <section className="max-w-6xl mx-auto py-20 px-4">
@@ -920,18 +702,6 @@ export default function Page() {
             </summary>
             <p className="mt-4 text-slate-300">We welcome contributions! Check out our GitHub repository for open issues, join our Discord to discuss features, or submit PRs. We also need help with documentation and tutorials.</p>
           </details>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 bg-black border-t border-white/10 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to go beyond?</h2>
-        <p className="text-lg text-slate-200 mb-8">Join the Pulsar community and shape the future of game development.</p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="/docs/installation">
-            <button className="px-8 py-3 rounded-lg bg-[#0ea5e9] hover:bg-[#0369a1] text-white font-semibold shadow-lg transition">Get Started</button>
-          </Link>
-          <a href="https://discord.gg/your-discord" target="_blank" rel="noopener" className="px-8 py-3 rounded-lg bg-[#6366f1] hover:bg-[#4338ca] text-white font-semibold shadow-lg transition">Join Discord</a>
         </div>
       </section>
     </main>
