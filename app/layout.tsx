@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Header, Footer } from "@/components/layout";
+import { Header, Footer, SponsorsButton } from "@/components/layout";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -32,6 +32,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
+        <SponsorsButton />
       </body>
     </html>
   );
