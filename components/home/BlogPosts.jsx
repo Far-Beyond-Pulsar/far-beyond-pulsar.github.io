@@ -1,27 +1,27 @@
 import Link from "next/link";
 
 const posts = [
-  {
-    date: "October 4, 2025",
-    title: "Pulsar 0.3: Real-time Ray Tracing",
-    desc: "Introducing hardware-accelerated ray tracing with Vulkan RT extensions for stunning real-time graphics.",
-    href: "/blog/pulsar-0-3-raytracing",
-    color: "0ea5e9"
-  },
-  {
-    date: "October 1, 2025",
-    title: "Building Your First Game with Pulsar",
-    desc: "A comprehensive guide to creating a 3D game from scratch using Pulsar's powerful ECS architecture.",
-    href: "/blog/first-game-tutorial",
-    color: "6366f1"
-  },
-  {
-    date: "September 28, 2025",
-    title: "Performance Benchmarks: Pulsar vs Unity",
-    desc: "See how Pulsar's Rust-based architecture delivers 2-3x better performance in real-world scenarios.",
-    href: "/blog/performance-benchmarks",
-    color: "f472b6"
-  }
+  // {
+  //   date: "October 4, 2025",
+  //   title: "Pulsar 0.3: Real-time Ray Tracing",
+  //   desc: "Introducing hardware-accelerated ray tracing with Vulkan RT extensions for stunning real-time graphics.",
+  //   href: "/blog/pulsar-0-3-raytracing",
+  //   color: "0ea5e9"
+  // },
+  // {
+  //   date: "October 1, 2025",
+  //   title: "Building Your First Game with Pulsar",
+  //   desc: "A comprehensive guide to creating a 3D game from scratch using Pulsar's powerful ECS architecture.",
+  //   href: "/blog/first-game-tutorial",
+  //   color: "6366f1"
+  // },
+  // {
+  //   date: "September 28, 2025",
+  //   title: "Performance Benchmarks: Pulsar vs Unity",
+  //   desc: "See how Pulsar's Rust-based architecture delivers 2-3x better performance in real-world scenarios.",
+  //   href: "/blog/performance-benchmarks",
+  //   color: "f472b6"
+  // }
 ];
 
 export default function BlogPosts() {
