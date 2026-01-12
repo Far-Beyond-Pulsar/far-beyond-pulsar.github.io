@@ -1,31 +1,31 @@
 const spotlights = [
-  {
-    emoji: "🏆",
-    title: "Developer of the Month",
-    name: "@AlexChen",
-    color: "0ea5e9",
-    desc: "Contributed 47 PRs this month, including the new particle system and shader improvements.",
-    link: "https://github.com/alexchen",
-    linkText: "View Profile →"
-  },
-  {
-    emoji: "✨",
-    title: "Featured Project",
-    name: "Neon Nexus",
-    color: "6366f1",
-    desc: "Cyberpunk roguelike with stunning visuals and procedural generation. 1.2K stars on GitHub.",
-    link: "/showcase/neon-nexus",
-    linkText: "View Project →"
-  },
-  {
-    emoji: "📚",
-    title: "Tutorial of the Week",
-    name: "Advanced Shader Techniques",
-    color: "f472b6",
-    desc: "Deep dive into custom shader programming for realistic water and atmospheric effects.",
-    link: "/tutorials/advanced-shaders",
-    linkText: "Read Tutorial →"
-  }
+  // {
+  //   emoji: "🏆",
+  //   title: "Developer of the Month",
+  //   name: "@tristanpoland",
+  //   color: "0ea5e9",
+  //   desc: "Contributed 47 PRs this month, including the new particle system and shader improvements.",
+  //   link: "https://github.com/tristanpoland",
+  //   linkText: "View Profile →"
+  // },
+  // {
+  //   emoji: "✨",
+  //   title: "Featured Project",
+  //   name: "Neon Nexus",
+  //   color: "6366f1",
+  //   desc: "Cyberpunk roguelike with stunning visuals and procedural generation. 1.2K stars on GitHub.",
+  //   link: "/showcase/neon-nexus",
+  //   linkText: "View Project →"
+  // },
+  // {
+  //   emoji: "📚",
+  //   title: "Tutorial of the Week",
+  //   name: "Advanced Shader Techniques",
+  //   color: "f472b6",
+  //   desc: "Deep dive into custom shader programming for realistic water and atmospheric effects.",
+  //   link: "/tutorials/advanced-shaders",
+  //   linkText: "Read Tutorial →"
+  // }
 ];
 
 export default function Spotlight() {
