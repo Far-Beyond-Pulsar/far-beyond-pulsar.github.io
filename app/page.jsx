@@ -9,7 +9,6 @@ import {
   QuickWins,
   ShowcaseGallery,
   VideoTutorials,
-  DocHighlights,
   TechStack,
   BlogPosts,
   FeatureComparison,
@@ -35,7 +34,6 @@ export default function Page() {
       <QuickWins />
       <ShowcaseGallery />
       <VideoTutorials />
-      <DocHighlights />
       <TechStack />
       <BlogPosts />
       <FeatureComparison />

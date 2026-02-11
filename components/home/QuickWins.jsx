@@ -35,27 +35,25 @@ export default function QuickWins() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
-            whileHover={{ scale: 1.05, y: -5 }}
             className="group relative"
           >
-            <div className="relative h-full bg-black rounded-2xl p-6 border border-slate-800 hover:border-slate-700 transition-all overflow-hidden">
+            <div className="relative h-full bg-black rounded-2xl p-5 border border-slate-800 hover:border-slate-700 transition-colors duration-200 overflow-hidden">
               {/* Number badge */}
               <motion.div
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                className={`absolute -top-3 -left-3 w-12 h-12 bg-gradient-to-r ${step.color} rounded-full flex items-center justify-center font-black text-xl shadow-lg z-10`}
+                className={`absolute -top-3 -left-3 w-12 h-12 bg-gradient-to-r ${step.color} rounded-full flex items-center justify-center font-black text-lg shadow-lg z-10`}
               >
                 {step.num}
               </motion.div>
 
               {/* Gradient accent */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${step.color} opacity-0 group-hover:opacity-5 transition-opacity`} />
+              <div className={`absolute inset-0 bg-gradient-to-br ${step.color} opacity-0 group-hover:opacity-5 transition-opacity duration-200`} />
 
               {/* Content */}
               <div className="relative z-10 mt-6">
-                <h3 className={`text-lg font-bold mb-3 bg-gradient-to-r ${step.color} bg-clip-text text-transparent`}>
+                <h3 className={`text-base font-bold mb-2 bg-gradient-to-r ${step.color} bg-clip-text text-transparent`}>
                   {step.title}
                 </h3>
-                <p className="text-sm text-slate-400 font-mono leading-relaxed break-all">
+                <p className="text-xs text-slate-400 font-mono leading-relaxed break-all">
                   {step.desc}
                 </p>
               </div>

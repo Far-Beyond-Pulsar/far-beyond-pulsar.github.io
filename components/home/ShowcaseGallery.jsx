@@ -52,21 +52,20 @@ export default function ShowcaseGallery() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
-            whileHover={{ scale: 1.05, y: -5 }}
-            className="group bg-black border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition-all"
+            className="group bg-black border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition-colors duration-200"
           >
             <div className={`aspect-video bg-gradient-to-br ${project.gradient} flex items-center justify-center relative overflow-hidden`}>
               <motion.div
                 whileHover={{ scale: 1.2, rotate: 5 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
                 className="text-5xl"
               >
                 {project.emoji}
               </motion.div>
             </div>
             <div className="p-6">
-              <h3 className="text-2xl font-bold mb-2 text-[#0ea5e9]">{project.title}</h3>
-              <p className="text-sm text-slate-400 mb-4 leading-relaxed">{project.desc}</p>
+              <h3 className="text-xl font-bold mb-2 text-[#0ea5e9]">{project.title}</h3>
+              <p className="text-xs text-slate-400 mb-3 leading-relaxed">{project.desc}</p>
               <div className="flex gap-2">
                 {project.tags.map((tag, j) => (
                   <span 

@@ -37,24 +37,19 @@ export default function UseCasesGallery() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.05 }}
-            whileHover={{ scale: 1.05, y: -5 }}
             className="group relative"
           >
-            <div className="relative h-full bg-black rounded-2xl p-6 border border-slate-800 hover:border-slate-700 transition-all overflow-hidden">
+            <div className="relative h-full bg-black rounded-2xl p-6 border border-slate-800 hover:border-slate-700 transition-colors duration-200 overflow-hidden">
               {/* Gradient accent on hover */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${useCase.color} opacity-0 group-hover:opacity-5 transition-opacity`} />
+              <div className={`absolute inset-0 bg-gradient-to-br ${useCase.color} opacity-0 group-hover:opacity-5 transition-opacity duration-200`} />
               
               {/* Icon */}
-              <motion.div
-                whileHover={{ rotate: 360, scale: 1.2 }}
-                transition={{ duration: 0.5 }}
-                className="text-4xl mb-4 relative z-10"
-              >
+              <div className="text-4xl mb-3 relative z-10">
                 {useCase.emoji}
-              </motion.div>
+              </div>
 
               {/* Title */}
-              <h3 className={`relative z-10 text-xl font-bold mb-2 bg-gradient-to-r ${useCase.color} bg-clip-text text-transparent`}>
+              <h3 className={`relative z-10 text-lg font-bold mb-2 bg-gradient-to-r ${useCase.color} bg-clip-text text-transparent`}>
                 {useCase.title}
               </h3>
 

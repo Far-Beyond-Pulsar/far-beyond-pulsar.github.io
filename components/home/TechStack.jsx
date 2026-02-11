@@ -83,12 +83,12 @@ export default function TechStack() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
-            className="bg-black border border-slate-800 rounded-2xl p-8 hover:border-slate-700 transition-all"
+            className="bg-black border border-slate-800 rounded-2xl p-6 hover:border-slate-700 transition-colors duration-200"
           >
-            <h3 className={`text-2xl font-bold mb-6 bg-gradient-to-r ${cat.color} bg-clip-text text-transparent`}>
+            <h3 className={`text-lg font-bold mb-5 bg-gradient-to-r ${cat.color} bg-clip-text text-transparent`}>
               {cat.title}
             </h3>
-            <div className="space-y-4">
+            <div className="space-y-3">
               {cat.items.map((item, j) => (
                 <motion.div
                   key={j}
@@ -96,11 +96,11 @@ export default function TechStack() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 + j * 0.05 }}
-                  className="flex items-center gap-3 p-3 bg-black border border-slate-800 rounded-xl hover:border-slate-700 transition-colors"
+                  className="flex items-center gap-3 p-2 bg-black border border-slate-800 rounded-xl hover:border-slate-700 transition-colors duration-200"
                 >
-                  <div className="text-2xl">📦</div>
+                  <div className="text-lg">📦</div>
                   <div>
-                    <div className="font-bold text-slate-200">{item.name}</div>
+                    <div className="font-bold text-sm text-slate-200">{item.name}</div>
                     <div className="text-xs text-slate-400">{item.desc}</div>
                   </div>
                 </motion.div>

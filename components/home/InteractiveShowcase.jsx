@@ -80,45 +80,37 @@ export default function InteractiveShowcase() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
-              whileHover={{ scale: 1.05, rotateY: 5 }}
               className="group relative"
             >
-              <div className={`relative h-full bg-black rounded-2xl p-8 border border-slate-800 backdrop-blur-sm overflow-hidden transition-all duration-300`}>
+              <div className={`relative h-full bg-black rounded-2xl p-6 border border-slate-800 hover:border-slate-700 backdrop-blur-sm overflow-hidden transition-colors duration-200`}>
                 {/* Animated gradient background */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${capability.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
+                <div className={`absolute inset-0 bg-gradient-to-br ${capability.color} opacity-0 group-hover:opacity-5 transition-opacity duration-200`} />
                 
-                {/* Icon */}
-                <motion.div
-                  whileHover={{ rotate: 360, scale: 1.2 }}
-                  transition={{ duration: 0.6 }}
-                  className="text-5xl mb-4 inline-block relative z-10"
-                >
+                {/* Icon - static */}
+                <div className="text-4xl mb-3 inline-block relative z-10">
                   {capability.icon}
-                </motion.div>
+                </div>
 
                 {/* Title */}
-                <h3 className={`relative z-10 text-2xl font-bold mb-3 text-transparent bg-gradient-to-r ${capability.color} bg-clip-text`}>
+                <h3 className={`relative z-10 text-xl font-bold mb-2 text-transparent bg-gradient-to-r ${capability.color} bg-clip-text`}>
                   {capability.title}
                 </h3>
 
                 {/* Description */}
-                <p className="relative z-10 text-slate-300 mb-4 font-medium">
+                <p className="relative z-10 text-slate-300 mb-3 text-sm">
                   {capability.description}
                 </p>
 
                 {/* Features list */}
-                <ul className="space-y-2 relative z-10">
+                <ul className="space-y-1.5 relative z-10">
                   {capability.features.map((feature, idx) => (
-                    <motion.li
+                    <li
                       key={idx}
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.1 * idx }}
-                      className="flex items-center gap-2 text-sm text-slate-400"
+                      className="flex items-center gap-2 text-xs text-slate-400"
                     >
                       <span className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${capability.color}`} />
                       {feature}
-                    </motion.li>
+                    </li>
                   ))}
                 </ul>
 

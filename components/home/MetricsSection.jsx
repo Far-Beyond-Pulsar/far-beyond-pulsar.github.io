@@ -18,22 +18,20 @@ export default function MetricsSection() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.1 }}
-            whileHover={{ scale: 1.05 }}
-            className="group relative text-center p-8 bg-black rounded-2xl border border-slate-800 hover:border-slate-700 transition-all overflow-hidden"
+            className="group relative text-center p-6 bg-black rounded-2xl border border-slate-800 hover:border-slate-700 transition-colors duration-200 overflow-hidden"
           >
             {/* Gradient accent */}
-            <div className={`absolute inset-0 bg-gradient-to-br ${metric.color} opacity-0 group-hover:opacity-10 transition-opacity`} />
+            <div className={`absolute inset-0 bg-gradient-to-br ${metric.color} opacity-0 group-hover:opacity-10 transition-opacity duration-200`} />
             
             {/* Value */}
             <motion.h4
-              whileHover={{ scale: 1.1 }}
-              className={`relative z-10 text-5xl font-black mb-4 bg-gradient-to-r ${metric.color} bg-clip-text text-transparent`}
+              className={`relative z-10 text-5xl font-black mb-3 bg-gradient-to-r ${metric.color} bg-clip-text text-transparent`}
             >
               {metric.value}
             </motion.h4>
 
             {/* Label */}
-            <p className="relative z-10 text-slate-300 font-medium">
+            <p className="relative z-10 text-sm text-slate-300 font-medium">
               {metric.label}
             </p>
           </motion.div>

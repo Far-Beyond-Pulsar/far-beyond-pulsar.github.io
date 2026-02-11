@@ -61,7 +61,7 @@ export default function FeaturesSection() {
             onHoverEnd={() => setHoveredIndex(null)}
             className="group relative"
           >
-            <div className={`relative h-full bg-black rounded-3xl p-8 border ${feature.borderColor} backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:shadow-2xl overflow-hidden`}>
+            <div className={`relative h-full bg-black rounded-2xl p-6 border ${feature.borderColor} hover:border-slate-600 backdrop-blur-sm transition-colors duration-200 overflow-hidden`}>
               {/* Animated background gradient on hover */}
               <motion.div
                 initial={{ opacity: 0 }}
@@ -70,38 +70,38 @@ export default function FeaturesSection() {
               />
 
               {/* Icon with glow effect */}
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <motion.div
                   animate={{ 
                     scale: hoveredIndex === index ? 1.1 : 1,
                     rotate: hoveredIndex === index ? 5 : 0 
                   }}
-                  transition={{ type: "spring", stiffness: 300 }}
+                  transition={{ type: "spring", stiffness: 300, duration: 0.2 }}
                   className="relative inline-block"
                 >
-                  <div className={`absolute inset-0 blur-xl bg-gradient-to-r ${feature.color} opacity-0 group-hover:opacity-50 transition-opacity`} />
+                  <div className={`absolute inset-0 blur-xl bg-gradient-to-r ${feature.color} opacity-0 group-hover:opacity-50 transition-opacity duration-200`} />
                   <Image 
                     src={feature.icon} 
                     alt={feature.title} 
-                    width={64} 
-                    height={64} 
+                    width={48} 
+                    height={48} 
                     className="relative drop-shadow-lg"
                   />
                 </motion.div>
               </div>
 
               {/* Content */}
-              <h3 className={`text-3xl font-bold mb-3 bg-gradient-to-r ${feature.color} bg-clip-text text-transparent`}>
+              <h3 className={`text-2xl font-bold mb-2 bg-gradient-to-r ${feature.color} bg-clip-text text-transparent`}>
                 {feature.title}
               </h3>
               
-              <p className="text-slate-300 leading-relaxed mb-4">
+              <p className="text-slate-300 text-sm leading-relaxed mb-3">
                 {feature.description}
               </p>
 
               {/* Stats badge */}
-              <div className={`inline-block px-4 py-2 rounded-full bg-gradient-to-r ${feature.color} bg-opacity-10 border ${feature.borderColor}`}>
-                <span className="text-sm font-semibold text-slate-200">
+              <div className={`inline-block px-3 py-1.5 rounded-full bg-gradient-to-r ${feature.color} bg-opacity-10 border ${feature.borderColor}`}>
+                <span className="text-xs font-semibold text-slate-200">
                   {feature.stats}
                 </span>
               </div>
