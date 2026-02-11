@@ -1,27 +1,70 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+
+// Media slideshow - can contain images or videos
+const heroMedia = [
+  { type: "image", src: "/sample_pics/level_editor.png", title: "Level Editor" },
+  { type: "image", src: "/sample_pics/profiler.png", title: "Engine Profiler" },
+  { type: "image", src: "/sample_pics/level_editor(file_drawer).png", title: "Asset Browser" },
+  { type: "image", src: "/sample_pics/engine_bps.png", title: "Engine Runtime" },
+  { type: "image", src: "/sample_pics/db_editor.png", title: "Database Editor" },
+  { type: "image", src: "/sample_pics/docs.png", title: "Documentation" },
+  { type: "image", src: "/sample_pics/panels1.png", title: "Multi-Panel Layout" },
+  { type: "image", src: "/sample_pics/panels2.png", title: "Advanced Panels" },
+  { type: "image", src: "/sample_pics/terminal.png", title: "Integrated Terminal" },
+  // Future: Add videos like { type: "video", src: "/hero-video.mp4", title: "Gameplay" }
+];
 
 export default function HeroSection() {
+  const [currentMedia, setCurrentMedia] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentMedia((prev) => (prev + 1) % heroMedia.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-screen text-center overflow-hidden">
-      {/* Video Background */}
-      <div className="absolute inset-0 w-full h-full -z-10">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
-        >
-          <source src="/hero-video.mp4" type="video/mp4" />
-          {/* Fallback gradient if video doesn't load */}
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black" />
+    <section className="relative flex flex-col items-center justify-center min-h-screen text-center overflow-hidden bg-transparent">
+      {/* Media Slideshow Background */}
+      <div className="absolute inset-0 w-full h-full z-0">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentMedia}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0"
+          >
+            {heroMedia[currentMedia].type === "image" ? (
+              <Image
+                src={heroMedia[currentMedia].src}
+                alt={heroMedia[currentMedia].title}
+                fill
+                className="object-cover opacity-60"
+                priority
+              />
+            ) : (
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover opacity-60"
+              >
+                <source src={heroMedia[currentMedia].src} type="video/mp4" />
+              </video>
+            )}
+          </motion.div>
+        </AnimatePresence>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/50" />
       </div>
 
-      <div className="relative z-10 px-4 max-w-7xl mx-auto w-full">
+      <div className="relative z-20 px-4 max-w-7xl mx-auto w-full">
         {/* Logo with animated glow */}
         <motion.div
           initial={{ scale: 0, rotate: -180 }}
