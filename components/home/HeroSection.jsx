@@ -111,7 +111,7 @@ export default function HeroSection() {
           transition={{ delay: 0.6 }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-32"
         >
-          <Link href="/docs/installation">
+          <Link href="/docs/docs/getting-started/installation/windows">
             <motion.button
               whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(14, 165, 233, 0.6)" }}
               whileTap={{ scale: 0.95 }}
