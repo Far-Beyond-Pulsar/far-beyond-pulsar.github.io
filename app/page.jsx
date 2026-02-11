@@ -1,10 +1,11 @@
 import {
   HeroSection,
   FeaturesSection,
+  InteractiveShowcase,
+  DemoSection,
   UseCasesGallery,
   MetricsSection,
   PlatformSupport,
-  DemoSection,
   QuickWins,
   ShowcaseGallery,
   VideoTutorials,
@@ -26,10 +27,11 @@ export default function Page() {
       <WIPBanner />
       <HeroSection />
       <FeaturesSection />
+      <InteractiveShowcase />
+      <DemoSection />
       <UseCasesGallery />
       <MetricsSection />
       <PlatformSupport />
-      <DemoSection />
       <QuickWins />
       <ShowcaseGallery />
       <VideoTutorials />

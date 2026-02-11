@@ -1,32 +1,111 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function HeroSection() {
   return (
-    <section className="relative flex flex-col items-center justify-center h-[80vh] text-center z-10">
-      <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#0ea5e9]/30 via-[#6366f1]/20 to-[#f472b6]/10 blur-2xl animate-pulse -z-10" />
-      <Image src="/logos/pulsar.png" alt="Pulsar Logo" width={120} height={120} className="mx-auto mb-6 drop-shadow-lg" />
-      <div className="mb-4 px-4 py-2 bg-yellow-500/20 border border-yellow-500/50 rounded-lg backdrop-blur-sm">
-        <p className="text-yellow-300 font-semibold text-sm">⚠️ EARLY DEVELOPMENT - Not production-ready</p>
+    <section className="relative flex flex-col items-center justify-center min-h-screen text-center overflow-hidden">
+      {/* Video Background */}
+      <div className="absolute inset-0 w-full h-full -z-10">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-30"
+        >
+          <source src="/hero-video.mp4" type="video/mp4" />
+          {/* Fallback gradient if video doesn't load */}
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black" />
       </div>
-      <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight bg-gradient-to-r from-[#0ea5e9] via-[#6366f1] to-[#f472b6] bg-clip-text text-transparent animate-fade-in">
-        Pulsar Engine
-      </h1>
-      <p className="mt-6 text-2xl md:text-3xl max-w-2xl mx-auto text-slate-200 animate-fade-in delay-200">
-        The next-generation, Rust-powered game engine. <br />
-        <span className="text-[#0ea5e9] font-bold">Faster</span>, <span className="text-[#6366f1] font-bold">smarter</span>, <span className="text-[#f472b6] font-bold">limitless</span>.
-      </p>
-      <p className="mt-4 text-sm text-slate-400 max-w-xl mx-auto">
-        <strong>Note:</strong> Pulsar is in active development. Not recommended for production use yet.
-      </p>
-      <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center animate-fade-in delay-300">
-        <Link href="/docs/installation">
-          <button className="px-8 py-3 rounded-lg bg-[#0ea5e9] hover:bg-[#0369a1] text-white font-semibold shadow-lg transition">Get Started</button>
-        </Link>
-        <Link href="/docs">
-          <button className="px-8 py-3 rounded-lg bg-[#6366f1] hover:bg-[#4338ca] text-white font-semibold shadow-lg transition">Read the Docs</button>
-        </Link>
-        <a href="https://github.com/Far-Beyond-Pulsar/Pulsar-Native" target="_blank" rel="noopener" className="px-8 py-3 rounded-lg bg-[#f472b6] hover:bg-[#be185d] text-white font-semibold shadow-lg transition">GitHub</a>
+
+      <div className="relative z-10 px-4 max-w-7xl mx-auto w-full">
+        {/* Logo with animated glow */}
+        <motion.div
+          initial={{ scale: 0, rotate: -180 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ type: "spring", stiffness: 100, damping: 15 }}
+          className="relative inline-block mb-8"
+        >
+          <div className="absolute inset-0 blur-3xl bg-gradient-to-r from-[#0ea5e9] via-[#06b6d4] to-[#0284c7] opacity-60 animate-pulse" />
+          <Image 
+            src="/logos/pulsar.png" 
+            alt="Pulsar Logo" 
+            width={120} 
+            height={120} 
+            className="relative drop-shadow-2xl"
+          />
+        </motion.div>
+
+        {/* Main title */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-8"
+        >
+          <span className="inline-block bg-gradient-to-r from-[#0ea5e9] via-[#06b6d4] to-[#0284c7] bg-clip-text text-transparent animate-gradient-x drop-shadow-2xl">
+            PULSAR
+          </span>
+        </motion.h1>
+
+        {/* Simple tagline */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="text-xl md:text-2xl text-slate-200 max-w-2xl mx-auto mb-12"
+        >
+          The Next Generation Game Engine
+        </motion.p>
+
+        {/* CTA buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-32"
+        >
+          <Link href="/docs/installation">
+            <motion.button
+              whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(14, 165, 233, 0.6)" }}
+              whileTap={{ scale: 0.95 }}
+              className="px-8 py-3 rounded-xl bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white font-bold text-lg shadow-2xl"
+            >
+              Get Started
+            </motion.button>
+          </Link>
+          
+          <Link href="/docs">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-8 py-3 rounded-xl border-2 border-[#06b6d4] bg-[#06b6d4]/10 text-white font-bold text-lg backdrop-blur-sm"
+            >
+              Documentation
+            </motion.button>
+          </Link>
+        </motion.div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        >
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="text-slate-500"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

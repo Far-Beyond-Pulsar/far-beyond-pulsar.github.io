@@ -16,3 +16,4 @@ export { default as Discussions } from './Discussions';
 export { default as Spotlight } from './Spotlight';
 export { default as FAQ } from './FAQ';
 export { default as CTASection } from './CTASection';
+export { default as InteractiveShowcase } from './InteractiveShowcase';

@@ -1,3 +1,7 @@
+"use client";
+import { motion } from "framer-motion";
+import { useState } from "react";
+
 const faqs = [
   {
     q: "Is Pulsar production-ready?",
@@ -30,18 +34,53 @@ const faqs = [
 ];
 
 export default function FAQ() {
+  const [openIndex, setOpenIndex] = useState(null);
+
   return (
-    <section className="max-w-4xl mx-auto py-20 px-4">
-      <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Frequently Asked Questions</h2>
+    <section className="max-w-4xl mx-auto py-32 px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-center mb-16"
+      >
+        <h2 className="text-5xl md:text-6xl font-black mb-4 bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent">
+          FAQ
+        </h2>
+        <p className="text-xl text-slate-400">
+          Common questions about Pulsar
+        </p>
+      </motion.div>
+
       <div className="space-y-4">
         {faqs.map((faq, i) => (
-          <details key={i} className="bg-black border border-white/10 rounded-xl p-6 group">
-            <summary className="font-bold text-lg cursor-pointer list-none flex justify-between items-center">
+          <motion.details
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.05 }}
+            className="bg-black border border-slate-800 rounded-2xl p-6 group hover:border-slate-700 transition-all"
+            open={openIndex === i}
+            onToggle={(e) => setOpenIndex(e.target.open ? i : null)}
+          >
+            <summary className="font-bold text-lg cursor-pointer list-none flex justify-between items-center text-slate-200">
               {faq.q}
-              <span className="text-2xl group-open:rotate-180 transition-transform">›</span>
+              <motion.span
+                animate={{ rotate: openIndex === i ? 90 : 0 }}
+                className="text-2xl text-[#0ea5e9]"
+              >
+                ›
+              </motion.span>
             </summary>
-            <p className="mt-4 text-slate-300">{faq.a}</p>
-          </details>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: openIndex === i ? 1 : 0 }}
+              className="mt-4 text-slate-400 leading-relaxed"
+            >
+              {faq.a}
+            </motion.p>
+          </motion.details>
         ))}
       </div>
     </section>
