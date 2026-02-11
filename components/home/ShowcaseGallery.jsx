@@ -28,14 +28,14 @@ const projects = [
 
 export default function ShowcaseGallery() {
   return (
-    <section className="max-w-7xl mx-auto py-32 px-4">
+        <section className="max-w-7xl mx-auto py-20 px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         className="flex justify-between items-center mb-4"
       >
-        <h2 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent">
+        <h2 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent">
           Development Projects
         </h2>
         <Link href="/showcase" className="text-[#0ea5e9] hover:text-[#0284c7] font-semibold text-lg">
@@ -59,7 +59,7 @@ export default function ShowcaseGallery() {
               <motion.div
                 whileHover={{ scale: 1.2, rotate: 5 }}
                 transition={{ duration: 0.3 }}
-                className="text-7xl"
+                className="text-5xl"
               >
                 {project.emoji}
               </motion.div>

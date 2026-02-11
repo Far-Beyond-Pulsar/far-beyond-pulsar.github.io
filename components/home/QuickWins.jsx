@@ -12,14 +12,14 @@ const steps = [
 
 export default function QuickWins() {
   return (
-    <section className="relative max-w-7xl mx-auto py-32 px-4">
+    <section className="relative max-w-7xl mx-auto py-20 px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         className="text-center mb-16"
       >
-        <h2 className="text-5xl md:text-6xl font-black mb-4 bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent">
+        <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent">
           Get Started in Minutes
         </h2>
         <p className="text-xl text-slate-400 max-w-2xl mx-auto">

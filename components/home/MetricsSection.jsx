@@ -27,7 +27,7 @@ export default function MetricsSection() {
             {/* Value */}
             <motion.h4
               whileHover={{ scale: 1.1 }}
-              className={`relative z-10 text-6xl font-black mb-4 bg-gradient-to-r ${metric.color} bg-clip-text text-transparent`}
+              className={`relative z-10 text-5xl font-black mb-4 bg-gradient-to-r ${metric.color} bg-clip-text text-transparent`}
             >
               {metric.value}
             </motion.h4>

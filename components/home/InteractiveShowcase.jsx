@@ -58,13 +58,13 @@ export default function InteractiveShowcase() {
   const scale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.8, 1, 1, 0.8]);
 
   return (
-    <section ref={containerRef} className="relative py-32 px-4 overflow-hidden">
+    <section ref={containerRef} className="relative py-20 px-4 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <motion.div
           style={{ opacity, scale }}
-          className="text-center mb-20"
+          className="text-center mb-16"
         >
-          <h2 className="text-5xl md:text-6xl font-black mb-4 bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent">
             Packed with Power
           </h2>
           <p className="text-xl text-slate-400 max-w-2xl mx-auto">
@@ -91,7 +91,7 @@ export default function InteractiveShowcase() {
                 <motion.div
                   whileHover={{ rotate: 360, scale: 1.2 }}
                   transition={{ duration: 0.6 }}
-                  className="text-6xl mb-4 inline-block relative z-10"
+                  className="text-5xl mb-4 inline-block relative z-10"
                 >
                   {capability.icon}
                 </motion.div>

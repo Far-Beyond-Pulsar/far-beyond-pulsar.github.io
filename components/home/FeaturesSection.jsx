@@ -34,14 +34,14 @@ export default function FeaturesSection() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
   return (
-    <section className="relative max-w-7xl mx-auto py-32 px-4">
+    <section className="relative max-w-7xl mx-auto py-20 px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="text-center mb-20"
+        className="text-center mb-16"
       >
-        <h2 className="text-5xl md:text-6xl font-black mb-4 bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent">
+        <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent">
           Built for Performance
         </h2>
         <p className="text-xl text-slate-400 max-w-2xl mx-auto">
@@ -134,7 +134,7 @@ export default function FeaturesSection() {
             transition={{ delay: index * 0.1 }}
             className="group"
           >
-            <div className="text-4xl md:text-5xl font-black bg-gradient-to-r from-[#0ea5e9] via-[#06b6d4] to-[#0284c7] bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform">
+            <div className="text-3xl md:text-4xl font-black bg-gradient-to-r from-[#0ea5e9] via-[#06b6d4] to-[#0284c7] bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform">
               {stat.value}
             </div>
             <div className="text-slate-400 font-medium">

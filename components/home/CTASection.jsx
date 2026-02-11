@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function CTASection() {
   return (
-    <section className="relative py-32 px-4 overflow-hidden">
+    <section className="relative py-20 px-4 overflow-hidden">
       {/* Gradient background */}
       <div className="absolute inset-0 bg-black">
         <div className="absolute inset-0 bg-gradient-to-r from-[#0ea5e9]/10 via-[#06b6d4]/10 to-[#0284c7]/10" />
@@ -24,12 +24,12 @@ export default function CTASection() {
           </div>
 
           {/* Title */}
-          <h2 className="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-[#0ea5e9] via-[#06b6d4] to-[#0284c7] bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-[#0ea5e9] via-[#06b6d4] to-[#0284c7] bg-clip-text text-transparent">
             Help Shape the Future
           </h2>
 
           {/* Description */}
-          <p className="text-xl md:text-2xl text-slate-300 mb-4 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-slate-300 mb-4 max-w-2xl mx-auto">
             Join the Pulsar community and be part of building the next generation game engine
           </p>
 
@@ -76,7 +76,7 @@ export default function CTASection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="mt-16 grid grid-cols-3 gap-8"
+            className="mt-12 grid grid-cols-3 gap-6"
           >
             {[
               { label: "Open Source", value: "100%" },
