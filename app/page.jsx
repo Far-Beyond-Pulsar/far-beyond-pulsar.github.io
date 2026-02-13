@@ -1,46 +1,39 @@
 import {
   HeroSection,
   FeaturesSection,
-  InteractiveShowcase,
   DemoSection,
-  UseCasesGallery,
-  MetricsSection,
-  PlatformSupport,
+  InteractiveShowcase,
   QuickWins,
-  ShowcaseGallery,
-  VideoTutorials,
-  TechStack,
-  BlogPosts,
-  FeatureComparison,
   CommunityNews,
-  Discussions,
-  Spotlight,
-  FAQ,
   CTASection
 } from "@/components/home";
+import EngineDeepDive from "@/components/home/EngineDeepDive";
 import WIPBanner from "@/components/WIPBanner";
+
+function SectionBreak() {
+  return (
+    <div className="section-glow-break" aria-hidden="true" />
+  );
+}
 
 export default function Page() {
   return (
     <main className="relative min-h-screen bg-black text-white overflow-x-hidden">
       <WIPBanner />
       <HeroSection />
+      <SectionBreak />
       <FeaturesSection />
-      <InteractiveShowcase />
+      <SectionBreak />
+      <EngineDeepDive />
+      <SectionBreak />
       <DemoSection />
-      <UseCasesGallery />
-      <MetricsSection />
-      <PlatformSupport />
+      <SectionBreak />
+      <InteractiveShowcase />
+      <SectionBreak />
       <QuickWins />
-      <ShowcaseGallery />
-      <VideoTutorials />
-      <TechStack />
-      <BlogPosts />
-      <FeatureComparison />
+      <SectionBreak />
       <CommunityNews />
-      <Discussions />
-      <Spotlight />
-      <FAQ />
+      <SectionBreak />
       <CTASection />
     </main>
   );
