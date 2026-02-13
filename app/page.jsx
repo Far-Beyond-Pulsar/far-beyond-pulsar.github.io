@@ -11,6 +11,9 @@ import EngineDeepDive from "@/components/home/EngineDeepDive";
 import WIPBanner from "@/components/WIPBanner";
 import { fetchDiscussionsAtBuildTime } from "@/lib/fetch-discussions";
 
+// Force static generation for export
+export const dynamic = 'force-static';
+
 function SectionBreak() {
   return (
     <div className="section-glow-break" aria-hidden="true" />
