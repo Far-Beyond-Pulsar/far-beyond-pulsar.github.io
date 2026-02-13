@@ -126,33 +126,33 @@ export default function HeroSection() {
             </motion.button>
           </a>
         </motion.div>
-
-        {/* Slide label pill */}
-        <motion.div
-          key={current}
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.4 }}
-          className="absolute bottom-16 left-1/2 -translate-x-1/2 flex items-center gap-2"
-        >
-          <span className="text-xs text-slate-400 tracking-widest uppercase font-medium">
-            {heroMedia[current].label}
-          </span>
-          <span className="text-slate-600">·</span>
-          <div className="flex gap-1">
-            {heroMedia.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrent(i)}
-                className={`h-0.5 rounded-full transition-all duration-300 ${
-                  i === current ? "w-5 bg-[#0ea5e9]" : "w-2 bg-slate-600"
-                }`}
-              />
-            ))}
-          </div>
-        </motion.div>
       </div>
+
+      {/* Slide label pill */}
+      <motion.div
+        key={current}
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.4 }}
+        className="absolute bottom-20 left-0 right-0 z-10 flex flex-col items-center justify-center gap-3 w-full"
+      >
+        <span className="text-sm text-slate-300 tracking-widest uppercase font-medium">
+          {heroMedia[current].label}
+        </span>
+        <div className="flex gap-2 items-center justify-center">
+          {heroMedia.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrent(i)}
+              aria-label={`View ${heroMedia[i].label}`}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === current ? "w-8 bg-[#0ea5e9]" : "w-2 bg-slate-600 hover:bg-slate-500"
+              }`}
+            />
+          ))}
+        </div>
+      </motion.div>
 
       {/* Scroll indicator */}
       <motion.div
