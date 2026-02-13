@@ -9,6 +9,10 @@ on:
   push:
     branches: ["main"]
 
+  # Runs daily at 2 AM UTC to fetch latest discussions
+  schedule:
+    - cron: '0 2 * * *'
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 

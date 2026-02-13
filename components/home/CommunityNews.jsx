@@ -2,15 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { fetchRepoStats, fetchLatestRelease } from '@/lib/github';
 
-const fallbackNews = [
-  {
-    date: "Nov 18, 2025",
-    title: "Pulsar v0.1.47 Released",
-    desc: "Latest improvements to the native engine.",
-    url: "https://github.com/Far-Beyond-Pulsar/Pulsar-Native/releases",
-  },
+const staticItems = [
   {
     date: "Ongoing",
     title: "Join the Discussion",
@@ -33,37 +28,36 @@ function formatDate(str) {
   }
 }
 
-export default function CommunityNews() {
+export default function CommunityNews({ discussions = [] }) {
   const [stats, setStats] = useState(null);
   const [release, setRelease] = useState(null);
-  const [announcements, setAnnouncements] = useState(fallbackNews);
   const [loading, setLoading] = useState(true);
+
+  // Combine static items with build-time discussions
+  const dynamicItems = discussions.map((d) => ({
+    date: formatDate(d.updated),
+    title: d.title,
+    desc: d.body,
+    url: d.url,
+    author: d.author,
+    avatarUrl: d.avatarUrl,
+    stats: d.stats,
+  }));
+  
+  const announcements = [...staticItems, ...dynamicItems];
 
   useEffect(() => {
     async function load() {
       try {
-        const { fetchAnnouncementsFromRSS } = await import('@/lib/github');
-        const [repoStats, latestRelease, announcementsData] = await Promise.all([
+        const [repoStats, latestRelease] = await Promise.all([
           fetchRepoStats(),
           fetchLatestRelease(),
-          fetchAnnouncementsFromRSS(3),
         ]);
 
         if (repoStats) setStats(repoStats);
         if (latestRelease) setRelease(latestRelease);
-        if (announcementsData?.length > 0) {
-          setAnnouncements(
-            announcementsData.map((d) => ({
-              date: formatDate(d.updated),
-              title: d.title,
-              desc: d.body,
-              url: d.url,
-              author: d.author,
-            }))
-          );
-        }
-      } catch {
-        // fallbacks already set
+      } catch (error) {
+        console.error('Failed to load repo stats:', error);
       } finally {
         setLoading(false);
       }
@@ -178,7 +172,7 @@ export default function CommunityNews() {
                 <div className="text-xs text-slate-600 min-w-[90px] pt-0.5 font-mono">
                   {item.date}
                 </div>
-                <div>
+                <div className="flex-1">
                   <a
                     href={item.url}
                     target="_blank"
@@ -187,9 +181,45 @@ export default function CommunityNews() {
                   >
                     {item.title}
                   </a>
-                  <p className="text-xs text-slate-500 leading-relaxed">{item.desc}</p>
+                  <p className="text-xs text-slate-500 leading-relaxed mb-2">{item.desc}</p>
                   {item.author && (
-                    <p className="text-xs text-slate-700 mt-1">By {item.author}</p>
+                    <div className="flex items-center justify-between gap-2 mt-2">
+                      <div className="flex items-center gap-2">
+                        {item.avatarUrl && (
+                          <Image
+                            src={item.avatarUrl}
+                            alt={item.author}
+                            width={20}
+                            height={20}
+                            className="rounded-full"
+                            unoptimized
+                          />
+                        )}
+                        <p className="text-xs text-slate-600">
+                          {item.author}
+                        </p>
+                      </div>
+                      {item.stats && (
+                        <div className="flex items-center gap-3 text-xs text-slate-600">
+                          {item.stats.upvotes > 0 && (
+                            <span className="flex items-center gap-1">
+                              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                              </svg>
+                              {item.stats.upvotes}
+                            </span>
+                          )}
+                          {item.stats.comments > 0 && (
+                            <span className="flex items-center gap-1">
+                              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                              </svg>
+                              {item.stats.comments}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   )}
                 </div>
               </div>
