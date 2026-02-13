@@ -25,9 +25,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-darkreader-ignore>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        data-darkreader-ignore
       >
         <Header />
         {children}

@@ -23,9 +23,9 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-screen text-center overflow-hidden bg-black">
+    <section className="relative flex flex-col items-center justify-center min-h-screen text-center overflow-hidden bg-black" data-darkreader-ignore>
       {/* Background slideshow */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0" data-darkreader-ignore>
         <AnimatePresence mode="wait">
           <motion.div
             key={current}
@@ -41,13 +41,14 @@ export default function HeroSection() {
               fill
               className="object-cover"
               priority
+              data-darkreader-ignore
             />
           </motion.div>
         </AnimatePresence>
         {/* Multi-layer overlay: heavy vignette + dark center so text pops */}
-        <div className="absolute inset-0 bg-black/65" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30" />
+        <div className="absolute inset-0 bg-black/65" data-darkreader-ignore />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80" data-darkreader-ignore />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30" data-darkreader-ignore />
       </div>
 
       {/* Content */}
@@ -58,14 +59,16 @@ export default function HeroSection() {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: "spring", stiffness: 120, damping: 14, delay: 0.1 }}
           className="relative mb-6"
+          data-darkreader-ignore
         >
-          <div className="absolute inset-0 blur-2xl bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] opacity-50 rounded-full scale-150" />
+          <div className="absolute inset-0 blur-2xl bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] opacity-50 rounded-full scale-150" data-darkreader-ignore />
           <Image
             src="/logos/pulsar.png"
             alt="Pulsar"
             width={96}
             height={96}
             className="relative drop-shadow-2xl"
+            data-darkreader-ignore
           />
         </motion.div>
 
@@ -75,8 +78,9 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25, duration: 0.6 }}
           className="text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-none mb-5"
+          data-darkreader-ignore
         >
-          <span className="inline-block bg-gradient-to-r from-[#0ea5e9] via-[#38bdf8] to-[#0284c7] bg-clip-text text-transparent animate-gradient-x drop-shadow-2xl">
+          <span className="inline-block bg-gradient-to-r from-[#0ea5e9] via-[#38bdf8] to-[#0284c7] bg-clip-text text-transparent animate-gradient-x drop-shadow-2xl" data-darkreader-ignore>
             PULSAR
           </span>
         </motion.h1>
@@ -103,6 +107,7 @@ export default function HeroSection() {
               whileHover={{ scale: 1.04, boxShadow: "0 0 32px rgba(14,165,233,0.5)" }}
               whileTap={{ scale: 0.97 }}
               className="px-7 py-3 rounded-xl bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white font-semibold text-base shadow-xl"
+              data-darkreader-ignore
             >
               Get Started
             </motion.button>
@@ -136,6 +141,7 @@ export default function HeroSection() {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.4 }}
         className="absolute bottom-20 left-0 right-0 z-10 flex flex-col items-center justify-center gap-3 w-full"
+        data-darkreader-ignore
       >
         <span className="text-sm text-slate-300 tracking-widest uppercase font-medium">
           {heroMedia[current].label}
@@ -149,6 +155,7 @@ export default function HeroSection() {
               className={`h-1.5 rounded-full transition-all duration-300 ${
                 i === current ? "w-8 bg-[#0ea5e9]" : "w-2 bg-slate-600 hover:bg-slate-500"
               }`}
+              data-darkreader-ignore
             />
           ))}
         </div>
