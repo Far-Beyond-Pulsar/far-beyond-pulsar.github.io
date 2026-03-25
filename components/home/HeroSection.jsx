@@ -55,13 +55,13 @@ export default function HeroSection() {
       <div className="relative z-10 px-4 max-w-5xl mx-auto w-full flex flex-col items-center">
         {/* Logo */}
         <motion.div
-          initial={{ scale: 0.6, opacity: 0 }}
+          initial={{ scale: 0.85, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 120, damping: 14, delay: 0.1 }}
+          transition={{ type: "spring", stiffness: 80, damping: 18, delay: 0.1 }}
           className="relative mb-6"
           data-darkreader-ignore
         >
-          <div className="absolute inset-0 blur-2xl bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] opacity-50 rounded-full scale-150" data-darkreader-ignore />
+          <div className="absolute inset-0 blur-2xl bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] opacity-30 rounded-full scale-125" data-darkreader-ignore />
           <Image
             src="/logos/pulsar.png"
             alt="Pulsar"
@@ -77,10 +77,10 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25, duration: 0.6 }}
-          className="text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-none mb-5"
+          className="text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-none mb-5"
           data-darkreader-ignore
         >
-          <span className="inline-block bg-gradient-to-r from-[#0ea5e9] via-[#38bdf8] to-[#0284c7] bg-clip-text text-transparent animate-gradient-x drop-shadow-2xl" data-darkreader-ignore>
+          <span className="inline-block bg-gradient-to-r from-[#0ea5e9] via-[#38bdf8] to-[#0284c7] bg-clip-text text-transparent drop-shadow-lg" data-darkreader-ignore>
             PULSAR
           </span>
         </motion.h1>
@@ -104,9 +104,9 @@ export default function HeroSection() {
         >
           <Link href="/docs/docs/getting-started/installation/windows">
             <motion.button
-              whileHover={{ scale: 1.04, boxShadow: "0 0 32px rgba(14,165,233,0.5)" }}
+              whileHover={{ scale: 1.03, boxShadow: "0 0 20px rgba(14,165,233,0.35)" }}
               whileTap={{ scale: 0.97 }}
-              className="px-7 py-3 rounded-xl bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white font-semibold text-base shadow-xl"
+              className="px-7 py-3 rounded-xl bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white font-semibold text-base shadow-lg"
               data-darkreader-ignore
             >
               Get Started

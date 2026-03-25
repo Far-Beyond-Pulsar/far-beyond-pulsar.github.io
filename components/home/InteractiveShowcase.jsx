@@ -75,7 +75,7 @@ export default function InteractiveShowcase() {
         <p className="text-xs tracking-[0.2em] uppercase text-[#0ea5e9] font-semibold mb-4">
           Capabilities
         </p>
-        <h2 className="text-4xl md:text-5xl font-black tracking-tight text-white mb-4">
+        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-4">
           Everything in One Engine
         </h2>
         <p className="text-slate-400 max-w-md mx-auto text-base">
@@ -137,7 +137,7 @@ export default function InteractiveShowcase() {
             {current.tagline}
           </p>
 
-          <h3 className={`text-3xl font-black mb-4 bg-gradient-to-r ${current.color} bg-clip-text text-transparent`}>
+          <h3 className={`text-2xl font-bold mb-4 bg-gradient-to-r ${current.color} bg-clip-text text-transparent`}>
             {current.title}
           </h3>
 

@@ -38,7 +38,7 @@ export default function QuickWins() {
         <p className="text-xs tracking-[0.2em] uppercase text-[#0ea5e9] font-semibold mb-4">
           Getting Started
         </p>
-        <h2 className="text-4xl md:text-5xl font-black tracking-tight text-white mb-4">
+        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-4">
           Up in Four Commands
         </h2>
         <p className="text-slate-400 max-w-sm mx-auto text-base">
@@ -89,9 +89,9 @@ export default function QuickWins() {
       >
         <Link href="/docs/installation">
           <motion.button
-            whileHover={{ scale: 1.04, boxShadow: "0 0 28px rgba(14,165,233,0.4)" }}
+            whileHover={{ scale: 1.03, boxShadow: "0 0 20px rgba(14,165,233,0.3)" }}
             whileTap={{ scale: 0.97 }}
-            className="px-8 py-3 rounded-xl bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white font-semibold text-sm shadow-xl"
+            className="px-8 py-3 rounded-xl bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white font-semibold text-sm shadow-lg"
           >
             Full Installation Guide →
           </motion.button>

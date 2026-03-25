@@ -48,7 +48,7 @@ export default function FeaturesSection() {
         <p className="text-xs tracking-[0.2em] uppercase text-[#0ea5e9] font-semibold mb-4">
           Core Technology
         </p>
-        <h2 className="text-4xl md:text-5xl font-black tracking-tight text-white mb-4">
+        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-4">
           Built for Performance
         </h2>
         <p className="text-slate-400 max-w-lg mx-auto text-base leading-relaxed">
@@ -60,10 +60,10 @@ export default function FeaturesSection() {
         {pillars.map((p, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0, y: 32 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
-            transition={{ delay: i * 0.12, duration: 0.55 }}
+            transition={{ delay: i * 0.1, duration: 0.5 }}
             className="group relative"
           >
             <div

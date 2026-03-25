@@ -7,7 +7,7 @@ export default function CTASection() {
     <section className="relative py-32 px-4 overflow-hidden">
       {/* Radial glow background */}
       <div className="absolute inset-0 bg-black">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(14,165,233,0.07)_0%,transparent_65%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(14,165,233,0.04)_0%,transparent_60%)]" />
       </div>
 
       <div className="relative z-10 max-w-2xl mx-auto text-center">
@@ -25,7 +25,7 @@ export default function CTASection() {
             </p>
           </div>
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-6 bg-gradient-to-r from-[#0ea5e9] via-[#38bdf8] to-[#0284c7] bg-clip-text text-transparent">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-6 bg-gradient-to-r from-[#0ea5e9] via-[#38bdf8] to-[#0284c7] bg-clip-text text-transparent">
             Help Shape Pulsar
           </h2>
 
@@ -36,9 +36,9 @@ export default function CTASection() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/docs/installation">
               <motion.button
-                whileHover={{ scale: 1.04, boxShadow: "0 0 36px rgba(14,165,233,0.5)" }}
-                whileTap={{ scale: 0.97 }}
-                className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white font-semibold text-base shadow-xl"
+              whileHover={{ scale: 1.03, boxShadow: "0 0 24px rgba(14,165,233,0.35)" }}
+              whileTap={{ scale: 0.97 }}
+              className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white font-semibold text-base shadow-lg"
               >
                 Try Alpha
               </motion.button>
