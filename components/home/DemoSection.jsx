@@ -1,6 +1,8 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
 const examples = [
   {
@@ -210,50 +212,26 @@ hot_reload = true`,
   },
 ];
 
-// Very basic syntax highlighting by tokenizing Rust-ish code
-function highlight(code) {
-  const keywords = ["use", "fn", "let", "mut", "struct", "impl", "pub", "for", "in", "if", "else", "loop", "async", "move", "match", "enum", "trait", "self", "return", "true", "false"];
-  const types = ["EditorPlugin", "PluginMetadata", "FileTypeDefinition", "EditorMetadata", "String", "Vec", "Vec3", "SubsystemId", "SubsystemContext", "SubsystemError", "Subsystem", "PhysicsEngine", "Result", "Option", "Self", "PathBuf", "Render", "Window", "ViewContext", "PulsarApp", "GameState", "Inventory", "PlayerData"];
+// Custom theme based on oneDark, with transparent background to match the container
+const codeTheme = {
+  ...oneDark,
+  'pre[class*="language-"]': {
+    ...oneDark['pre[class*="language-"]'],
+    background: "transparent",
+    margin: 0,
+    padding: 0,
+    fontSize: "0.85rem",
+  },
+  'code[class*="language-"]': {
+    ...oneDark['code[class*="language-"]'],
+    background: "transparent",
+    fontSize: "0.85rem",
+  },
+};
 
-  return code.split("\n").map((line, li) => {
-    const tokens = [];
-    let rest = line;
-    let i = 0;
-
-    // Simple pass: color comments, strings, keywords, types
-    if (rest.trimStart().startsWith("//")) {
-      tokens.push(<span key={i++} className="text-slate-500">{rest}</span>);
-    } else {
-      // Split by word boundaries and color
-      const parts = rest.split(/(\b\w+\b|[^a-zA-Z0-9_]+)/g).filter(Boolean);
-      parts.forEach((part, pi) => {
-        if (keywords.includes(part)) {
-          tokens.push(<span key={pi} className="text-[#0ea5e9]">{part}</span>);
-        } else if (types.includes(part)) {
-          tokens.push(<span key={pi} className="text-[#38bdf8]">{part}</span>);
-        } else if (/^[0-9]+(\.[0-9]+)?$/.test(part)) {
-          tokens.push(<span key={pi} className="text-amber-400">{part}</span>);
-        } else if (part.startsWith('"') && part.endsWith('"')) {
-          tokens.push(<span key={pi} className="text-emerald-400">{part}</span>);
-        } else if (/^[A-Z][a-zA-Z0-9]*$/.test(part)) {
-          tokens.push(<span key={pi} className="text-violet-400">{part}</span>);
-        } else if (/^#\[/.test(part) || part === "#") {
-          tokens.push(<span key={pi} className="text-amber-300">{part}</span>);
-        } else {
-          tokens.push(<span key={pi} className="text-slate-300">{part}</span>);
-        }
-      });
-    }
-
-    return (
-      <div key={li} className="flex">
-        <span className="select-none w-8 shrink-0 text-right pr-4 text-slate-600 text-xs leading-6">
-          {li + 1}
-        </span>
-        <span className="leading-6">{tokens}</span>
-      </div>
-    );
-  });
+function getLanguage(file) {
+  if (file.endsWith(".toml")) return "toml";
+  return "rust";
 }
 
 export default function DemoSection() {
@@ -349,9 +327,21 @@ export default function DemoSection() {
             transition={{ duration: 0.2 }}
             className="p-5 overflow-x-auto"
           >
-            <pre className="text-xs sm:text-sm font-mono">
-              {highlight(examples[active].code)}
-            </pre>
+            <SyntaxHighlighter
+              language={getLanguage(examples[active].file)}
+              style={codeTheme}
+              showLineNumbers
+              lineNumberStyle={{
+                minWidth: "2em",
+                paddingRight: "1em",
+                color: "#475569",
+                fontSize: "0.75rem",
+                userSelect: "none",
+              }}
+              wrapLines
+            >
+              {examples[active].code}
+            </SyntaxHighlighter>
           </motion.div>
         </AnimatePresence>
 
