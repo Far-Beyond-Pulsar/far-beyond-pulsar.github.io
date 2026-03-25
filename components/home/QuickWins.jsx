@@ -6,22 +6,22 @@ const steps = [
   {
     label: "Install Rust",
     cmd: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh",
-    note: "Requires Rust 1.75+ stable toolchain",
+    note: "Requires Rust stable toolchain and Visual Studio C++ build tools on Windows",
   },
   {
-    label: "Install Pulsar CLI",
-    cmd: "cargo install pulsar-cli",
-    note: "Fetches and compiles the project scaffolding tool",
+    label: "Clone the repository",
+    cmd: "git clone https://github.com/Far-Beyond-Pulsar/Pulsar-Native.git",
+    note: "Or download a binary from the Releases page on GitHub",
   },
   {
-    label: "Create a project",
-    cmd: "pulsar new my-game",
-    note: "Generates a minimal working project with sensible defaults",
+    label: "Build the engine",
+    cmd: "cd Pulsar-Native && cargo build --release",
+    note: "First build compiles all dependencies — subsequent builds are much faster",
   },
   {
     label: "Run it",
-    cmd: "cd my-game && cargo run",
-    note: "Your first window should appear in seconds",
+    cmd: "cargo run --release",
+    note: "The Pulsar launcher will open — create a project from the Templates tab",
   },
 ];
 

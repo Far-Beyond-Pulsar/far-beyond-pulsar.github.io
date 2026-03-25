@@ -17,11 +17,11 @@ export default function CTASection() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.65 }}
         >
-          {/* Alpha badge */}
+          {/* Status badge */}
           <div className="inline-flex items-center gap-2 mb-8 px-4 py-1.5 bg-amber-500/8 border border-amber-500/20 rounded-full">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
             <p className="text-amber-300 text-xs font-semibold tracking-wide">
-              Alpha · Join Early
+              In Development · Get Involved
             </p>
           </div>
 
@@ -30,17 +30,17 @@ export default function CTASection() {
           </h2>
 
           <p className="text-slate-400 text-lg mb-10 leading-relaxed">
-            Pulsar is open source and in active development. The best time to get involved — file issues, write docs, build features — is right now.
+            Pulsar is open source and in active development. Core systems are still being designed — the best time to influence the engine's direction is right now.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/docs/installation">
+            <Link href="/docs/docs/getting-started/installation/windows">
               <motion.button
               whileHover={{ scale: 1.03, boxShadow: "0 0 24px rgba(14,165,233,0.35)" }}
               whileTap={{ scale: 0.97 }}
               className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white font-semibold text-base shadow-lg"
               >
-                Try Alpha
+                Build from Source
               </motion.button>
             </Link>
 

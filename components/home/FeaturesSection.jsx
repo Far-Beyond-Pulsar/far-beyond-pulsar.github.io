@@ -5,30 +5,30 @@ import { motion } from "framer-motion";
 const pillars = [
   {
     icon: "/logos/rust.png",
-    title: "Built with Rust",
+    title: "Rust All the Way Down",
     description:
-      "Memory safety and fearless concurrency without a garbage collector. Pulsar's core is Rust all the way down — no runtime surprises, no undefined behavior, just fast deterministic code.",
-    detail: "Zero-cost abstractions",
+      "The editor, the renderer, the plugins — everything is Rust. Projects are standard Cargo workspaces. No custom scripting language, no VM overhead, just native performance with compile-time safety.",
+    detail: "Standard Cargo workflow",
     color: "from-[#0ea5e9] to-[#06b6d4]",
     border: "border-[#0ea5e9]/20",
     glow: "rgba(14,165,233,0.12)",
   },
   {
     icon: "/logos/vulkan.png",
-    title: "Next-Gen Graphics",
+    title: "Zero-Copy GPU Rendering",
     description:
-      "Direct access to Vulkan and WebGPU gives you the full power of modern GPU hardware. PBR rendering, ray tracing support, and HDR pipelines — built to ship games that look stunning.",
-    detail: "Ray tracing ready",
+      "A three-layer compositor shares textures directly in GPU memory — Bevy renders the 3D viewport, GPUI renders the editor UI, and D3D11 composites them with no CPU copies. Smooth 60 FPS even with a complex scene.",
+    detail: "D3D11 compositor + Bevy + GPUI",
     color: "from-[#06b6d4] to-[#0284c7]",
     border: "border-[#06b6d4]/20",
     glow: "rgba(6,182,212,0.12)",
   },
   {
     icon: "/logos/rapier.png",
-    title: "Advanced Physics",
+    title: "Rapier3D Physics",
     description:
-      "Rapier powers Pulsar's physics — a pure-Rust simulation engine capable of thousands of rigid bodies per frame with stable, deterministic results across platforms.",
-    detail: "10k+ bodies/frame",
+      "Rapier powers Pulsar's physics simulation — a pure-Rust engine running on a background thread for consistent physics ticks. Rigid body dynamics, collision detection, and constraints with deterministic results.",
+    detail: "Background-threaded simulation",
     color: "from-[#0284c7] to-[#0ea5e9]",
     border: "border-[#0284c7]/20",
     glow: "rgba(2,132,199,0.12)",

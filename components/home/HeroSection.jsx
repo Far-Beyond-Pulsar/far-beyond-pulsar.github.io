@@ -92,7 +92,7 @@ export default function HeroSection() {
           transition={{ delay: 0.45, duration: 0.6 }}
           className="text-lg md:text-xl text-slate-300 max-w-xl mx-auto mb-10 font-light tracking-wide"
         >
-          A next-generation game engine built in Rust — fast, safe, open source.
+          An experimental game engine and editor built entirely in Rust — stable, extensible, open source.
         </motion.p>
 
         {/* CTAs */}

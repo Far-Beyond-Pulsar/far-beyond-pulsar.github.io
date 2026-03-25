@@ -6,73 +6,65 @@ const examples = [
   {
     label: "Hello World",
     file: "main.rs",
-    description: "Create a full Pulsar app in under 10 lines.",
-    code: `use pulsar::prelude::*;
+    description: "A Pulsar project is just a Rust program.",
+    code: `use pulsar_std::prelude::*;
 
 fn main() {
-    App::new()
-        .add_systems(Startup, setup)
-        .add_systems(Update, hello_world)
-        .run();
-}
-
-fn setup(mut commands: Commands) {
-    commands.spawn(Camera3d::default());
-}
-
-fn hello_world() {
-    println!("Hello, Pulsar!");
+    println!("Hello from Pulsar!");
 }`,
   },
   {
-    label: "Entity System",
-    file: "player.rs",
-    description: "Define components and query them with zero overhead.",
-    code: `#[derive(Component)]
-struct Player {
-    speed: f32,
-    health: i32,
+    label: "Blueprints",
+    file: "math_nodes.rs",
+    description: "Define visual scripting nodes with a simple attribute macro.",
+    code: `use pulsar_macros::blueprint;
+
+/// Adds two numbers
+#[blueprint(type: pure, category: "Math")]
+fn add(a: f32, b: f32) -> f32 {
+    a + b
 }
 
-fn spawn_player(mut commands: Commands) {
-    commands.spawn((
-        Player { speed: 10.0, health: 100 },
-        Transform::default(),
-        Mesh3d::from(shape::Cube { size: 1.0 }),
-    ));
+/// Prints a message to the console
+#[blueprint(type: fn_, category: "Debug")]
+fn print(message: String) {
+    println!("{}", message);
 }
 
-fn move_player(
-    time: Res<Time>,
-    mut query: Query<(&Player, &mut Transform)>
-) {
-    for (player, mut transform) in query.iter_mut() {
-        transform.translation.x += player.speed * time.delta();
+/// Branch based on a condition
+#[blueprint(type: control_flow, category: "Flow")]
+fn branch(condition: bool) {
+    if condition {
+        exec_output!("True");
+    } else {
+        exec_output!("False");
     }
 }`,
   },
   {
-    label: "Physics",
-    file: "physics.rs",
-    description: "Rigid bodies and colliders in a few lines with Rapier.",
-    code: `use pulsar::physics::prelude::*;
+    label: "Plugin",
+    file: "my_plugin.rs",
+    description: "Extend the editor with compiled Rust DLLs — full API access.",
+    code: `use pulsar_plugin::prelude::*;
 
-fn setup_physics(mut commands: Commands) {
-    // Dynamic ball that falls and rolls
-    commands.spawn((
-        RigidBody::Dynamic,
-        Collider::ball(0.5),
-        Transform::from_xyz(0.0, 10.0, 0.0),
-        Velocity::linear(Vec3::new(1.0, 0.0, 0.0)),
-        Mass::new(1.0),
-    ));
+pub struct MyPlugin;
 
-    // Static ground plane
-    commands.spawn((
-        RigidBody::Fixed,
-        Collider::cuboid(50.0, 0.1, 50.0),
-        Transform::default(),
-    ));
+impl EditorPlugin for MyPlugin {
+    fn name(&self) -> &str {
+        "My Custom Plugin"
+    }
+
+    fn file_types(&self) -> Vec<FileTypeDefinition> {
+        vec![FileTypeDefinition {
+            extension: "custom",
+            icon: "puzzle",
+            editor: "custom_editor",
+        }]
+    }
+
+    fn on_load(&mut self) {
+        println!("Plugin loaded!");
+    }
 }`,
   },
 ];
@@ -80,7 +72,7 @@ fn setup_physics(mut commands: Commands) {
 // Very basic syntax highlighting by tokenizing Rust-ish code
 function highlight(code) {
   const keywords = ["use", "fn", "let", "mut", "struct", "impl", "pub", "for", "in", "if"];
-  const types = ["Commands", "Transform", "Query", "Res", "Time", "App", "Vec3", "RigidBody", "Collider", "Mass", "Velocity", "Camera3d", "Mesh3d", "Component"];
+  const types = ["EditorPlugin", "FileTypeDefinition", "String", "Vec", "Vec3", "RigidBody", "Collider", "Mass", "Velocity"];
 
   return code.split("\n").map((line, li) => {
     const tokens = [];
