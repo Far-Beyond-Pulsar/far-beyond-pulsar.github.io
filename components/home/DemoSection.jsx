@@ -1,8 +1,13 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
+import rust from "react-syntax-highlighter/dist/cjs/languages/hljs/rust";
+import ini from "react-syntax-highlighter/dist/cjs/languages/hljs/ini";
+import { atomOneDark } from "react-syntax-highlighter/dist/cjs/styles/hljs";
+
+SyntaxHighlighter.registerLanguage("rust", rust);
+SyntaxHighlighter.registerLanguage("toml", ini);
 
 const examples = [
   {
@@ -212,20 +217,13 @@ hot_reload = true`,
   },
 ];
 
-// Custom theme based on oneDark, with transparent background to match the container
+// Custom theme based on atomOneDark, with transparent background to match the container
 const codeTheme = {
-  ...oneDark,
-  'pre[class*="language-"]': {
-    ...oneDark['pre[class*="language-"]'],
+  ...atomOneDark,
+  hljs: {
+    ...atomOneDark.hljs,
     background: "transparent",
-    margin: 0,
     padding: 0,
-    fontSize: "0.85rem",
-    fontFamily: "var(--font-jetbrains-mono), monospace",
-  },
-  'code[class*="language-"]': {
-    ...oneDark['code[class*="language-"]'],
-    background: "transparent",
     fontSize: "0.85rem",
     fontFamily: "var(--font-jetbrains-mono), monospace",
   },
@@ -329,21 +327,23 @@ export default function DemoSection() {
             transition={{ duration: 0.2 }}
             className="p-5 overflow-x-auto"
           >
-            <SyntaxHighlighter
-              language={getLanguage(examples[active].file)}
-              style={codeTheme}
-              showLineNumbers
-              lineNumberStyle={{
-                minWidth: "2em",
-                paddingRight: "1em",
-                color: "#475569",
-                fontSize: "0.75rem",
-                userSelect: "none",
-              }}
-              wrapLines
-            >
-              {examples[active].code}
-            </SyntaxHighlighter>
+            <div className="flex" style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}>
+              <div
+                className="select-none text-right pr-4 text-slate-600 shrink-0"
+                style={{ fontSize: "0.75rem", lineHeight: "1.5", paddingTop: "1em" }}
+                aria-hidden="true"
+              >
+                {examples[active].code.split("\n").map((_, i) => (
+                  <div key={i}>{i + 1}</div>
+                ))}
+              </div>
+              <SyntaxHighlighter
+                language={getLanguage(examples[active].file)}
+                style={codeTheme}
+              >
+                {examples[active].code}
+              </SyntaxHighlighter>
+            </div>
           </motion.div>
         </AnimatePresence>
 
