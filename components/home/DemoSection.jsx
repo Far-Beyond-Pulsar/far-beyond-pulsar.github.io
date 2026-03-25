@@ -1,13 +1,8 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
-import rust from "react-syntax-highlighter/dist/cjs/languages/hljs/rust";
-import ini from "react-syntax-highlighter/dist/cjs/languages/hljs/ini";
-import { atomOneDark } from "react-syntax-highlighter/dist/cjs/styles/hljs";
-
-SyntaxHighlighter.registerLanguage("rust", rust);
-SyntaxHighlighter.registerLanguage("toml", ini);
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
 const examples = [
   {
@@ -217,20 +212,28 @@ hot_reload = true`,
   },
 ];
 
-// Custom theme based on atomOneDark, with transparent background to match the container
+// Custom theme based on oneDark, with transparent background to match the container
 const codeTheme = {
-  ...atomOneDark,
-  hljs: {
-    ...atomOneDark.hljs,
+  ...oneDark,
+  'pre[class*="language-"]': {
+    ...oneDark['pre[class*="language-"]'],
     background: "transparent",
+    margin: 0,
     padding: 0,
+    fontSize: "0.85rem",
+    fontFamily: "var(--font-jetbrains-mono), monospace",
+  },
+  'code[class*="language-"]': {
+    ...oneDark['code[class*="language-"]'],
+    background: "transparent",
     fontSize: "0.85rem",
     fontFamily: "var(--font-jetbrains-mono), monospace",
   },
 };
 
+// Use 'ini' for TOML — Prism's 'toml' grammar splits bracket tokens across lines
 function getLanguage(file) {
-  if (file.endsWith(".toml")) return "toml";
+  if (file.endsWith(".toml")) return "ini";
   return "rust";
 }
 
