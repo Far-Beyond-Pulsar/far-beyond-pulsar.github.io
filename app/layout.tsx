@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { JetBrains_Mono } from "next/font/google";
 import { Header, Footer, SponsorsButton } from "@/components/layout";
 import "./globals.css";
 
@@ -12,6 +13,10 @@ const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
+});
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
 });
 
 export const metadata: Metadata = {
@@ -27,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-darkreader-ignore>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${jetbrainsMono.variable} antialiased`}
         data-darkreader-ignore
       >
         <Header />

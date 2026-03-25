@@ -221,11 +221,13 @@ const codeTheme = {
     margin: 0,
     padding: 0,
     fontSize: "0.85rem",
+    fontFamily: "var(--font-jetbrains-mono), monospace",
   },
   'code[class*="language-"]': {
     ...oneDark['code[class*="language-"]'],
     background: "transparent",
     fontSize: "0.85rem",
+    fontFamily: "var(--font-jetbrains-mono), monospace",
   },
 };
 
@@ -273,42 +275,42 @@ export default function DemoSection() {
       >
         {/* Tab bar */}
         <div className="flex items-center justify-between border-b border-slate-800 px-4">
-          <div className="flex">
-            {examples.map((ex, i) => (
-              <button
-                key={i}
-                onClick={() => setActive(i)}
-                className={`relative px-4 py-3 text-sm font-medium transition-colors duration-200 ${
-                  active === i
-                    ? "text-white"
-                    : "text-slate-500 hover:text-slate-300"
-                }`}
-              >
-                {ex.label}
-                {active === i && (
-                  <motion.div
-                    layoutId="tab-underline"
-                    className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-[#0ea5e9] to-[#0284c7]"
-                  />
-                )}
-              </button>
-            ))}
-          </div>
-
-          {/* Window dots + copy */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <div className="hidden sm:flex gap-1.5">
               <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
               <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
               <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
             </div>
-            <button
-              onClick={copy}
-              className="text-xs text-slate-500 hover:text-slate-300 transition-colors font-mono py-1"
-            >
-              {copied ? "copied ✓" : "copy"}
-            </button>
+            <div className="flex">
+              {examples.map((ex, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActive(i)}
+                  className={`relative px-4 py-3 text-sm font-medium transition-colors duration-200 ${
+                    active === i
+                      ? "text-white"
+                      : "text-slate-500 hover:text-slate-300"
+                  }`}
+                >
+                  {ex.label}
+                  {active === i && (
+                    <motion.div
+                      layoutId="tab-underline"
+                      className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-[#0ea5e9] to-[#0284c7]"
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
+
+          {/* Copy button */}
+          <button
+            onClick={copy}
+            className="text-xs text-slate-500 hover:text-slate-300 transition-colors font-mono py-1"
+          >
+            {copied ? "copied ✓" : "copy"}
+          </button>
         </div>
 
         {/* File path */}
