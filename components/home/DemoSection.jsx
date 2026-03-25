@@ -4,34 +4,50 @@ import { useState } from "react";
 
 const examples = [
   {
-    label: "Hello World",
-    file: "main.rs",
-    description: "A Pulsar project is just a Rust program.",
+    label: "Game Setup",
+    file: "engine_main.rs",
+    description: "Initialize Pulsar, register types, load a scene, and run.",
     code: `use pulsar_std::prelude::*;
 
-fn main() {
-    println!("Hello from Pulsar!");
+pub fn main() {
+    env_logger::init();
+
+    let mut app = PulsarApp::new();
+
+    // Register your project's types
+    app.register_type::<GameState>();
+    app.register_type::<Inventory>();
+    app.register_type::<PlayerData>();
+
+    // Register game systems
+    app.add_system(game_state_system);
+    app.add_system(inventory_system);
+    app.add_system(player_update_system);
+
+    // Load the default scene and run
+    app.load_scene("scenes/default.level");
+    app.run();
 }`,
   },
   {
     label: "Blueprints",
-    file: "math_nodes.rs",
-    description: "Define visual scripting nodes with a simple attribute macro.",
-    code: `use pulsar_macros::blueprint;
+    file: "nodes.rs",
+    description: "Visual scripting nodes from plain Rust functions.",
+    code: `use pulsar_macros::{blueprint, exec_output, bp_import};
 
-/// Adds two numbers
+/// Pure data-flow node — no side effects
 #[blueprint(type: pure, category: "Math")]
 fn add(a: f32, b: f32) -> f32 {
     a + b
 }
 
-/// Prints a message to the console
+/// Side-effect node — one exec in, one exec out
 #[blueprint(type: fn_, category: "Debug")]
 fn print(message: String) {
     println!("{}", message);
 }
 
-/// Branch based on a condition
+/// Control flow — multiple execution outputs
 #[blueprint(type: control_flow, category: "Flow")]
 fn branch(condition: bool) {
     if condition {
@@ -39,40 +55,165 @@ fn branch(condition: bool) {
     } else {
         exec_output!("False");
     }
+}
+
+/// Event entry point — starts execution
+#[blueprint(type: event, category: "Game")]
+fn begin_play() {
+    exec_output!("Body");
 }`,
   },
   {
     label: "Plugin",
-    file: "my_plugin.rs",
-    description: "Extend the editor with compiled Rust DLLs — full API access.",
-    code: `use pulsar_plugin::prelude::*;
+    file: "plugin.rs",
+    description: "Editor plugins are compiled Rust DLLs with full API access.",
+    code: `pub trait EditorPlugin: Send + Sync {
+    fn metadata(&self) -> PluginMetadata;
+    fn file_types(&self) -> Vec<FileTypeDefinition>;
+    fn editors(&self) -> Vec<EditorMetadata>;
+    fn on_load(&mut self) {}
+    fn on_unload(&mut self) {}
+}
 
-pub struct MyPlugin;
+// Register a custom file type
+fn file_types(&self) -> Vec<FileTypeDefinition> {
+    vec![standalone_file_type(
+        "my-config",
+        "cfg",
+        "Configuration File",
+        ui::IconName::Settings,
+        gpui::rgb(0x3B82F6),
+        serde_json::json!({
+            "version": 1,
+            "settings": {}
+        }),
+    )]
+}`,
+  },
+  {
+    label: "Subsystem",
+    file: "physics.rs",
+    description: "Modular subsystems with dependency-driven init.",
+    code: `pub trait Subsystem: Send + Sync {
+    fn id(&self) -> SubsystemId;
+    fn dependencies(&self) -> Vec<SubsystemId>;
+    fn init(&mut self, ctx: &SubsystemContext)
+        -> Result<(), SubsystemError>;
+    fn shutdown(&mut self) -> Result<(), SubsystemError>;
+}
 
-impl EditorPlugin for MyPlugin {
-    fn name(&self) -> &str {
-        "My Custom Plugin"
+impl Subsystem for PhysicsEngine {
+    fn id(&self) -> SubsystemId {
+        subsystem_ids::PHYSICS
     }
 
-    fn file_types(&self) -> Vec<FileTypeDefinition> {
-        vec![FileTypeDefinition {
-            extension: "custom",
-            icon: "puzzle",
-            editor: "custom_editor",
-        }]
+    fn dependencies(&self) -> Vec<SubsystemId> {
+        vec![] // No dependencies
     }
 
-    fn on_load(&mut self) {
-        println!("Plugin loaded!");
+    fn init(&mut self, ctx: &SubsystemContext)
+        -> Result<(), SubsystemError>
+    {
+        let handle = ctx.runtime.spawn(async move {
+            loop {
+                profiling::profile_scope!("Physics::Step");
+                // Rapier simulation step
+            }
+        });
+        self.task_handle = Some(handle);
+        Ok(())
+    }
+
+    fn shutdown(&mut self) -> Result<(), SubsystemError> {
+        if let Some(handle) = self.task_handle.take() {
+            handle.abort();
+        }
+        Ok(())
     }
 }`,
+  },
+  {
+    label: "GPUI View",
+    file: "editor_ui.rs",
+    description: "Build editor UI with GPU-accelerated GPUI views.",
+    code: `impl Render for LevelEditorView {
+    fn render(&mut self, _window: &mut Window,
+        cx: &mut ViewContext<Self>) -> impl IntoElement
+    {
+        div()
+            .size_full()
+            .flex()
+            .child(
+                // 3D viewport via Bevy
+                div()
+                    .flex_1()
+                    .child(self.viewport.clone())
+            )
+            .child(
+                // Properties panel
+                div()
+                    .w_64()
+                    .bg(cx.theme().background)
+                    .child("Properties Panel")
+            )
+    }
+}
+
+// Custom events between components
+#[derive(Debug, Clone)]
+pub enum EditorEvent {
+    SelectionChanged { from: usize, to: usize },
+    ContentModified,
+    FileSaved { path: PathBuf },
+}
+
+cx.emit(EditorEvent::ContentModified);`,
+  },
+  {
+    label: "Config",
+    file: "Pulsar.toml",
+    description: "Project configuration — plain TOML, no magic.",
+    code: `[project]
+name = "MyGame"
+version = "0.1.0"
+author = "Your Name"
+
+[window]
+title = "My Game - Pulsar Engine"
+width = 1920
+height = 1080
+fullscreen = false
+vsync = true
+resizable = true
+
+[graphics]
+renderer = "Vulkan"
+msaa_samples = 4
+max_fps = 144
+shadow_quality = "High"
+
+[input.key_bindings]
+move_forward = "W"
+move_backward = "S"
+move_left = "A"
+move_right = "D"
+jump = "Space"
+
+[paths]
+assets = "assets/"
+shaders = "shaders/"
+scripts = "classes/"
+
+[build]
+debug = true
+hot_reload = true`,
   },
 ];
 
 // Very basic syntax highlighting by tokenizing Rust-ish code
 function highlight(code) {
-  const keywords = ["use", "fn", "let", "mut", "struct", "impl", "pub", "for", "in", "if"];
-  const types = ["EditorPlugin", "FileTypeDefinition", "String", "Vec", "Vec3", "RigidBody", "Collider", "Mass", "Velocity"];
+  const keywords = ["use", "fn", "let", "mut", "struct", "impl", "pub", "for", "in", "if", "else", "loop", "async", "move", "match", "enum", "trait", "self", "return", "true", "false"];
+  const types = ["EditorPlugin", "PluginMetadata", "FileTypeDefinition", "EditorMetadata", "String", "Vec", "Vec3", "SubsystemId", "SubsystemContext", "SubsystemError", "Subsystem", "PhysicsEngine", "Result", "Option", "Self", "PathBuf", "Render", "Window", "ViewContext", "PulsarApp", "GameState", "Inventory", "PlayerData"];
 
   return code.split("\n").map((line, li) => {
     const tokens = [];
@@ -138,10 +279,10 @@ export default function DemoSection() {
           Code First
         </p>
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-4">
-          Elegant by Default
+          Real Engine Code
         </h2>
         <p className="text-slate-400 max-w-lg mx-auto text-base">
-          Pulsar's API is designed to read like documentation. Expressive, minimal, and type-safe.
+          Everything here is from the actual Pulsar codebase — not mock-ups.
         </p>
       </motion.div>
 
