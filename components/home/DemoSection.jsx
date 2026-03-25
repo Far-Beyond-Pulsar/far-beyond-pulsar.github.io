@@ -330,23 +330,24 @@ export default function DemoSection() {
             transition={{ duration: 0.2 }}
             className="p-5 overflow-x-auto"
           >
-            <div className="flex" style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}>
-              <div
-                className="select-none text-right pr-4 text-slate-600 shrink-0"
-                style={{ fontSize: "0.75rem", lineHeight: "1.5", paddingTop: "1em" }}
-                aria-hidden="true"
-              >
-                {examples[active].code.split("\n").map((_, i) => (
-                  <div key={i}>{i + 1}</div>
-                ))}
-              </div>
-              <SyntaxHighlighter
-                language={getLanguage(examples[active].file)}
-                style={codeTheme}
-              >
-                {examples[active].code}
-              </SyntaxHighlighter>
-            </div>
+            <SyntaxHighlighter
+              language={getLanguage(examples[active].file)}
+              style={codeTheme}
+              showLineNumbers
+              lineNumberStyle={{
+                width: "2em",
+                paddingRight: "1.5em",
+                marginRight: "1em",
+                color: "#334155",
+                borderRight: "1px solid rgba(51,65,85,0.3)",
+                userSelect: "none",
+                fontVariantNumeric: "tabular-nums",
+                textAlign: "right",
+                display: "inline-block",
+              }}
+            >
+              {examples[active].code}
+            </SyntaxHighlighter>
           </motion.div>
         </AnimatePresence>
 
