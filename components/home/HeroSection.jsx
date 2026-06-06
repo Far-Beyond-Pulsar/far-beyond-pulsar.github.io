@@ -1,179 +1,183 @@
 "use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
+import { Github, ArrowRight } from "lucide-react";
 
-const heroMedia = [
-  { type: "image", src: "/sample_pics/level_editor.png", label: "Level Editor" },
-  { type: "image", src: "/sample_pics/profiler.png", label: "Profiler" },
-  { type: "image", src: "/sample_pics/level_editor(file_drawer).png", label: "Asset Browser" },
-  { type: "image", src: "/sample_pics/engine_bps.png", label: "Engine Runtime" },
-  { type: "image", src: "/sample_pics/db_editor.png", label: "Database Editor" },
-  { type: "image", src: "/sample_pics/panels1.png", label: "Multi-Panel Layout" },
-  { type: "image", src: "/sample_pics/terminal.png", label: "Integrated Terminal" },
+const SLIDES = [
+  { src: "/sample_pics/level_editor.png", label: "Level Editor" },
+  { src: "/sample_pics/panels1.png", label: "Multi-Panel Layout" },
+  { src: "/sample_pics/engine_bps.png", label: "Visual Blueprints" },
+  { src: "/sample_pics/profiler.png", label: "Performance Profiler" },
+  { src: "/sample_pics/level_editor(file_drawer).png", label: "Asset Browser" },
+  { src: "/sample_pics/db_editor.png", label: "Database Editor" },
+  { src: "/sample_pics/terminal.png", label: "Integrated Terminal" },
 ];
 
 export default function HeroSection() {
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    const t = setInterval(() => setCurrent((p) => (p + 1) % heroMedia.length), 4000);
-    return () => clearInterval(t);
+    const id = setInterval(() => setCurrent((p) => (p + 1) % SLIDES.length), 5000);
+    return () => clearInterval(id);
   }, []);
 
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-screen text-center overflow-hidden bg-black" data-darkreader-ignore>
-      {/* Background slideshow */}
-      <div className="absolute inset-0 z-0" data-darkreader-ignore>
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-black">
+      {/* Background: cycling engine screenshots */}
+      <div className="absolute inset-0 z-0">
         <AnimatePresence mode="wait">
           <motion.div
             key={current}
-            initial={{ opacity: 0, scale: 1.03 }}
+            className="absolute inset-0"
+            initial={{ opacity: 0, scale: 1.04 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="absolute inset-0"
+            transition={{ duration: 1, ease: "easeInOut" }}
           >
             <Image
-              src={heroMedia[current].src}
-              alt={heroMedia[current].label}
+              src={SLIDES[current].src}
+              alt={SLIDES[current].label}
               fill
               className="object-cover"
-              priority
-              data-darkreader-ignore
+              priority={current === 0}
             />
           </motion.div>
         </AnimatePresence>
-        {/* Multi-layer overlay: heavy vignette + dark center so text pops */}
-        <div className="absolute inset-0 bg-black/65" data-darkreader-ignore />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80" data-darkreader-ignore />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30" data-darkreader-ignore />
+
+        {/* Layered overlays — heavy vignette, darkens corners */}
+        <div className="absolute inset-0 bg-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/10 to-black/90" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40" />
       </div>
 
       {/* Content */}
-      <div className="relative z-10 px-4 max-w-5xl mx-auto w-full flex flex-col items-center">
-        {/* Logo */}
+      <div className="relative z-10 w-full max-w-4xl mx-auto px-5 pt-20 flex flex-col items-center text-center">
+        {/* Status pill */}
         <motion.div
-          initial={{ scale: 0.85, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 80, damping: 18, delay: 0.1 }}
-          className="relative mb-6"
-          data-darkreader-ignore
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="inline-flex items-center gap-2 mb-8 px-3.5 py-1.5 rounded-full border border-white/[0.12] bg-white/[0.04] backdrop-blur-sm"
         >
-          <div className="absolute inset-0 blur-2xl bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] opacity-30 rounded-full scale-125" data-darkreader-ignore />
+          <span className="w-1.5 h-1.5 rounded-full bg-[#0ea5e9] animate-pulse-dot" />
+          <span className="text-xs text-white/60 font-medium tracking-wide">
+            Early development · Open source
+          </span>
+        </motion.div>
+
+        {/* Wordmark */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="mb-1"
+        >
           <Image
             src="/logos/pulsar.png"
-            alt="Pulsar"
-            width={96}
-            height={96}
-            className="relative drop-shadow-2xl"
-            data-darkreader-ignore
+            alt=""
+            width={52}
+            height={52}
+            className="mx-auto mb-5 opacity-90"
           />
         </motion.div>
 
-        {/* Title */}
+        {/* Headline */}
         <motion.h1
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25, duration: 0.6 }}
-          className="text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-none mb-5"
-          data-darkreader-ignore
+          transition={{ delay: 0.3, duration: 0.55 }}
+          className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-[-0.03em] leading-none text-white mb-5"
         >
-          <span className="inline-block bg-gradient-to-r from-[#0ea5e9] via-[#38bdf8] to-[#0284c7] bg-clip-text text-transparent drop-shadow-lg" data-darkreader-ignore>
-            PULSAR
-          </span>
+          Build without&nbsp;
+          <span className="text-[#38bdf8]">limits.</span>
         </motion.h1>
 
-        {/* Tagline */}
+        {/* Subheading */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.45, duration: 0.6 }}
-          className="text-lg md:text-xl text-slate-300 max-w-xl mx-auto mb-10 font-light tracking-wide"
+          transition={{ delay: 0.45 }}
+          className="text-base sm:text-lg text-white/50 max-w-xl mx-auto mb-10 leading-relaxed font-light"
         >
-          An experimental game engine and editor built entirely in Rust — stable, extensible, open source.
+          Pulsar is an open-source game engine written entirely in Rust — delivering native
+          performance, a full-featured editor, and visual scripting without compromise.
         </motion.p>
 
         {/* CTAs */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
-          className="flex flex-col sm:flex-row gap-3 justify-center items-center"
+          transition={{ delay: 0.55 }}
+          className="flex flex-wrap items-center justify-center gap-3"
         >
-          <Link href="/docs/docs/getting-started/installation/windows">
-            <motion.button
-              whileHover={{ scale: 1.03, boxShadow: "0 0 20px rgba(14,165,233,0.35)" }}
-              whileTap={{ scale: 0.97 }}
-              className="px-7 py-3 rounded-xl bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white font-semibold text-base shadow-lg"
-              data-darkreader-ignore
-            >
-              Get Started
-            </motion.button>
+          <Link
+            href="/docs/docs/getting-started/installation/windows"
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#0ea5e9] hover:bg-[#0284c7] text-white font-medium text-sm rounded-xl transition-colors"
+          >
+            Get Started
+            <ArrowRight className="w-4 h-4" />
           </Link>
-          <Link href="/docs">
-            <motion.button
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-              className="px-7 py-3 rounded-xl border border-slate-600 bg-white/5 text-white font-semibold text-base backdrop-blur-sm hover:border-[#0ea5e9]/60 transition-colors"
-            >
-              Documentation
-            </motion.button>
-          </Link>
-          <a href="https://github.com/Far-Beyond-Pulsar" target="_blank" rel="noopener">
-            <motion.button
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-              className="px-7 py-3 rounded-xl border border-slate-700 bg-transparent text-slate-300 font-semibold text-base hover:text-white hover:border-slate-500 transition-colors"
-            >
-              GitHub
-            </motion.button>
+          <a
+            href="https://github.com/Far-Beyond-Pulsar/Pulsar-Native"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-2.5 border border-white/[0.15] hover:border-white/30 bg-white/[0.04] hover:bg-white/[0.07] text-white/80 hover:text-white font-medium text-sm rounded-xl transition-all backdrop-blur-sm"
+          >
+            <Github className="w-4 h-4" />
+            View on GitHub
           </a>
+          <Link
+            href="/docs"
+            className="inline-flex items-center px-6 py-2.5 text-white/45 hover:text-white/70 font-medium text-sm transition-colors"
+          >
+            Documentation
+          </Link>
         </motion.div>
       </div>
 
-      {/* Slide label pill */}
-      <motion.div
-        key={current}
-        initial={{ opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.4 }}
-        className="absolute bottom-20 left-0 right-0 z-10 flex flex-col items-center justify-center gap-3 w-full"
-        data-darkreader-ignore
-      >
-        <span className="text-sm text-slate-300 tracking-widest uppercase font-medium">
-          {heroMedia[current].label}
-        </span>
-        <div className="flex gap-2 items-center justify-center">
-          {heroMedia.map((_, i) => (
+      {/* Slide indicator — bottom */}
+      <div className="absolute bottom-8 left-0 right-0 z-10 flex flex-col items-center gap-3">
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={current}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="text-[10px] tracking-[0.2em] uppercase text-white/35 font-medium"
+          >
+            {SLIDES[current].label}
+          </motion.span>
+        </AnimatePresence>
+        <div className="flex gap-1.5">
+          {SLIDES.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrent(i)}
-              aria-label={`View ${heroMedia[i].label}`}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === current ? "w-8 bg-[#0ea5e9]" : "w-2 bg-slate-600 hover:bg-slate-500"
+              aria-label={`View ${SLIDES[i].label}`}
+              className={`h-[3px] rounded-full transition-all duration-500 ${
+                i === current ? "w-7 bg-[#0ea5e9]" : "w-2 bg-white/20 hover:bg-white/35"
               }`}
-              data-darkreader-ignore
             />
           ))}
         </div>
-      </motion.div>
+      </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll chevron */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2"
+        transition={{ delay: 1.5 }}
+        className="absolute bottom-8 right-8 z-10"
       >
         <motion.div
-          animate={{ y: [0, 7, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-          className="text-slate-600"
+          animate={{ y: [0, 5, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
           </svg>
         </motion.div>

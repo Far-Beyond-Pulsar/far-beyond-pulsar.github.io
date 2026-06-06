@@ -1,14 +1,33 @@
 "use client";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
-const examples = [
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+
+// Minimal dark theme — hand-tuned to match the site palette
+const pulsarTheme = {
+  'code[class*="language-"]': { color: "#c9d1d9", fontFamily: "var(--font-mono)", fontSize: "13px", lineHeight: "1.7" },
+  'pre[class*="language-"]': { background: "transparent", margin: 0, padding: 0, overflow: "auto" },
+  comment: { color: "#4a5568" },
+  punctuation: { color: "#6b7280" },
+  property: { color: "#79c0ff" },
+  keyword: { color: "#ff7b72" },
+  string: { color: "#a5d6ff" },
+  number: { color: "#f0883e" },
+  "class-name": { color: "#ffa657" },
+  function: { color: "#d2a8ff" },
+  operator: { color: "#89ddff" },
+  "attr-name": { color: "#79c0ff" },
+  variable: { color: "#c9d1d9" },
+  "builtin": { color: "#ffa657" },
+  "macro": { color: "#ff7b72", fontStyle: "italic" },
+};
+
+const TABS = [
   {
     label: "Game Setup",
-    file: "engine_main.rs",
-    description: "Initialize Pulsar, register types, load a scene, and run.",
+    file: "main.rs",
+    description: "Initialize the engine, register types, and run your game.",
     code: `use pulsar_std::prelude::*;
 
 pub fn main() {
@@ -16,17 +35,17 @@ pub fn main() {
 
     let mut app = PulsarApp::new();
 
-    // Register your project's types
+    // Register your project types
     app.register_type::<GameState>();
     app.register_type::<Inventory>();
     app.register_type::<PlayerData>();
 
-    // Register game systems
+    // Attach game systems
     app.add_system(game_state_system);
     app.add_system(inventory_system);
     app.add_system(player_update_system);
 
-    // Load the default scene and run
+    // Load scene and run
     app.load_scene("scenes/default.level");
     app.run();
 }`,
@@ -34,18 +53,18 @@ pub fn main() {
   {
     label: "Blueprints",
     file: "nodes.rs",
-    description: "Visual scripting nodes from plain Rust functions.",
-    code: `use pulsar_macros::{blueprint, exec_output, bp_import};
+    description: "Annotate Rust functions to expose them as visual scripting nodes.",
+    code: `use pulsar_macros::{blueprint, exec_output};
 
-/// Pure data-flow node — no side effects
+/// Pure data-flow node — no execution pin
 #[blueprint(type: pure, category: "Math")]
 fn add(a: f32, b: f32) -> f32 {
     a + b
 }
 
-/// Side-effect node — one exec in, one exec out
+/// Side-effecting node with exec flow
 #[blueprint(type: fn_, category: "Debug")]
-fn print(message: String) {
+fn print_message(message: String) {
     println!("{}", message);
 }
 
@@ -59,303 +78,153 @@ fn branch(condition: bool) {
     }
 }
 
-/// Event entry point — starts execution
+/// Event entry point — begins execution graph
 #[blueprint(type: event, category: "Game")]
 fn begin_play() {
     exec_output!("Body");
 }`,
   },
   {
-    label: "Plugin",
+    label: "Editor Plugin",
     file: "plugin.rs",
-    description: "Editor plugins are compiled Rust DLLs with full API access.",
-    code: `pub trait EditorPlugin: Send + Sync {
-    fn metadata(&self) -> PluginMetadata;
-    fn file_types(&self) -> Vec<FileTypeDefinition>;
-    fn editors(&self) -> Vec<EditorMetadata>;
-    fn on_load(&mut self) {}
-    fn on_unload(&mut self) {}
-}
+    description: "Extend the editor with compiled Rust DLLs — full API access.",
+    code: `use pulsar_plugin_api::prelude::*;
 
-// Register a custom file type
-fn file_types(&self) -> Vec<FileTypeDefinition> {
-    vec![standalone_file_type(
-        "my-config",
-        "cfg",
-        "Configuration File",
-        ui::IconName::Settings,
-        gpui::rgb(0x3B82F6),
-        serde_json::json!({
-            "version": 1,
-            "settings": {}
-        }),
-    )]
-}`,
-  },
-  {
-    label: "Subsystem",
-    file: "physics.rs",
-    description: "Modular subsystems with dependency-driven init.",
-    code: `pub trait Subsystem: Send + Sync {
-    fn id(&self) -> SubsystemId;
-    fn dependencies(&self) -> Vec<SubsystemId>;
-    fn init(&mut self, ctx: &SubsystemContext)
-        -> Result<(), SubsystemError>;
-    fn shutdown(&mut self) -> Result<(), SubsystemError>;
-}
+pub struct MyEditorPlugin;
 
-impl Subsystem for PhysicsEngine {
-    fn id(&self) -> SubsystemId {
-        subsystem_ids::PHYSICS
-    }
-
-    fn dependencies(&self) -> Vec<SubsystemId> {
-        vec![] // No dependencies
-    }
-
-    fn init(&mut self, ctx: &SubsystemContext)
-        -> Result<(), SubsystemError>
-    {
-        let handle = ctx.runtime.spawn(async move {
-            loop {
-                profiling::profile_scope!("Physics::Step");
-                // Rapier simulation step
-            }
-        });
-        self.task_handle = Some(handle);
-        Ok(())
-    }
-
-    fn shutdown(&mut self) -> Result<(), SubsystemError> {
-        if let Some(handle) = self.task_handle.take() {
-            handle.abort();
+impl EditorPlugin for MyEditorPlugin {
+    fn metadata(&self) -> PluginMetadata {
+        PluginMetadata {
+            name: "My Plugin",
+            version: env!("CARGO_PKG_VERSION"),
+            author: "You",
         }
-        Ok(())
     }
-}`,
-  },
-  {
-    label: "GPUI View",
-    file: "editor_ui.rs",
-    description: "Build editor UI with GPU-accelerated GPUI views.",
-    code: `impl Render for LevelEditorView {
-    fn render(&mut self, _window: &mut Window,
-        cx: &mut ViewContext<Self>) -> impl IntoElement
-    {
-        div()
-            .size_full()
-            .flex()
-            .child(
-                // 3D viewport via Bevy
-                div()
-                    .flex_1()
-                    .child(self.viewport.clone())
-            )
-            .child(
-                // Properties panel
-                div()
-                    .w_64()
-                    .bg(cx.theme().background)
-                    .child("Properties Panel")
-            )
+
+    fn file_types(&self) -> Vec<FileTypeDefinition> {
+        vec![
+            FileTypeDefinition {
+                extension: "mydata",
+                label: "My Data File",
+                icon: Icon::Custom("my_icon"),
+            }
+        ]
+    }
+
+    fn on_load(&mut self) {
+        println!("Plugin loaded!");
     }
 }
 
-// Custom events between components
-#[derive(Debug, Clone)]
-pub enum EditorEvent {
-    SelectionChanged { from: usize, to: usize },
-    ContentModified,
-    FileSaved { path: PathBuf },
-}
-
-cx.emit(EditorEvent::ContentModified);`,
-  },
-  {
-    label: "Config",
-    file: "Pulsar.toml",
-    description: "Project configuration — plain TOML, no magic.",
-    code: `[project]
-name = "MyGame"
-version = "0.1.0"
-author = "Your Name"
-
-[window]
-title = "My Game - Pulsar Engine"
-width = 1920
-height = 1080
-fullscreen = false
-vsync = true
-resizable = true
-
-[graphics]
-renderer = "Vulkan"
-msaa_samples = 4
-max_fps = 144
-shadow_quality = "High"
-
-[input.key_bindings]
-move_forward = "W"
-move_backward = "S"
-move_left = "A"
-move_right = "D"
-jump = "Space"
-
-[paths]
-assets = "assets/"
-shaders = "shaders/"
-scripts = "classes/"
-
-[build]
-debug = true
-hot_reload = true`,
+export_plugin!(MyEditorPlugin);`,
   },
 ];
 
-// Custom theme based on oneDark, with transparent background to match the container
-const codeTheme = {
-  ...oneDark,
-  'pre[class*="language-"]': {
-    ...oneDark['pre[class*="language-"]'],
-    background: "transparent",
-    margin: 0,
-    padding: 0,
-    fontSize: "0.85rem",
-    fontFamily: "var(--font-jetbrains-mono), monospace",
-  },
-  'code[class*="language-"]': {
-    ...oneDark['code[class*="language-"]'],
-    background: "transparent",
-    fontSize: "0.85rem",
-    fontFamily: "var(--font-jetbrains-mono), monospace",
-  },
-};
-
-// Use 'ini' for TOML — Prism's 'toml' grammar splits bracket tokens across lines
-function getLanguage(file) {
-  if (file.endsWith(".toml")) return "ini";
-  return "rust";
-}
-
 export default function DemoSection() {
   const [active, setActive] = useState(0);
-  const [copied, setCopied] = useState(false);
-
-  const copy = () => {
-    navigator.clipboard.writeText(examples[active].code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   return (
-    <section className="relative max-w-5xl mx-auto py-24 px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.6 }}
-        className="text-center mb-14"
-      >
-        <p className="text-xs tracking-[0.2em] uppercase text-[#0ea5e9] font-semibold mb-4">
-          Code First
-        </p>
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-4">
-          Real Engine Code
-        </h2>
-        <p className="text-slate-400 max-w-lg mx-auto text-base">
-          Everything here is from the actual Pulsar codebase — not mock-ups.
-        </p>
-      </motion.div>
+    <section className="py-28 px-5 bg-[#030303]">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <motion.div
+          className="max-w-xl mb-12"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5 }}
+        >
+          <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#0ea5e9] mb-4">
+            Developer Experience
+          </p>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-4 leading-tight">
+            Rust you already know.
+          </h2>
+          <p className="text-white/45 text-base leading-relaxed">
+            No custom scripting language to learn. Your game code is plain Rust,
+            with proc-macros bridging it into the editor's visual systems.
+          </p>
+        </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.6, delay: 0.1 }}
-        className="bg-[#080808] rounded-2xl border border-slate-800 overflow-hidden shadow-2xl"
-      >
-        {/* Tab bar */}
-        <div className="flex items-center justify-between border-b border-slate-800 px-4">
-          <div className="flex items-center gap-3">
-            <div className="hidden sm:flex gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
-              <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
-              <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
+        {/* Code panel */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="rounded-2xl border border-white/[0.09] overflow-hidden bg-[#0c0c0c]"
+        >
+          {/* Tab bar */}
+          <div className="flex items-center gap-0 border-b border-white/[0.07] bg-[#0a0a0a] overflow-x-auto">
+            {/* Window dots */}
+            <div className="flex items-center gap-1.5 px-4 py-3 border-r border-white/[0.07] shrink-0">
+              <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
+              <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
+              <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
             </div>
-            <div className="flex">
-              {examples.map((ex, i) => (
-                <button
-                  key={i}
-                  onClick={() => setActive(i)}
-                  className={`relative px-4 py-3 text-sm font-medium transition-colors duration-200 ${
-                    active === i
-                      ? "text-white"
-                      : "text-slate-500 hover:text-slate-300"
-                  }`}
+
+            {TABS.map((tab, i) => (
+              <button
+                key={i}
+                onClick={() => setActive(i)}
+                className={`relative px-5 py-3 text-sm font-medium transition-colors whitespace-nowrap ${
+                  active === i
+                    ? "text-white"
+                    : "text-white/35 hover:text-white/60"
+                }`}
+              >
+                {tab.label}
+                {active === i && (
+                  <motion.div
+                    layoutId="tab-indicator"
+                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#0ea5e9]"
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
+              </button>
+            ))}
+
+            {/* Filename pill — right */}
+            <div className="ml-auto px-4 py-3 shrink-0">
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={active}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-[11px] text-white/25 font-mono"
                 >
-                  {ex.label}
-                  {active === i && (
-                    <motion.div
-                      layoutId="tab-underline"
-                      className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-[#0ea5e9] to-[#0284c7]"
-                    />
-                  )}
-                </button>
-              ))}
+                  {TABS[active].file}
+                </motion.span>
+              </AnimatePresence>
             </div>
           </div>
 
-          {/* Copy button */}
-          <button
-            onClick={copy}
-            className="text-xs text-slate-500 hover:text-slate-300 transition-colors font-mono py-1"
-          >
-            {copied ? "copied ✓" : "copy"}
-          </button>
-        </div>
-
-        {/* File path */}
-        <div className="flex items-center gap-2 px-5 py-2 border-b border-slate-800/50 bg-slate-900/20">
-          <span className="text-slate-600 text-xs">~/my-game/src/</span>
-          <span className="text-slate-400 text-xs font-mono">{examples[active].file}</span>
-        </div>
-
-        {/* Code */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={active}
-            initial={{ opacity: 0, x: 10 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -10 }}
-            transition={{ duration: 0.2 }}
-            className="p-5 overflow-x-auto"
-          >
-            <SyntaxHighlighter
-              language={getLanguage(examples[active].file)}
-              style={codeTheme}
-              showLineNumbers
-              lineNumberStyle={{
-                width: "2em",
-                paddingRight: "1.5em",
-                marginRight: "1em",
-                color: "#334155",
-                borderRight: "1px solid rgba(51,65,85,0.3)",
-                userSelect: "none",
-                fontVariantNumeric: "tabular-nums",
-                textAlign: "right",
-                display: "inline-block",
-              }}
+          {/* Code body */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="p-6 overflow-x-auto"
             >
-              {examples[active].code}
-            </SyntaxHighlighter>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Footer description */}
-        <div className="px-5 py-3 border-t border-slate-800/50 bg-slate-900/20">
-          <p className="text-xs text-slate-500">{examples[active].description}</p>
-        </div>
-      </motion.div>
+              <p className="text-xs text-white/30 mb-4">{TABS[active].description}</p>
+              <SyntaxHighlighter
+                language="rust"
+                style={pulsarTheme}
+                customStyle={{ background: "transparent", padding: 0, margin: 0 }}
+                wrapLines={false}
+                useInlineStyles
+              >
+                {TABS[active].code}
+              </SyntaxHighlighter>
+            </motion.div>
+          </AnimatePresence>
+        </motion.div>
+      </div>
     </section>
   );
 }

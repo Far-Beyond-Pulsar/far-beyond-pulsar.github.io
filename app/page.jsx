@@ -1,46 +1,42 @@
 import {
   HeroSection,
-  FeaturesSection,
+  TechPillars,
+  EditorPreview,
+  BlueprintsShowcase,
   DemoSection,
-  InteractiveShowcase,
-  QuickWins,
-  CommunityNews,
-  CTASection
+  PlatformBar,
+  CommunitySection,
+  CTASection,
 } from "@/components/home";
-import EngineDeepDive from "@/components/home/EngineDeepDive";
-import WIPBanner from "@/components/WIPBanner";
-import { fetchDiscussionsAtBuildTime } from "@/lib/fetch-discussions";
 
-// Force static generation for export
-export const dynamic = 'force-static';
+export const dynamic = "force-static";
 
-function SectionBreak() {
+export default function Page() {
   return (
-    <div className="section-glow-break" aria-hidden="true" />
-  );
-}
-
-export default async function Page() {
-  // Fetch discussions at build time
-  const discussions = await fetchDiscussionsAtBuildTime(5);
-
-  return (
-    <main className="relative min-h-screen bg-black text-white overflow-x-hidden">
-      <WIPBanner />
+    <main className="bg-black text-white overflow-x-hidden">
       <HeroSection />
-      <SectionBreak />
-      <FeaturesSection />
-      <SectionBreak />
-      <EngineDeepDive />
-      <SectionBreak />
+
+      {/* Thin accent rule */}
+      <div className="divider mx-auto max-w-4xl" />
+
+      <TechPillars />
+
+      <div className="divider mx-auto max-w-4xl" />
+
+      <EditorPreview />
+
+      <PlatformBar />
+
+      <BlueprintsShowcase />
+
+      <div className="divider mx-auto max-w-4xl" />
+
       <DemoSection />
-      <SectionBreak />
-      <InteractiveShowcase />
-      <SectionBreak />
-      <QuickWins />
-      <SectionBreak />
-      <CommunityNews discussions={discussions} />
-      <SectionBreak />
+
+      <div className="divider mx-auto max-w-4xl" />
+
+      <CommunitySection />
+
       <CTASection />
     </main>
   );
