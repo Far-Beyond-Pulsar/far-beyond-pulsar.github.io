@@ -62,7 +62,7 @@ export default function TechPillars() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ delay: i * 0.08, duration: 0.5 }}
-              className={`group relative bg-[#0c0c0c] rounded-2xl p-7 border border-white/[0.07] transition-all duration-300 ${p.border} ${p.glow}`}
+              className={`group relative flex flex-col bg-[#0c0c0c] rounded-2xl p-7 border border-white/[0.07] transition-all duration-300 ${p.border} ${p.glow}`}
             >
               {/* Logo */}
               <div className="mb-6 flex items-center">
