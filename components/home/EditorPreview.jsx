@@ -5,12 +5,12 @@ import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 
 const FEATURES = [
-  "Visual blueprint scripting with pure-Rust execution",
-  "Multi-panel editor layout with dockable windows",
-  "Integrated asset browser, profiler, and terminal",
-  "Live scene editing with real-time physics preview",
-  "Plugin system — extend the editor with compiled Rust DLLs",
-  "Built-in database editor for game data management",
+  "Visual blueprint scripting backed by a Rust-native bytecode VM",
+  "Multi-panel layout — dockable viewport, asset browser, terminal, profiler",
+  "Integrated Rust Analyzer LSP for in-editor code intelligence",
+  "Live scene editing with real-time physics preview at fixed 60 TPS",
+  "Plugin system — extend the editor with hot-reloadable Rust DLLs",
+  "Built-in database editor and project-level asset management",
 ];
 
 export default function EditorPreview() {
@@ -33,9 +33,10 @@ export default function EditorPreview() {
               without the lock-in.
             </h2>
             <p className="text-white/45 text-base leading-relaxed mb-8">
-              Pulsar's editor is itself a Rust application — meaning it's fast, crash-resistant,
-              and fully extensible. Everything you see can be replaced or extended with a
-              compiled plugin.
+              Pulsar's editor is built on GPUI — the same GPU-accelerated UI framework that
+              powers the Zed editor. It runs in its own thread, meaning a game crash never
+              takes down your workspace. Everything you see can be replaced or extended with a
+              compiled Rust plugin.
             </p>
 
             <ul className="space-y-3">

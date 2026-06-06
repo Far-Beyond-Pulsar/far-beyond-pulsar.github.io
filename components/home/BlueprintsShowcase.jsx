@@ -51,14 +51,15 @@ export default function BlueprintsShowcase() {
               to native Rust.
             </h2>
             <p className="text-white/45 text-base leading-relaxed mb-6">
-              Visual blueprint graphs aren't a separate system — they're a front-end for real Rust code.
+              Visual blueprint graphs are a first-class frontend for Rust code.
               Annotate any function with <code className="font-mono text-sm text-[#0ea5e9]/80 bg-white/[0.04] px-1.5 py-0.5 rounded">#[blueprint]</code> and
               it appears as a node in the graph editor. Pure functions, exec-flow nodes, events, and
-              control flow all supported.
+              control flow are all supported out of the box.
             </p>
             <p className="text-white/45 text-base leading-relaxed mb-8">
-              No interpreter. No JIT compilation. Blueprint graphs resolve to direct Rust function
-              calls at compile time.
+              At runtime, blueprints execute through a lightweight bytecode VM that calls directly
+              into Rust-backed dynamic libraries — giving designers fast iteration without touching
+              source, and engineers full native performance where it counts.
             </p>
             <a
               href="/docs"

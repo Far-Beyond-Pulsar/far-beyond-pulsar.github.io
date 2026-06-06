@@ -102,8 +102,9 @@ export default function HeroSection() {
           transition={{ delay: 0.45 }}
           className="text-base sm:text-lg text-white/50 max-w-xl mx-auto mb-10 leading-relaxed font-light"
         >
-          Pulsar is an open-source game engine written entirely in Rust — delivering native
-          performance, a full-featured editor, and visual scripting without compromise.
+          An open-source game engine written entirely in Rust. Custom GPU-driven renderer,
+          ECS core, visual blueprint scripting, and a crash-isolated editor — built to compete
+          at the highest level.
         </motion.p>
 
         {/* CTAs */}

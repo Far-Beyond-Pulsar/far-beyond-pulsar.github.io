@@ -76,7 +76,7 @@ export function Footer() {
               <span className="text-sm font-semibold text-white">Pulsar</span>
             </div>
             <p className="text-sm text-white/40 leading-relaxed max-w-[220px]">
-              A high-performance game engine built entirely in Rust. Open source, community-driven.
+              A high-performance game engine built entirely in Rust — custom GPU-driven renderer, ECS core, visual scripting. Open source.
             </p>
             <div className="flex items-center gap-3 mt-5">
               <a
