@@ -8,8 +8,8 @@ const SECTIONS = [
     title: "Learn",
     links: [
       { label: "Documentation", href: "/docs" },
-      { label: "Getting Started", href: "/docs/docs/getting-started/installation/windows" },
-      { label: "API Reference", href: "/docs" },
+      { label: "Getting Started", href: "/docs/getting-started/installation/windows" },
+      { label: "Blog", href: "/blog" },
       { label: "Examples", href: "https://github.com/Far-Beyond-Pulsar/Pulsar-Native/tree/main/examples" },
     ],
   },

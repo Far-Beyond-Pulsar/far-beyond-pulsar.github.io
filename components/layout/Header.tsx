@@ -8,6 +8,7 @@ import { Github, Menu, X } from "lucide-react";
 const NAV_LINKS = [
   { label: "Features", href: "/#features" },
   { label: "Docs", href: "/docs" },
+  { label: "Blog", href: "/blog" },
   { label: "Changelog", href: "https://github.com/Far-Beyond-Pulsar/Pulsar-Native/releases", external: true },
   { label: "Community", href: "https://github.com/orgs/Far-Beyond-Pulsar/discussions", external: true },
 ];
@@ -82,7 +83,7 @@ export function Header() {
             <span>GitHub</span>
           </a>
           <Link
-            href="/docs/docs/getting-started/installation/windows"
+            href="/docs/getting-started/installation/windows"
             className="flex items-center px-4 py-1.5 bg-[#0ea5e9] hover:bg-[#0284c7] text-white text-sm font-medium rounded-lg transition-colors"
           >
             Get Started
@@ -135,7 +136,7 @@ export function Header() {
               <Github className="w-4 h-4" /> GitHub
             </a>
             <Link
-              href="/docs/docs/getting-started/installation/windows"
+              href="/docs/getting-started/installation/windows"
               className="px-4 py-2.5 bg-[#0ea5e9] text-white text-sm font-medium rounded-lg text-center"
               onClick={() => setMenuOpen(false)}
             >
