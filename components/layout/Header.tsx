@@ -9,7 +9,7 @@ const NAV_LINKS = [
   { label: "Features", href: "/#features" },
   { label: "Blog", href: "/blog" },
   { label: "Docs", href: "/docs" },
-  { label: "Research", href: "/Research" },
+  { label: "Research", href: "/Research", external: true },
   { label: "Studio", href: "/studio" },
   {
     label: "Changelog",
