@@ -27,6 +27,20 @@ body {
 }
 
 @layer utilities {
+
+/* Matrix background animation */
+@keyframes matrixMove {
+  to {background-position: 40px 40px;}
+}
+
+.matrix-bg {
+  background:
+    linear-gradient(135deg, rgba(0,255,0,.05) 25%, transparent 25%),
+    linear-gradient(225deg, rgba(0,255,0,.05) 25%, transparent 25%);
+  background-size: 20px 20px;
+  animation: matrixMove 5s linear infinite;
+}
+
   @keyframes fade-up {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -37,12 +51,21 @@ body {
     50% { opacity: 0.3; }
   }
 
+  @keyframes pulse-glow {
+    0%, 100% { text-shadow: 0 0 16px rgba(59, 130, 246, 0.35); }
+    50% { text-shadow: 0 0 28px rgba(59, 130, 246, 0.7); }
+  }
+
   .animate-fade-up {
     animation: fade-up 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   .animate-pulse-dot {
     animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 4s ease-in-out infinite;
   }
 
   /* Thin accent divider */

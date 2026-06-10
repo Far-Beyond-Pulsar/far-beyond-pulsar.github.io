@@ -1,6 +1,9 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Github } from "lucide-react";
 
 const SECTIONS = [
@@ -65,6 +68,9 @@ function FooterCol({ title, links }: { title: string; links: { label: string; hr
 }
 
 export function Footer() {
+  const pathname = usePathname();
+  if (pathname?.startsWith("/studio")) return null;
+
   return (
     <footer className="border-t border-white/[0.07] bg-black">
       <div className="max-w-7xl mx-auto px-5 pt-16 pb-10">

@@ -9,8 +9,18 @@ const NAV_LINKS = [
   { label: "Features", href: "/#features" },
   { label: "Docs", href: "/docs" },
   { label: "Blog", href: "/blog" },
-  { label: "Changelog", href: "https://github.com/Far-Beyond-Pulsar/Pulsar-Native/releases", external: true },
-  { label: "Community", href: "https://github.com/orgs/Far-Beyond-Pulsar/discussions", external: true },
+  { label: "Studio", href: "/studio" },
+  { label: "Research", href: "/Research" },
+  {
+    label: "Changelog",
+    href: "https://github.com/Far-Beyond-Pulsar/Pulsar-Native/releases",
+    external: true,
+  },
+  {
+    label: "Community",
+    href: "https://github.com/orgs/Far-Beyond-Pulsar/discussions",
+    external: true,
+  },
 ];
 
 export function Header() {
@@ -31,9 +41,12 @@ export function Header() {
           : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-5 h-14 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-5 h-14 grid grid-cols-[1fr_auto_1fr] items-center">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 shrink-0">
+        <Link
+          href="/"
+          className="flex items-center gap-2.5 shrink-0 justify-self-start"
+        >
           <Image
             src="/logos/pulsar.png"
             alt="Pulsar"
@@ -47,7 +60,7 @@ export function Header() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden md:flex items-center gap-1 justify-self-center">
           {NAV_LINKS.map(({ label, href, external }) =>
             external ? (
               <a
@@ -67,37 +80,41 @@ export function Header() {
               >
                 {label}
               </Link>
-            )
+            ),
           )}
         </nav>
 
         {/* Right actions */}
-        <div className="hidden md:flex items-center gap-2">
+        <div className="flex items-center gap-2 justify-self-end">
           <a
             href="https://github.com/Far-Beyond-Pulsar/Pulsar-Native"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-white/55 hover:text-white transition-colors"
+            className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-sm text-white/55 hover:text-white transition-colors"
           >
             <Github className="w-4 h-4" />
             <span>GitHub</span>
           </a>
           <Link
             href="/docs/getting-started/installation/windows"
-            className="flex items-center px-4 py-1.5 bg-[#0ea5e9] hover:bg-[#0284c7] text-white text-sm font-medium rounded-lg transition-colors"
+            className="hidden md:flex items-center px-4 py-1.5 bg-[#0ea5e9] hover:bg-[#0284c7] text-white text-sm font-medium rounded-lg transition-colors"
           >
             Get Started
           </Link>
-        </div>
 
-        {/* Mobile menu toggle */}
-        <button
-          className="md:hidden p-2 text-white/60 hover:text-white"
-          onClick={() => setMenuOpen((o) => !o)}
-          aria-label="Toggle menu"
-        >
-          {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+          {/* Mobile menu toggle */}
+          <button
+            className="md:hidden p-2 text-white/60 hover:text-white"
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
@@ -124,7 +141,7 @@ export function Header() {
               >
                 {label}
               </Link>
-            )
+            ),
           )}
           <div className="mt-3 pt-3 border-t border-white/[0.07] flex flex-col gap-2">
             <a
