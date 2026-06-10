@@ -7,10 +7,10 @@ import { Github, Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
   { label: "Features", href: "/#features" },
-  { label: "Docs", href: "/docs" },
   { label: "Blog", href: "/blog" },
-  { label: "Studio", href: "/studio" },
+  { label: "Docs", href: "/docs" },
   { label: "Research", href: "/Research" },
+  { label: "Studio", href: "/studio" },
   {
     label: "Changelog",
     href: "https://github.com/Far-Beyond-Pulsar/Pulsar-Native/releases",
