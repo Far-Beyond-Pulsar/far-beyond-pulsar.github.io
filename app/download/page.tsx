@@ -335,15 +335,14 @@ function DownloadPage() {
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="flex justify-center mb-5">
-            <div className="relative w-16 h-16 rounded-2xl bg-white/[0.03] border border-white/[0.07] flex items-center justify-center overflow-hidden">
+            <div className="flex items-center justify-center">
               <Image
                 src="/logos/pulsar.png"
                 alt="Pulsar"
-                width={36}
-                height={36}
+                width={56}
+                height={56}
                 className="opacity-90"
               />
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0ea5e9]/10 to-transparent" />
             </div>
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">
