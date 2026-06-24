@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Github, Menu, X } from "lucide-react";
+import { Github, Menu, X, Download } from "lucide-react";
 
 const NAV_LINKS = [
   { label: "Features", href: "/#features" },
@@ -96,10 +96,11 @@ export function Header() {
             <span>GitHub</span>
           </a>
           <Link
-            href="/docs/getting-started/installation/windows"
-            className="hidden md:flex items-center px-4 py-1.5 bg-[#0ea5e9] hover:bg-[#0284c7] text-white text-sm font-medium rounded-lg transition-colors"
+            href="/download"
+            className="hidden md:flex items-center gap-1.5 px-4 py-1.5 bg-[#0ea5e9] hover:bg-[#0284c7] text-white text-sm font-medium rounded-lg transition-colors"
           >
-            Get Started
+            <Download className="w-4 h-4" />
+            Download
           </Link>
 
           {/* Mobile menu toggle */}
@@ -153,11 +154,12 @@ export function Header() {
               <Github className="w-4 h-4" /> GitHub
             </a>
             <Link
-              href="/docs/getting-started/installation/windows"
-              className="px-4 py-2.5 bg-[#0ea5e9] text-white text-sm font-medium rounded-lg text-center"
+              href="/download"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-[#0ea5e9] text-white text-sm font-medium rounded-lg"
               onClick={() => setMenuOpen(false)}
             >
-              Get Started
+              <Download className="w-4 h-4" />
+              Download
             </Link>
           </div>
         </div>
