@@ -322,6 +322,12 @@ function DownloadPage() {
   return (
     <main className="min-h-screen bg-black text-white pt-24 pb-20 px-5">
       <div className="max-w-2xl mx-auto">
+        <div className="mb-8 rounded-xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-center">
+          <p className="text-sm text-amber-300/80 font-medium">
+            Pulsar is in early development &mdash; not yet ready for production game development.
+          </p>
+        </div>
+
         <motion.div
           className="text-center mb-10"
           initial={{ opacity: 0, y: 24 }}
