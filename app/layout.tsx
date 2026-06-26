@@ -19,6 +19,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Pulsar — Game Engine",
   description: "A next-generation game engine built in Rust. High performance, visual scripting, open source.",
+  icons: {
+    icon: '/logos/pulsar.png',
+    shortcut: '/logos/pulsar.png',
+    apple: '/logos/pulsar.png',
+  },
   openGraph: {
     title: "Pulsar Game Engine",
     description: "A next-generation game engine built entirely in Rust.",
