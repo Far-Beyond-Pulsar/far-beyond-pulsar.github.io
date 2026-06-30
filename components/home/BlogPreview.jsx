@@ -62,7 +62,7 @@ export default function BlogPreview() {
     fetch(PULSAR_PREVIEW)
       .then((r) => r.ok ? r.json() : [])
       .then((data) => {
-        if (Array.isArray(data)) setPosts(data);
+        if (Array.isArray(data)) setPosts(data.slice(0, 3));
       })
       .catch(() => {});
   }, []);
@@ -98,7 +98,7 @@ export default function BlogPreview() {
           </div>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
           {posts.map((post, i) => (
             <motion.div
               key={post.slug}
