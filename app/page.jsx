@@ -5,6 +5,7 @@ import {
   BlueprintsShowcase,
   DemoSection,
   PlatformBar,
+  BlogPreview,
   CommunitySection,
   CTASection,
 } from "@/components/home";
@@ -32,6 +33,10 @@ export default function Page() {
       <div className="divider mx-auto max-w-4xl" />
 
       <DemoSection />
+
+      <div className="divider mx-auto max-w-4xl" />
+
+      <BlogPreview />
 
       <div className="divider mx-auto max-w-4xl" />
 
