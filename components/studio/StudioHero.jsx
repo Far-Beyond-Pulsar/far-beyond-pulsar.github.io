@@ -5,8 +5,8 @@ import { useMotionValue } from "motion/react";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 
 const IMAGES = [
-  "/sample_pics/level_editor.png",
-  "/sample_pics/panels1.png",
+  "/sample_pics/studio-hero.png",
+  "/sample_pics/studio-hero.png",
   "/sample_pics/engine_bps.png",
   "/sample_pics/profiler.png",
   "/sample_pics/terminal.png",
@@ -22,6 +22,7 @@ export function StudioHero() {
   const accumulated = useRef(0);
   const lockedY = useRef(0);
   const completedForward = useRef(false);
+  const isScrollingDown = useRef(true);
 
   const begin = () => {
     if (absorbing.current) return;
@@ -41,22 +42,63 @@ export function StudioHero() {
     document.body.style.top = "";
     document.body.style.width = "";
     window.scrollTo({
-      top: Math.max(0, lockedY.current + (forward ? window.innerHeight : -window.innerHeight)),
+      top: Math.max(
+        0,
+        lockedY.current + (forward ? window.innerHeight : -window.innerHeight),
+      ),
       behavior: "smooth",
     });
   };
+
+  useEffect(() => {
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      isScrollingDown.current = y > lastY;
+      lastY = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !absorbing.current) begin();
+        if (
+          entry.isIntersecting &&
+          !absorbing.current &&
+          isScrollingDown.current
+        ) {
+          begin();
+        }
       },
       { threshold: 0.6 },
     );
     obs.observe(el);
     return () => obs.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (absorbing.current) return;
+
+      const rect = ref.current?.getBoundingClientRect();
+      if (!rect) return;
+
+      if (isScrollingDown.current && !completedForward.current) {
+        if (rect.top < 0 && rect.bottom >= window.innerHeight * 0.6) {
+          begin();
+        }
+      } else if (!isScrollingDown.current && completedForward.current) {
+        if (rect.top >= 0 && rect.top < 150) {
+          begin();
+        }
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
@@ -67,7 +109,11 @@ export function StudioHero() {
       const p = Math.min(1, Math.max(0, accumulated.current / THRESHOLD));
       absorbedProgress.set(p);
 
-      if (p >= 1 && accumulated.current > THRESHOLD + DEAD_ZONE && e.deltaY > 0) {
+      if (
+        p >= 1 &&
+        accumulated.current > THRESHOLD + DEAD_ZONE &&
+        e.deltaY > 0
+      ) {
         release(true);
       } else if (p <= 0 && accumulated.current < -DEAD_ZONE && e.deltaY < 0) {
         release(false);
