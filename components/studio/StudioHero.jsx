@@ -12,7 +12,8 @@ const IMAGES = [
   "/sample_pics/terminal.png",
 ];
 
-const SCROLL_THRESHOLD = 5000;
+const THRESHOLD = 5000;
+const DEAD_ZONE = 100;
 
 export function StudioHero() {
   const ref = useRef(null);
@@ -20,35 +21,45 @@ export function StudioHero() {
   const absorbing = useRef(false);
   const accumulated = useRef(0);
   const lockedY = useRef(0);
+  const completedForward = useRef(false);
 
-  /* Lock page and absorb scroll */
-  const begin = useRef(() => {});
-  begin.current = () => {
+  const begin = () => {
     if (absorbing.current) return;
     absorbing.current = true;
-    lockedY.current = window.scrollY;
-    accumulated.current = 0;
-    absorbedProgress.set(0);
+    accumulated.current = completedForward.current ? THRESHOLD : 0;
+    absorbedProgress.set(accumulated.current / THRESHOLD);
+
+    // Center the hero in the viewport before locking
+    const rect = ref.current.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const centerOffset = (vh - rect.height) / 2;
+    lockedY.current = window.scrollY + rect.top - centerOffset;
+
     document.body.style.position = "fixed";
     document.body.style.top = `-${lockedY.current}px`;
     document.body.style.width = "100%";
   };
 
-  const release = useRef(() => {});
-  release.current = () => {
+  const release = (forward) => {
     absorbing.current = false;
+    completedForward.current = forward;
     document.body.style.position = "";
     document.body.style.top = "";
     document.body.style.width = "";
-    window.scrollTo({ top: lockedY.current + window.innerHeight, behavior: "smooth" });
+    window.scrollTo({
+      top: Math.max(0, lockedY.current + (forward ? window.innerHeight : -window.innerHeight)),
+      behavior: "smooth",
+    });
   };
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting && !absorbing.current) begin.current(); },
-      { threshold: 0.1 },
+      ([entry]) => {
+        if (entry.isIntersecting && !absorbing.current) begin();
+      },
+      { threshold: 0.6 },
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -58,10 +69,15 @@ export function StudioHero() {
     const onWheel = (e) => {
       if (!absorbing.current) return;
       e.preventDefault();
-      accumulated.current = Math.max(0, accumulated.current + e.deltaY);
-      const p = Math.min(1, accumulated.current / SCROLL_THRESHOLD);
+      accumulated.current += e.deltaY;
+      const p = Math.min(1, Math.max(0, accumulated.current / THRESHOLD));
       absorbedProgress.set(p);
-      if (p >= 1) release.current();
+
+      if (p >= 1 && accumulated.current > THRESHOLD + DEAD_ZONE && e.deltaY > 0) {
+        release(true);
+      } else if (p <= 0 && accumulated.current < -DEAD_ZONE && e.deltaY < 0) {
+        release(false);
+      }
     };
     window.addEventListener("wheel", onWheel, { passive: false });
     return () => window.removeEventListener("wheel", onWheel);
