@@ -475,11 +475,11 @@ export default function StudioPage() {
 
       {/* ── Pricing ── */}
       <section id="pricing" className="max-w-6xl mx-auto px-5 py-20">
-        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-4">
-          Simple pricing
+        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-2">
+          Tentative pricing
         </h2>
-        <p className="text-sm text-white/40 text-center max-w-xl mx-auto mb-14">
-          Start with a free trial. No credit card required.
+        <p className="text-xs text-white/30 text-center max-w-xl mx-auto mb-14">
+          Pricing is not yet finalized and is subject to change.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
           {TIERS.map((tier) => (
@@ -523,16 +523,12 @@ export default function StudioPage() {
                   </li>
                 ))}
               </ul>
-              <Link
-                href={tier.href}
-                className={`block w-full text-center text-sm font-medium py-2.5 rounded-xl transition-all mb-3 ${
-                  tier.featured
-                    ? "bg-[#0ea5e9] text-white hover:bg-[#0284c7] shadow-lg shadow-[#0ea5e9]/20"
-                    : "bg-white/[0.06] text-white/80 hover:bg-white/[0.1] border border-white/[0.08]"
-                }`}
+              <div
+                className="block w-full text-center text-sm font-medium py-2.5 rounded-xl mb-3 bg-white/[0.04] text-white/30 border border-white/[0.06] cursor-not-allowed"
+                title="Coming on release"
               >
-                {tier.cta}
-              </Link>
+                {tier.cta} &mdash; coming on release
+              </div>
               {tier.calculator && <CalculatorToggle />}
             </motion.div>
           ))}
