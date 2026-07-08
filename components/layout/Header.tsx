@@ -35,10 +35,10 @@ export function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 border-b transition-all duration-300 ${
         scrolled
-          ? "bg-black/90 backdrop-blur-md border-b border-white/[0.07]"
-          : "bg-transparent"
+          ? "bg-black/90 backdrop-blur-md border-white/[0.07]"
+          : "bg-transparent border-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-5 h-14 grid grid-cols-[1fr_auto_1fr] items-center">
