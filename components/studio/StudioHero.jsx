@@ -26,15 +26,9 @@ export function StudioHero() {
   const begin = () => {
     if (absorbing.current) return;
     absorbing.current = true;
+    lockedY.current = window.scrollY;
     accumulated.current = completedForward.current ? THRESHOLD : 0;
     absorbedProgress.set(accumulated.current / THRESHOLD);
-
-    // Center the hero in the viewport before locking
-    const rect = ref.current.getBoundingClientRect();
-    const vh = window.innerHeight;
-    const centerOffset = (vh - rect.height) / 2;
-    lockedY.current = window.scrollY + rect.top - centerOffset;
-
     document.body.style.position = "fixed";
     document.body.style.top = `-${lockedY.current}px`;
     document.body.style.width = "100%";
