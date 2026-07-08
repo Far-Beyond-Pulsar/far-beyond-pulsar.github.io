@@ -7,9 +7,10 @@ import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 const IMAGES = [
   "/sample_pics/studio-hero.png",
   "/sample_pics/studio-hero.png",
-  "/sample_pics/engine_bps.png",
-  "/sample_pics/profiler.png",
-  "/sample_pics/terminal.png",
+  "/sample_pics/studio-hero-2.png",
+  "/sample_pics/studio-hero-3.png",
+  "/sample_pics/studio-hero-4.png",
+  "/sample_pics/studio-hero-5.png",
 ];
 
 const THRESHOLD = 5000;
@@ -127,13 +128,22 @@ export function StudioHero() {
     <div ref={ref} className="flex flex-col overflow-hidden bg-black">
       <ContainerScroll
         titleComponent={
-          <span className="text-4xl font-semibold text-white">
-            Real-time collaboration
-            <br />
-            <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none text-[#38bdf8]">
-              built for game teams.
+          <div className="flex flex-col items-center gap-4">
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full border border-[#38bdf8]/30 bg-black/60 backdrop-blur-sm text-xs text-[#38bdf8] font-medium">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#38bdf8] opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#38bdf8]" />
+              </span>
+              In development &mdash; early access available on request
+            </div>
+            <span className="text-4xl font-semibold text-white">
+              Real-time collaboration
+              <br />
+              <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none text-[#38bdf8]">
+                built for game teams.
+              </span>
             </span>
-          </span>
+          </div>
         }
         images={IMAGES}
         absorbedProgress={absorbedProgress}

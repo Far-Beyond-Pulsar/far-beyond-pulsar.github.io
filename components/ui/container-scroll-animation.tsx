@@ -1,6 +1,12 @@
 "use client";
 import React, { useRef } from "react";
-import { useScroll, useTransform, useMotionValueEvent, motion, MotionValue } from "motion/react";
+import {
+  useScroll,
+  useTransform,
+  useMotionValueEvent,
+  motion,
+  MotionValue,
+} from "motion/react";
 
 export const ContainerScroll = ({
   titleComponent,
@@ -46,8 +52,15 @@ export const ContainerScroll = ({
       className="h-[60rem] md:h-[80rem] flex items-center justify-center relative p-2 md:p-20"
       ref={containerRef}
     >
-      <div className="py-10 md:py-40 w-full relative" style={{ perspective: "1000px" }}>
-        <Header translate={titleTranslate} opacity={titleOpacity} titleComponent={titleComponent} />
+      <div
+        className="py-10 md:py-40 w-full relative"
+        style={{ perspective: "1000px" }}
+      >
+        <Header
+          translate={titleTranslate}
+          opacity={titleOpacity}
+          titleComponent={titleComponent}
+        />
 
         <Card rotate={rotate} scale={scale} translate={cardRise}>
           {images ? (
@@ -59,7 +72,10 @@ export const ContainerScroll = ({
                   alt=""
                   draggable={false}
                   className="absolute inset-0 w-full h-full rounded-lg object-contain bg-zinc-900"
-                  style={{ opacity: i === current ? 1 : 0, transition: "opacity 0.3s" }}
+                  style={{
+                    opacity: i === current ? 1 : 0,
+                    transition: "opacity 0.3s",
+                  }}
                 />
               ))}
             </div>
@@ -74,8 +90,14 @@ export const ContainerScroll = ({
                 if (i < current) w = 100;
                 else if (i === current) w = fract * 100;
                 return (
-                  <div key={i} className="h-1.5 w-12 rounded-full overflow-hidden bg-white/15">
-                    <div className="h-full w-full rounded-full bg-[#38bdf8]" style={{ width: `${w}%` }} />
+                  <div
+                    key={i}
+                    className="h-1.5 w-12 rounded-full overflow-hidden bg-white/15"
+                  >
+                    <div
+                      className="h-full w-full rounded-full bg-[#38bdf8]"
+                      style={{ width: `${w}%` }}
+                    />
                   </div>
                 );
               })}
@@ -89,7 +111,10 @@ export const ContainerScroll = ({
 
 export const Header = ({ translate, opacity, titleComponent }: any) => {
   return (
-    <motion.div style={{ translateY: translate, opacity }} className="max-w-5xl mx-auto text-center">
+    <motion.div
+      style={{ translateY: translate, opacity }}
+      className="max-w-5xl mx-auto text-center mb-10"
+    >
       {titleComponent}
     </motion.div>
   );
