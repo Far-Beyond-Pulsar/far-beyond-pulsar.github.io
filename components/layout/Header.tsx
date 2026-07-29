@@ -8,9 +8,9 @@ import { Github, Menu, X, Download } from "lucide-react";
 const NAV_LINKS = [
   { label: "Blog", href: "/blog" },
   { label: "Docs", href: "/docs" },
+  { label: "Studio", href: "/studio" },
   { label: "Research", href: "/Research", external: true },
   { label: "WGPUI", href: "/UI", external: true },
-  { label: "Studio", href: "/studio" },
 ];
 
 export function Header() {
