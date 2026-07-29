@@ -6,21 +6,11 @@ import Image from "next/image";
 import { Github, Menu, X, Download } from "lucide-react";
 
 const NAV_LINKS = [
-  { label: "Features", href: "/#features" },
   { label: "Blog", href: "/blog" },
   { label: "Docs", href: "/docs" },
   { label: "Research", href: "/Research", external: true },
+  { label: "WGPUI", href: "/UI", external: true },
   { label: "Studio", href: "/studio" },
-  {
-    label: "Changelog",
-    href: "https://github.com/Far-Beyond-Pulsar/Pulsar-Native/releases",
-    external: true,
-  },
-  {
-    label: "Community",
-    href: "https://github.com/orgs/Far-Beyond-Pulsar/discussions",
-    external: true,
-  },
 ];
 
 export function Header() {
