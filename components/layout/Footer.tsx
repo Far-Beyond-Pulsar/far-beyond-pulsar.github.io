@@ -36,10 +36,13 @@ const SECTIONS = [
   },
 ];
 
-function FooterCol({ title, links }: { title: string; links: { label: string; href: string }[] }) {
+function FooterCol({ title, links, index }: { title: string; links: { label: string; href: string }[]; index: number }) {
   return (
     <div>
-      <p className="text-xs font-semibold tracking-widest uppercase text-white/25 mb-4">{title}</p>
+      <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/30 mb-4">
+        <span className="text-[#38bdf8]/60 mr-2">0{index + 2}</span>
+        {title}
+      </p>
       <ul className="space-y-2.5">
         {links.map(({ label, href }) => {
           const isExternal = href.startsWith("http");
@@ -97,23 +100,26 @@ export function Footer() {
             </div>
           </div>
 
-          {SECTIONS.map((s) => (
-            <FooterCol key={s.title} title={s.title} links={s.links} />
+          {SECTIONS.map((s, i) => (
+            <FooterCol key={s.title} title={s.title} links={s.links} index={i} />
           ))}
         </div>
 
         <div className="divider mb-8" />
 
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-          <p className="text-xs text-white/25">
-            © {new Date().getFullYear()} Far Beyond Dev. Open source under MIT.
+          <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/25">
+            © {new Date().getFullYear()} Far Beyond Dev — MIT license
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-5">
+            <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/15 hidden sm:block">
+              rust · gpu-driven · open source
+            </span>
             <a
               href="https://www.githubstatus.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-white/25 hover:text-white/50 transition-colors"
+              className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/25 hover:text-white/50 transition-colors"
             >
               Status
             </a>
@@ -121,7 +127,7 @@ export function Footer() {
               href="https://github.com/Far-Beyond-Pulsar/Pulsar-Native/issues"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-white/25 hover:text-white/50 transition-colors"
+              className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/25 hover:text-white/50 transition-colors"
             >
               Support
             </a>

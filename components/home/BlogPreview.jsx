@@ -13,7 +13,7 @@ function BlogCard({ post }) {
       href={post.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group block bg-[#0c0c0c] border border-white/[0.07] rounded-xl overflow-hidden hover:border-white/[0.14] transition-all duration-200"
+      className="group block bg-[#0b0c0e] border border-white/[0.08] overflow-hidden hover:border-white/[0.16] transition-all duration-200"
     >
       {post.thumbnail && (
         <div className="relative w-full h-40 overflow-hidden bg-[#050505]">
@@ -26,7 +26,7 @@ function BlogCard({ post }) {
       )}
       <div className="p-5">
         <div className="flex items-center justify-between gap-3 mb-3">
-          <div className="flex items-center gap-3 text-[11px] text-white/30">
+          <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.14em] text-white/30">
             <span className="flex items-center gap-1">
               <Calendar className="w-3 h-3" />
               {post.date}
@@ -45,7 +45,7 @@ function BlogCard({ post }) {
           {post.description}
         </p>
         {post.author && (
-          <div className="flex items-center gap-1.5 text-[11px] text-white/25">
+          <div className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-white/25">
             <User className="w-3 h-3" />
             {post.author}
           </div>
@@ -79,8 +79,9 @@ export default function BlogPreview() {
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5 }}
         >
-          <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#0ea5e9] mb-4">
-            Latest Posts
+          <p className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40 mb-4">
+            <span className="w-8 h-px bg-[#38bdf8]/70" />
+            06 / Latest Posts
           </p>
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white leading-tight max-w-md">

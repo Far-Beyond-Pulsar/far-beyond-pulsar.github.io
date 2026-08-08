@@ -50,24 +50,26 @@ export function Header() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-1 justify-self-center">
-          {NAV_LINKS.map(({ label, href, external }) =>
+        <nav className="hidden md:flex items-center gap-0.5 justify-self-center">
+          {NAV_LINKS.map(({ label, href, external }, i) =>
             external ? (
               <a
                 key={label}
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3.5 py-1.5 text-sm text-white/55 hover:text-white transition-colors rounded-md hover:bg-white/[0.05]"
+                className="px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-white/45 hover:text-white transition-colors rounded-md hover:bg-white/[0.05]"
               >
+                <span className="text-[#38bdf8]/60 mr-1.5">0{i + 1}</span>
                 {label}
               </a>
             ) : (
               <Link
                 key={label}
                 href={href}
-                className="px-3.5 py-1.5 text-sm text-white/55 hover:text-white transition-colors rounded-md hover:bg-white/[0.05]"
+                className="px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-white/45 hover:text-white transition-colors rounded-md hover:bg-white/[0.05]"
               >
+                <span className="text-[#38bdf8]/60 mr-1.5">0{i + 1}</span>
                 {label}
               </Link>
             ),
@@ -80,16 +82,16 @@ export function Header() {
             href="https://github.com/Far-Beyond-Pulsar/Pulsar-Native"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-sm text-white/55 hover:text-white transition-colors"
+            className="hidden md:flex items-center gap-1.5 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/55 hover:text-white transition-colors"
           >
-            <Github className="w-4 h-4" />
+            <Github className="w-3.5 h-3.5" />
             <span>GitHub</span>
           </a>
           <Link
             href="/download"
-            className="hidden md:flex items-center gap-1.5 px-4 py-1.5 bg-[#0ea5e9] hover:bg-[#0284c7] text-white text-sm font-medium rounded-lg transition-colors"
+            className="hidden md:flex items-center gap-1.5 px-4 py-1.5 bg-[#0ea5e9] hover:bg-[#0284c7] text-white font-mono text-[11px] uppercase tracking-[0.12em] rounded-md transition-colors"
           >
-            <Download className="w-4 h-4" />
+            <Download className="w-3.5 h-3.5" />
             Download
           </Link>
 

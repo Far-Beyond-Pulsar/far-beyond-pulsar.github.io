@@ -17,12 +17,14 @@ export default function BlueprintsShowcase() {
             transition={{ duration: 0.55 }}
             className="relative order-2 lg:order-1"
           >
-            <div className="absolute -inset-4 bg-[#0ea5e9]/[0.03] rounded-3xl blur-2xl pointer-events-none" />
-            <div className="relative rounded-2xl overflow-hidden border border-white/[0.09] shadow-2xl">
+            <div className="absolute -inset-4 bg-[#0ea5e9]/[0.03] blur-2xl pointer-events-none" />
+            <div className="relative overflow-hidden border border-white/[0.09] shadow-2xl bg-[#0b0d10]">
+              <span className="absolute -top-px -left-px w-4 h-4 border-t-2 border-l-2 border-[#38bdf8]/60 z-10" />
+              <span className="absolute -top-px -right-px w-4 h-4 border-t-2 border-r-2 border-[#38bdf8]/60 z-10" />
               <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#111] border-b border-white/[0.07]">
                 <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
                 <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
-                <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                <span className="w-2.5 h-2.5 rounded-full bg-[#0ea5e9]/60" />
                 <span className="ml-3 text-[11px] text-white/25 font-mono">Blueprint Editor — player_controller.bp</span>
               </div>
               <Image
@@ -32,6 +34,10 @@ export default function BlueprintsShowcase() {
                 height={540}
                 className="w-full object-cover"
               />
+              <div className="flex items-center justify-between px-4 py-2 border-t border-white/[0.07] bg-[#111]">
+                <span className="text-[10px] text-white/25 font-mono tracking-[0.16em] uppercase">node graph</span>
+                <span className="text-[10px] text-white/25 font-mono tracking-[0.16em] uppercase">#[blueprint]</span>
+              </div>
             </div>
           </motion.div>
 
@@ -43,11 +49,13 @@ export default function BlueprintsShowcase() {
             transition={{ duration: 0.55, delay: 0.1 }}
             className="order-1 lg:order-2"
           >
-            <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#0ea5e9] mb-4">
-              Visual Scripting
+            <p className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40 mb-4">
+              <span className="w-8 h-px bg-[#38bdf8]/70" />
+              04 / Visual Scripting
             </p>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-5 leading-tight">
-              Blueprints that compile <br className="hidden sm:block" />
+              Blueprints that compile
+              <br className="hidden sm:block" />
               to native Rust.
             </h2>
             <p className="text-white/45 text-base leading-relaxed mb-6">

@@ -7,7 +7,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 // Minimal dark theme — hand-tuned to match the site palette
 const pulsarTheme = {
   'code[class*="language-"]': { color: "#c9d1d9", fontFamily: "var(--font-mono)", fontSize: "13px", lineHeight: "1.7" },
-  'pre[class*="language-"]': { background: "transparent", margin: 0, padding: 0, overflow: "auto" },
+  'pre[class*="language-"]': { background: "transparent", margin: 0, padding: 0, overflow: "visible" },
   comment: { color: "#4a5568" },
   punctuation: { color: "#6b7280" },
   property: { color: "#79c0ff" },
@@ -134,8 +134,9 @@ export default function DemoSection() {
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5 }}
         >
-          <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#0ea5e9] mb-4">
-            Developer Experience
+          <p className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40 mb-4">
+            <span className="w-8 h-px bg-[#38bdf8]/70" />
+            05 / Developer Experience
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-4 leading-tight">
             Rust you already know.
@@ -152,7 +153,7 @@ export default function DemoSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="rounded-2xl border border-white/[0.09] overflow-hidden bg-[#0c0c0c]"
+          className="rounded-md border border-white/[0.09] overflow-hidden bg-[#0b0c0e]"
         >
           {/* Tab bar */}
           <div className="flex items-center gap-0 border-b border-white/[0.07] bg-[#0a0a0a] overflow-x-auto">
@@ -160,19 +161,20 @@ export default function DemoSection() {
             <div className="flex items-center gap-1.5 px-4 py-3 border-r border-white/[0.07] shrink-0">
               <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
               <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
-              <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#0ea5e9]/60" />
             </div>
 
             {TABS.map((tab, i) => (
               <button
                 key={i}
                 onClick={() => setActive(i)}
-                className={`relative px-5 py-3 text-sm font-medium transition-colors whitespace-nowrap ${
+                className={`relative px-5 py-3 font-mono text-[12px] uppercase tracking-[0.1em] transition-colors whitespace-nowrap ${
                   active === i
                     ? "text-white"
                     : "text-white/35 hover:text-white/60"
                 }`}
               >
+                <span className="text-[#38bdf8]/50 mr-2">{String(i + 1).padStart(2, "0")}</span>
                 {tab.label}
                 {active === i && (
                   <motion.div

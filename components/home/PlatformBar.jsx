@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
 
 function AppleIcon() {
   return (
@@ -24,58 +23,61 @@ const PLATFORMS = [
   { type: "img", logo: "/logos/openxr.png", label: "OpenXR" },
 ];
 
+function PlatformItem({ p }) {
+  const Icon = p.icon;
+  return (
+    <div className="flex items-center gap-2.5 shrink-0">
+      <span className="w-5 h-5 flex items-center justify-center text-white/50">
+        {p.type === "img" ? (
+          <Image
+            src={p.logo}
+            alt={p.label}
+            width={20}
+            height={20}
+            loading="eager"
+            className="object-contain opacity-70"
+          />
+        ) : (
+          <div className="w-4 h-4">
+            <Icon />
+          </div>
+        )}
+      </span>
+      <span className="font-mono text-[12px] uppercase tracking-[0.14em] text-white/40 whitespace-nowrap">
+        {p.label}
+      </span>
+      <span className="mx-5 text-white/15">/</span>
+    </div>
+  );
+}
+
 export default function PlatformBar() {
   return (
-    <section className="py-16 px-5 border-y border-white/[0.05]">
-      <div className="max-w-6xl mx-auto">
-        <motion.div
-          className="text-center mb-10"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <h3 className="text-xl font-semibold text-white/70 tracking-tight">
-            Platform &amp; Renderer Support
-          </h3>
-          <p className="text-sm text-white/30 mt-1.5">
-            Deploy to desktop, web, and XR from a single codebase.
-          </p>
-        </motion.div>
+    <section className="py-0 px-0 border-y border-white/[0.07] bg-[#050506]">
+      {/* Ledger header */}
+      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-5 pt-6 pb-4">
+        <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40">
+          <span className="w-8 h-px bg-[#38bdf8]/70" />
+          Deployment targets
+        </div>
+        <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/20">
+          desktop · web · xr — one codebase
+        </span>
+      </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-7">
-          {PLATFORMS.map((p, i) => {
-            const Icon = p.icon;
-            return (
-              <motion.div
-                key={p.label}
-                className="flex flex-col items-center gap-2.5 group cursor-default"
-                initial={{ opacity: 0, y: 6 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.04, duration: 0.35 }}
-              >
-                <div className="w-10 h-10 flex items-center justify-center text-white/70 group-hover:text-white transition-all duration-200 group-hover:scale-110">
-                  {p.type === "img" ? (
-                    <Image
-                      src={p.logo}
-                      alt={p.label}
-                      width={36}
-                      height={36}
-                      className="object-contain w-9 h-9 opacity-80 group-hover:opacity-100 transition-opacity duration-200"
-                    />
-                  ) : (
-                    <div className="w-8 h-8">
-                      <Icon />
-                    </div>
-                  )}
-                </div>
-                <span className="text-[11px] text-white/40 group-hover:text-white/65 transition-colors font-medium">
-                  {p.label}
-                </span>
-              </motion.div>
-            );
-          })}
+      {/* Marquee tape */}
+      <div className="mask-fade-x overflow-hidden py-5">
+        <div className="flex animate-marquee w-max">
+          <div className="flex items-center">
+            {PLATFORMS.map((p) => (
+              <PlatformItem key={p.label} p={p} />
+            ))}
+          </div>
+          <div className="flex items-center" aria-hidden="true">
+            {PLATFORMS.map((p) => (
+              <PlatformItem key={p.label} p={p} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

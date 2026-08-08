@@ -34,24 +34,33 @@ export default function TechPillars() {
   return (
     <section id="features" className="py-28 px-5">
       <div className="max-w-6xl mx-auto">
-        {/* Section header */}
-        <motion.div
-          className="mb-12 text-center"
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.5 }}
-        >
-          <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#0ea5e9] mb-4">
-            Core Technology
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-4 leading-tight">
-            A stack chosen deliberately
-          </h2>
-          <p className="text-white/45 text-base leading-relaxed max-w-md mx-auto">
+        {/* Section header — editorial, anchored */}
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-14">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.5 }}
+          >
+            <p className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40 mb-4">
+              <span className="w-8 h-px bg-[#38bdf8]/70" />
+              02 / Core Technology
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white leading-tight">
+              A stack chosen <br className="hidden sm:block" />
+              deliberately.
+            </h2>
+          </motion.div>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="text-white/45 text-sm leading-relaxed max-w-[260px] font-mono text-[12px] tracking-wide"
+          >
             Every component exists because it makes the engine better — not because it was trendy.
-          </p>
-        </motion.div>
+          </motion.p>
+        </div>
 
         {/* Cards */}
         <div className="grid md:grid-cols-3 gap-5">
@@ -62,11 +71,11 @@ export default function TechPillars() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ delay: i * 0.08, duration: 0.5 }}
-              className={`group relative flex flex-col bg-[#0c0c0c] rounded-2xl p-7 border border-white/[0.07] transition-all duration-300 ${p.border} ${p.glow}`}
+              className={`group relative flex flex-col bg-[#0b0c0e] p-7 border border-white/[0.08] transition-all duration-300 hover:border-white/[0.16]`}
             >
-              {/* Logo */}
-              <div className="mb-6 flex items-center">
-                <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center">
+              {/* Index + logo row */}
+              <div className="mb-6 flex items-center justify-between">
+                <div className="w-10 h-10 rounded-md bg-white/[0.04] border border-white/[0.08] flex items-center justify-center">
                   <Image
                     src={p.logo}
                     alt=""
@@ -75,6 +84,9 @@ export default function TechPillars() {
                     className="object-contain"
                   />
                 </div>
+                <span className="font-mono text-[11px] tracking-[0.14em] text-white/20">
+                  0{i + 1}
+                </span>
               </div>
 
               <h3 className="text-white font-semibold text-[17px] tracking-tight mb-3 leading-snug">
@@ -85,8 +97,8 @@ export default function TechPillars() {
               </p>
 
               {/* Tag */}
-              <div className="mt-auto">
-                <span className="inline-block px-2.5 py-1 bg-white/[0.04] border border-white/[0.08] rounded-md text-[11px] text-white/35 font-mono tracking-wide">
+              <div className="mt-auto pt-4 border-t border-white/[0.06]">
+                <span className="inline-block text-[11px] text-white/35 font-mono tracking-wide">
                   {p.tag}
                 </span>
               </div>

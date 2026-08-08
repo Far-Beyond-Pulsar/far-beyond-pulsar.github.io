@@ -79,4 +79,64 @@ body {
       transparent 100%
     );
   }
+
+  /* Ghost outline type — editorial wordmarks.
+     Stroke is drawn on a ::before copy so the solid fill layer
+     above it hides the inner half of the stroke — this removes
+     the junction blobs on crossing strokes (e.g. 't', 'x'). */
+  .text-outline,
+  .text-outline-accent,
+  .text-outline-faint {
+    position: relative;
+    color: var(--outline-fill, #000);
+  }
+
+  .text-outline::before,
+  .text-outline-accent::before,
+  .text-outline-faint::before {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: var(--outline-width, 2px) var(--outline-color, rgba(255, 255, 255, 0.55));
+    pointer-events: none;
+  }
+
+  .text-outline {
+    --outline-color: rgba(255, 255, 255, 0.55);
+  }
+
+  .text-outline-accent {
+    --outline-color: rgba(56, 189, 248, 0.85);
+  }
+
+  .text-outline-faint {
+    --outline-color: rgba(255, 255, 255, 0.18);
+  }
+
+  /* Vertical text — HUD rail labels */
+  .v-text {
+    writing-mode: vertical-rl;
+  }
+
+  /* Marquee tape */
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+
+  .mask-fade-x {
+    mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+  }
+
+  /* Table cell hairline */
+  .cell-line {
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+  }
 }

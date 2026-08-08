@@ -33,7 +33,7 @@ function StatCard({ icon: Icon, value, label }) {
     <div className="flex flex-col gap-1">
       <div className="flex items-center gap-2 text-white/25 mb-1">
         <Icon className="w-3.5 h-3.5" />
-        <span className="text-[11px] uppercase tracking-widest font-medium">{label}</span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.16em]">{label}</span>
       </div>
       <span className="text-2xl font-bold text-white tracking-tight">{value}</span>
     </div>
@@ -46,18 +46,26 @@ function DiscussionCard({ title, body, url, date, category }) {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group block bg-[#0c0c0c] border border-white/[0.07] rounded-xl p-5 hover:border-white/[0.14] transition-all duration-200"
+      className="group flex items-start justify-between gap-4 bg-[#0b0c0e] border border-white/[0.08] px-5 py-4 hover:border-white/[0.16] transition-all duration-200"
     >
-      <div className="flex items-start justify-between gap-3 mb-3">
-        <span className="inline-block px-2 py-0.5 bg-[#0ea5e9]/10 border border-[#0ea5e9]/20 rounded text-[10px] text-[#0ea5e9] font-medium tracking-wide">
-          {category}
+      <div className="flex items-start gap-4">
+        <span className="hidden sm:flex w-8 h-8 rounded-md bg-[#0ea5e9]/10 border border-[#0ea5e9]/25 items-center justify-center font-mono text-[10px] text-[#0ea5e9] mt-0.5">
+          RFC
         </span>
-        <ArrowUpRight className="w-3.5 h-3.5 text-white/20 group-hover:text-white/45 transition-colors flex-shrink-0 mt-0.5" />
+        <div>
+          <div className="flex items-center gap-3 mb-1">
+            <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#0ea5e9]/80">
+              {category}
+            </span>
+            <span className="font-mono text-[10px] text-white/20">{date}</span>
+          </div>
+          <h3 className="text-sm font-semibold text-white/80 group-hover:text-white mb-1.5 transition-colors leading-snug">
+            {title}
+          </h3>
+          <p className="text-xs text-white/35 leading-relaxed line-clamp-2">{body}</p>
+        </div>
       </div>
-      <h3 className="text-sm font-semibold text-white/80 group-hover:text-white mb-2 transition-colors leading-snug">
-        {title}
-      </h3>
-      <p className="text-xs text-white/35 leading-relaxed line-clamp-2">{body}</p>
+      <ArrowUpRight className="w-3.5 h-3.5 text-white/20 group-hover:text-white/45 transition-colors flex-shrink-0 mt-1" />
     </a>
   );
 }
@@ -93,12 +101,14 @@ export default function CommunitySection() {
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5 }}
         >
-          <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#0ea5e9] mb-4">
-            Community
+          <p className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40 mb-4">
+            <span className="w-8 h-px bg-[#38bdf8]/70" />
+            07 / Community
           </p>
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white leading-tight max-w-md">
-              Built in the open, by the community.
+              Built in the open, <br className="hidden sm:block" />
+              by the community.
             </h2>
             <a
               href="https://github.com/Far-Beyond-Pulsar"
@@ -123,7 +133,11 @@ export default function CommunitySection() {
             className="lg:col-span-1"
           >
             {/* Stats */}
-            <div className="bg-[#0c0c0c] border border-white/[0.07] rounded-xl p-6 mb-5">
+            <div className="bg-[#0b0c0e] border border-white/[0.08] p-6 mb-5">
+              <div className="flex items-center justify-between mb-5">
+                <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/30">Repo status</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#0ea5e9] animate-pulse-dot" />
+              </div>
               <div className="grid grid-cols-3 gap-4">
                 <StatCard icon={Star} value={stats.stars} label="Stars" />
                 <StatCard icon={GitFork} value={stats.forks} label="Forks" />
@@ -132,7 +146,7 @@ export default function CommunitySection() {
             </div>
 
             {/* Quick links */}
-            <div className="bg-[#0c0c0c] border border-white/[0.07] rounded-xl overflow-hidden">
+            <div className="bg-[#0b0c0e] border border-white/[0.08] overflow-hidden">
               {[
                 { label: "GitHub Discussions", href: "https://github.com/orgs/Far-Beyond-Pulsar/discussions", icon: MessageSquare },
                 { label: "Open Issues", href: "https://github.com/Far-Beyond-Pulsar/Pulsar-Native/issues", icon: Github },
@@ -143,11 +157,11 @@ export default function CommunitySection() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`flex items-center justify-between px-5 py-3.5 hover:bg-white/[0.03] transition-colors group ${i > 0 ? "border-t border-white/[0.05]" : ""}`}
+                  className={`flex items-center justify-between px-5 py-3.5 hover:bg-white/[0.03] transition-colors group ${i > 0 ? "border-t border-white/[0.06]" : ""}`}
                 >
                   <div className="flex items-center gap-3">
                     <Icon className="w-3.5 h-3.5 text-white/25" />
-                    <span className="text-sm text-white/50 group-hover:text-white/80 transition-colors">{label}</span>
+                    <span className="font-mono text-[12px] text-white/50 group-hover:text-white/80 transition-colors">{label}</span>
                   </div>
                   <ArrowUpRight className="w-3 h-3 text-white/15 group-hover:text-white/40 transition-colors" />
                 </a>
