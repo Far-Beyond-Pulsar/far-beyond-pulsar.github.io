@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Github } from "lucide-react";
+import OutlineText from "../OutlineText";
 
 export default function CTASection() {
   return (
@@ -40,7 +41,7 @@ export default function CTASection() {
             <h2 className="text-4xl sm:text-6xl font-bold tracking-[-0.03em] text-white leading-[1.02] mb-6">
               Help shape
               <br />
-              <span className="text-outline-accent" data-text="the engine.">the engine.</span>
+              <OutlineText text="the engine." color="rgba(56, 189, 248, 0.85)" />
             </h2>
             <p className="text-white/45 text-lg leading-relaxed max-w-lg">
               Pulsar's core systems are still being designed. The best time to influence
@@ -81,10 +82,10 @@ export default function CTASection() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="select-none pointer-events-none mt-16 lg:mt-20 -mb-10 overflow-hidden"
+          className="select-none pointer-events-none mt-16 lg:mt-20 -mb-10"
         >
-          <p className="text-outline-faint text-[clamp(4rem,15vw,14rem)] font-bold tracking-[-0.04em] leading-[0.75] text-center whitespace-nowrap" data-text="PULSAR">
-            PULSAR
+          <p className="text-[clamp(4rem,15vw,14rem)] font-bold tracking-[-0.04em] leading-[0.75] text-center whitespace-nowrap">
+            <OutlineText text="PULSAR" color="rgba(255, 255, 255, 0.18)" strokeWidth={3} />
           </p>
         </motion.div>
       </div>

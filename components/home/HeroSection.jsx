@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Github, ArrowRight, Download } from "lucide-react";
+import OutlineText from "../OutlineText";
 
 const SLIDES = [
   { src: "/sample_pics/level_editor.png", label: "Level Editor" },
@@ -68,7 +69,7 @@ export default function HeroSection() {
           >
             Build without
             <br />
-            <span className="text-outline-accent" data-text="limits.">limits.</span>
+            <OutlineText text="limits." color="rgba(56, 189, 248, 0.85)" />
           </motion.h1>
 
           {/* Subheading */}
