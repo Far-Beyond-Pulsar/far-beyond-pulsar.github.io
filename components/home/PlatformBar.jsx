@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 function AppleIcon() {
   return (
@@ -52,6 +53,30 @@ function PlatformItem({ p }) {
 }
 
 export default function PlatformBar() {
+  const trackRef = useRef(null);
+  const [copies, setCopies] = useState(2);
+
+  useEffect(() => {
+    const updateCopies = () => {
+      const track = trackRef.current;
+      if (!track) return;
+      const group = track.firstElementChild;
+      if (!group) return;
+      // The animation sweeps exactly half the track (one copy per frame),
+      // so the viewport window must never be wider than copies/2 groups,
+      // otherwise the right side runs past the track tail and content
+      // "pops in" at the loop wrap.
+      const groupWidth = group.getBoundingClientRect().width;
+      if (!groupWidth) return;
+      const needed = Math.max(2, Math.ceil(window.innerWidth / groupWidth) * 2);
+      setCopies((prev) => (prev === needed ? prev : needed));
+    };
+
+    updateCopies();
+    window.addEventListener("resize", updateCopies);
+    return () => window.removeEventListener("resize", updateCopies);
+  }, []);
+
   return (
     <section className="py-0 px-0 border-y border-white/[0.07] bg-[#050506]">
       {/* Ledger header */}
@@ -67,17 +92,14 @@ export default function PlatformBar() {
 
       {/* Marquee tape */}
       <div className="mask-fade-x overflow-hidden py-5">
-        <div className="flex animate-marquee w-max">
-          <div className="flex items-center">
-            {PLATFORMS.map((p) => (
-              <PlatformItem key={p.label} p={p} />
-            ))}
-          </div>
-          <div className="flex items-center" aria-hidden="true">
-            {PLATFORMS.map((p) => (
-              <PlatformItem key={p.label} p={p} />
-            ))}
-          </div>
+        <div ref={trackRef} className="flex animate-marquee w-max">
+          {Array.from({ length: copies }).map((_, i) => (
+            <div key={i} className="flex items-center" aria-hidden={i === 0 ? undefined : "true"}>
+              {PLATFORMS.map((p) => (
+                <PlatformItem key={p.label} p={p} />
+              ))}
+            </div>
+          ))}
         </div>
       </div>
     </section>
