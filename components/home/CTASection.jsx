@@ -84,7 +84,7 @@ export default function CTASection() {
           transition={{ duration: 1, delay: 0.2 }}
           className="select-none pointer-events-none mt-16 lg:mt-20 -mb-10"
         >
-          <p className="text-[clamp(4rem,15vw,14rem)] font-bold tracking-[-0.04em] leading-[0.75] text-center whitespace-nowrap">
+          <p className="text-[clamp(4rem,15vw,14rem)] font-bold tracking-[-0.04em] leading-[1.05] text-center whitespace-nowrap">
             <OutlineText text="PULSAR" color="rgba(255, 255, 255, 0.18)" strokeWidth={3} />
           </p>
         </motion.div>
