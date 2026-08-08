@@ -81,14 +81,16 @@ body {
   }
 
   /* Ghost outline type — editorial wordmarks.
-     Stroke is drawn on a ::before copy so the solid fill layer
-     above it hides the inner half of the stroke — this removes
-     the junction blobs on crossing strokes (e.g. 't', 'x'). */
+     The element carries the stroke with a transparent fill; a ::before
+     copy paints a solid fill on top, hiding the inner half of the stroke
+     and the junction blobs on crossing strokes (e.g. 't', 'x'). */
   .text-outline,
   .text-outline-accent,
   .text-outline-faint {
     position: relative;
-    color: var(--outline-fill, #000);
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: var(--outline-width, 2px) var(--outline-color, rgba(255, 255, 255, 0.55));
   }
 
   .text-outline::before,
@@ -97,9 +99,9 @@ body {
     content: attr(data-text);
     position: absolute;
     inset: 0;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    -webkit-text-stroke: var(--outline-width, 2px) var(--outline-color, rgba(255, 255, 255, 0.55));
+    color: var(--outline-fill, #000);
+    -webkit-text-fill-color: var(--outline-fill, #000);
+    -webkit-text-stroke: 0;
     pointer-events: none;
   }
 
