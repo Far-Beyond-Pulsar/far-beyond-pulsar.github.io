@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Check, ChevronDown, Clipboard, Download, ExternalLink, LoaderCircle, MonitorDown, RefreshCw } from "lucide-react";
+import { Check, ChevronDown, Clipboard, Download, ExternalLink, LoaderCircle, MonitorDown, Pause, Play, RefreshCw } from "lucide-react";
 
 const REPO = "https://api.github.com/repos/Far-Beyond-Pulsar/Pulsar-Hub";
 const RELEASES = "https://github.com/Far-Beyond-Pulsar/Pulsar-Hub/releases/latest";
 const CACHE_KEY = "pulsar-hub-releases-v2";
 const PLATFORM_CACHE_KEY = "pulsar-hub-platform-releases-v1";
+const LIVE_WATCH_PAUSED_KEY = "pulsar-hub-live-watch-paused-v1";
 const CACHE_TTL = 15 * 60 * 1000;
 const ACTIONS_API = `${REPO}/actions`;
 
@@ -138,6 +139,8 @@ export default function DownloadPage() {
   const [arch, setArch] = useState<Arch | null>(null);
   const [showAll, setShowAll] = useState(false);
   const [liveBuilds, setLiveBuilds] = useState<LiveBuild[]>([]);
+  const [watchPaused, setWatchPaused] = useState(false);
+  const [watchReady, setWatchReady] = useState(false);
   const hadActiveBuilds = useRef(false);
 
   useEffect(() => {
@@ -183,6 +186,14 @@ export default function DownloadPage() {
   useEffect(() => { loadRelease(); }, []);
 
   useEffect(() => {
+    try {
+      setWatchPaused(localStorage.getItem(LIVE_WATCH_PAUSED_KEY) === "true");
+    } catch {}
+    setWatchReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!watchReady || watchPaused) return;
     let cancelled = false;
     let timer: ReturnType<typeof setTimeout>;
     const poll = async () => {
@@ -216,12 +227,18 @@ export default function DownloadPage() {
       } catch {
         if (!cancelled) setLiveBuilds([]);
       } finally {
-        if (!cancelled) timer = setTimeout(poll, 150_000);
+        if (!cancelled) timer = setTimeout(poll, 60_000);
       }
     };
     poll();
     return () => { cancelled = true; clearTimeout(timer); };
-  }, []);
+  }, [watchPaused, watchReady]);
+
+  const toggleLiveWatch = () => {
+    const nextPaused = !watchPaused;
+    setWatchPaused(nextPaused);
+    try { localStorage.setItem(LIVE_WATCH_PAUSED_KEY, String(nextPaused)); } catch {}
+  };
 
   const platforms = Array.from(new Set(releases.flatMap((release) => release.assets
     .filter((asset) => kind(asset))
@@ -267,6 +284,7 @@ export default function DownloadPage() {
             </div>
             <div className="flex items-center gap-2">
               {release && <span className="rounded-full border border-[#0ea5e9]/25 bg-[#0ea5e9]/[0.08] px-3 py-1 font-mono text-xs text-[#7dd3fc]">{release.tag_name}</span>}
+              <button onClick={toggleLiveWatch} disabled={!watchReady} aria-label={watchPaused ? "Resume live release watch" : "Pause live release watch"} title={watchPaused ? "Resume live watch" : "Pause live watch"} className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 px-2.5 py-2 text-xs text-white/45 transition-colors hover:border-[#0ea5e9]/35 hover:text-white disabled:opacity-40">{watchPaused ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}<span className="hidden sm:inline">{watchPaused ? "Resume watch" : "Pause watch"}</span></button>
               <button onClick={() => loadRelease(true)} disabled={loading} aria-label="Force refresh release data" title="Force refresh" className="rounded-lg border border-white/10 p-2 text-white/45 transition-colors hover:border-[#0ea5e9]/35 hover:text-white disabled:opacity-40"><RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} /></button>
             </div>
           </div>
@@ -282,8 +300,8 @@ export default function DownloadPage() {
               </div>
               {liveBuilds.some((build) => build.platform === currentPlatform) && <div className="mb-4 overflow-hidden rounded-xl border border-dashed border-[#0ea5e9]/30 bg-[#0ea5e9]/[0.035] p-4">
                 <div className="mb-3 flex items-center justify-between gap-3">
-                  <div><div className="font-mono text-[10px] uppercase tracking-[.16em] text-[#7dd3fc]/70">New build in progress</div><p className="mt-1 text-xs text-white/40">Showing the latest published {PLATFORM_LABEL[currentPlatform]} build below until this release is ready.</p></div>
-                  <span className="h-2 w-2 shrink-0 animate-pulse rounded-full bg-[#38bdf8]" />
+                  <div><div className="font-mono text-[10px] uppercase tracking-[.16em] text-[#7dd3fc]/70">{watchPaused ? "Live watch paused · last status" : "New build in progress"}</div><p className="mt-1 text-xs text-white/40">Showing the latest published {PLATFORM_LABEL[currentPlatform]} build below until this release is ready.</p></div>
+                  <span className={`h-2 w-2 shrink-0 rounded-full bg-[#38bdf8] ${watchPaused ? "opacity-35" : "animate-pulse"}`} />
                 </div>
                 <div className="grid gap-2 sm:grid-cols-2">{liveBuilds.filter((build) => build.platform === currentPlatform).map((build) => <a key={`${build.platform}-${build.arch}`} href={build.runUrl} target="_blank" rel="noreferrer" className="flex items-center gap-3 rounded-lg border border-white/[0.07] bg-white/[0.025] px-3 py-2.5 hover:bg-white/[0.05]"><span className="h-7 w-7 animate-pulse rounded-md bg-white/[0.08]" /><span className="min-w-0 flex-1"><span className="block text-sm text-white/70">{ARCH_LABEL[build.arch]} build</span><span className="block font-mono text-[10px] text-white/30">{build.status === "queued" ? "Queued" : "Building"} · {build.headSha.slice(0, 7)}</span></span><LoaderCircle className="h-4 w-4 animate-spin text-[#38bdf8]/60" /></a>)}</div>
               </div>}
