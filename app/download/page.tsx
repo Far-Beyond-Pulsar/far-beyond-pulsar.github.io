@@ -8,16 +8,15 @@ const RELEASES = "https://github.com/Far-Beyond-Pulsar/Pulsar-Hub/releases/lates
 const CACHE_KEY = "pulsar-hub-latest-release";
 const CACHE_TTL = 15 * 60 * 1000;
 
-type Platform = "windows" | "linux";
-type DetectedPlatform = Platform | "macos";
+type Platform = "windows" | "linux" | "macos";
 type Asset = { id: number; name: string; size: number; browser_download_url: string; digest?: string | null };
 type Release = { tag_name: string; name: string; published_at: string; html_url: string; assets: Asset[] };
 type Arch = "x86_64" | "arm64";
 
-const PLATFORM_LABEL: Record<Platform, string> = { windows: "Windows", linux: "Linux" };
+const PLATFORM_LABEL: Record<Platform, string> = { windows: "Windows", linux: "Linux", macos: "macOS" };
 const ARCH_LABEL: Record<Arch, string> = { x86_64: "x86_64", arm64: "ARM64" };
 
-function detectPlatform(): DetectedPlatform {
+function detectPlatform(): Platform {
   if (/win/i.test(navigator.userAgent)) return "windows";
   if (/mac/i.test(navigator.userAgent)) return "macos";
   return "linux";
@@ -41,12 +40,20 @@ function assetArch(name: string): Arch | null {
   return null;
 }
 
-function kind(asset: Asset): "setup" | "standalone" | "appimage" | "deb" | null {
+function platformForAsset(name: string): Platform | null {
+  if (/\.dmg$/i.test(name) || /pulsar\.hub/i.test(name)) return "macos";
+  if (/windows/i.test(name) || /\.exe$/i.test(name)) return "windows";
+  if (/linux/i.test(name) || /\.(appimage|deb)$/i.test(name)) return "linux";
+  return null;
+}
+
+function kind(asset: Asset): "setup" | "standalone" | "appimage" | "deb" | "dmg" | null {
   const n = asset.name.toLowerCase();
   if (n.endsWith(".sha256")) return null;
   if (n.includes("setup.exe")) return "setup";
   if (n.endsWith(".appimage")) return "appimage";
   if (n.endsWith(".deb")) return "deb";
+  if (n.endsWith(".dmg")) return "dmg";
   if (n.includes("pulsar-installer-windows-") || n.includes("pulsar-installer-linux-")) return "standalone";
   return null;
 }
@@ -55,7 +62,8 @@ function kindLabel(value: ReturnType<typeof kind>) {
   if (value === "setup") return "Setup executable";
   if (value === "standalone") return "Standalone";
   if (value === "appimage") return "AppImage · standalone";
-  return "Debian package";
+  if (value === "deb") return "Debian package";
+  return "Disk image";
 }
 
 function DownloadOption({ asset, title, description }: { asset: Asset; title: string; description: string }) {
@@ -101,18 +109,18 @@ function DownloadOption({ asset, title, description }: { asset: Asset; title: st
 }
 
 export default function DownloadPage() {
-  const [release, setRelease] = useState<Release | null>(null);
+  const [releases, setReleases] = useState<Release[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [platform, setPlatform] = useState<Platform | null>(null);
-  const [detectedPlatform, setDetectedPlatform] = useState<DetectedPlatform | null>(null);
+  const [detectedPlatform, setDetectedPlatform] = useState<Platform | null>(null);
   const [arch, setArch] = useState<Arch | null>(null);
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const detected = detectPlatform();
     setDetectedPlatform(detected);
-    if (detected !== "macos") setPlatform(detected);
+    setPlatform(detected);
     setArch(detectArch());
   }, []);
 
@@ -124,8 +132,8 @@ export default function DownloadPage() {
         const cached = localStorage.getItem(CACHE_KEY);
         if (cached) {
           const { data, timestamp } = JSON.parse(cached);
-          if (Date.now() - timestamp < CACHE_TTL) {
-            setRelease(data);
+          if (Array.isArray(data) && Date.now() - timestamp < CACHE_TTL) {
+            setReleases(data);
             setLoading(false);
             return;
           }
@@ -135,10 +143,10 @@ export default function DownloadPage() {
       }
     }
     try {
-      const response = await fetch(`${REPO}/releases/latest`, { headers: { Accept: "application/vnd.github+json" }, cache: "no-store" });
+      const response = await fetch(`${REPO}/releases?per_page=20`, { headers: { Accept: "application/vnd.github+json" }, cache: "no-store" });
       if (!response.ok) throw new Error(`GitHub returned ${response.status}.`);
-      const data: Release = await response.json();
-      setRelease(data);
+      const data: Release[] = await response.json();
+      setReleases(data);
       try {
         localStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() }));
       } catch {}
@@ -151,20 +159,25 @@ export default function DownloadPage() {
 
   useEffect(() => { loadRelease(); }, []);
 
-  const assets = useMemo(() => (release?.assets ?? []).flatMap((asset) => {
-    const fileKind = kind(asset);
-    if (!fileKind) return [];
-    const platform: Platform | null = /windows/i.test(asset.name) || /\.exe$/i.test(asset.name) ? "windows" : /linux/i.test(asset.name) || /\.(appimage|deb)$/i.test(asset.name) ? "linux" : null;
-    const arch = assetArch(asset.name);
-    return platform && arch ? [{ asset, fileKind, platform, arch }] : [];
-  }), [release]);
-
-  const platforms = Array.from(new Set(assets.map((item) => item.platform)));
+  const platforms = Array.from(new Set(releases.flatMap((release) => release.assets
+    .filter((asset) => kind(asset))
+    .map((asset) => platformForAsset(asset.name))
+    .filter((item): item is Platform => item !== null))));
   const currentPlatform = platform && platforms.includes(platform) ? platform : platforms[0] ?? "windows";
-  const architectures = Array.from(new Set(assets.filter((item) => item.platform === currentPlatform).map((item) => item.arch)));
+  const platformReleases = releases.filter((release) => release.assets.some((asset) => kind(asset) && platformForAsset(asset.name) === currentPlatform));
+  const architectures = Array.from(new Set(platformReleases.flatMap((release) => release.assets
+    .filter((asset) => kind(asset) && platformForAsset(asset.name) === currentPlatform)
+    .map((asset) => assetArch(asset.name))
+    .filter((item): item is Arch => item !== null))));
   const currentArch = arch && architectures.includes(arch) ? arch : architectures[0] ?? "x86_64";
-  const selected = assets.filter((item) => item.platform === currentPlatform && item.arch === currentArch);
-  const orderedKinds: Array<"setup" | "standalone" | "appimage" | "deb"> = currentPlatform === "windows" ? ["setup", "standalone"] : ["appimage", "deb", "standalone"];
+  const release = platformReleases.find((candidate) => candidate.assets.some((asset) => kind(asset) && platformForAsset(asset.name) === currentPlatform && assetArch(asset.name) === currentArch)) ?? platformReleases[0] ?? null;
+  const selected = (release?.assets ?? []).flatMap((asset) => {
+    const fileKind = kind(asset);
+    const assetPlatform = platformForAsset(asset.name);
+    const assetArchitecture = assetArch(asset.name);
+    return fileKind && assetPlatform === currentPlatform && assetArchitecture === currentArch ? [{ asset, fileKind }] : [];
+  });
+  const orderedKinds: Array<"setup" | "standalone" | "appimage" | "deb" | "dmg"> = currentPlatform === "windows" ? ["setup", "standalone"] : currentPlatform === "macos" ? ["dmg"] : ["appimage", "deb", "standalone"];
 
   return (
     <main className="min-h-screen bg-black px-5 pb-20 pt-24 text-white sm:pt-28">
@@ -177,8 +190,8 @@ export default function DownloadPage() {
           </div>
           <div className="rounded-xl border border-[#0ea5e9]/20 bg-[#0ea5e9]/[0.06] p-4 text-sm leading-6 text-white/55">
             <div className="mb-1 flex items-center gap-2 text-[#7dd3fc]"><MonitorDown className="h-4 w-4" /> Detected system</div>
-            {detectedPlatform ? <span className="text-white">{detectedPlatform === "macos" ? "macOS · no build currently published" : `${PLATFORM_LABEL[detectedPlatform]} · ${ARCH_LABEL[currentArch]}`}</span> : <span>Detecting your system…</span>}
-            <span className="text-white/40"> — {detectedPlatform === "macos" ? "showing available downloads." : "you can change this below."}</span>
+            {detectedPlatform ? <span className="text-white">{PLATFORM_LABEL[detectedPlatform]} · {ARCH_LABEL[currentArch]}</span> : <span>Detecting your system…</span>}
+            <span className="text-white/40"> — you can change this below.</span>
           </div>
         </div>
 
@@ -210,6 +223,7 @@ export default function DownloadPage() {
                     standalone: ["Standalone executable", "Run directly without a setup wizard"],
                     appimage: ["Pulsar Hub AppImage", "Portable Linux app · no package installation required"],
                     deb: ["Pulsar Hub for Debian / Ubuntu", "Install using your system package manager"],
+                    dmg: ["Pulsar Hub for macOS", "Open the disk image and drag Pulsar Hub into Applications"],
                   };
                   const [title, description] = labels[fileKind];
                   return <DownloadOption key={asset.id} asset={asset} title={title} description={description} />;
