@@ -1,695 +1,233 @@
 "use client";
 
-import { useEffect, useState, useMemo, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
-import {
-  Download,
-  ChevronDown,
-  Copy,
-  Check,
-  RefreshCw,
-  ExternalLink,
-} from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Check, ChevronDown, Clipboard, Download, ExternalLink, LoaderCircle, MonitorDown, RefreshCw } from "lucide-react";
 
-export const dynamic = "force-static";
+const REPO = "https://api.github.com/repos/Far-Beyond-Pulsar/Pulsar-Hub";
+const RELEASES = "https://github.com/Far-Beyond-Pulsar/Pulsar-Hub/releases/latest";
+const CACHE_KEY = "pulsar-hub-latest-release";
+const CACHE_TTL = 15 * 60 * 1000;
 
-type Platform = "macos" | "windows" | "linux";
+type Platform = "windows" | "linux";
+type DetectedPlatform = Platform | "macos";
+type Asset = { id: number; name: string; size: number; browser_download_url: string; digest?: string | null };
+type Release = { tag_name: string; name: string; published_at: string; html_url: string; assets: Asset[] };
 type Arch = "x86_64" | "arm64";
 
-interface Asset {
-  name: string;
-  browserDownloadUrl: string;
-  size: number;
+const PLATFORM_LABEL: Record<Platform, string> = { windows: "Windows", linux: "Linux" };
+const ARCH_LABEL: Record<Arch, string> = { x86_64: "x86_64", arm64: "ARM64" };
+
+function detectPlatform(): DetectedPlatform {
+  if (/win/i.test(navigator.userAgent)) return "windows";
+  if (/mac/i.test(navigator.userAgent)) return "macos";
+  return "linux";
 }
 
-interface ReleaseData {
-  tagName: string;
-  name: string;
-  publishedAt: string;
-  body: string;
-  assets: Asset[];
+function detectArch(): Arch {
+  return /arm64|aarch64/i.test(navigator.userAgent) ? "arm64" : "x86_64";
 }
 
-interface ParsedAsset {
-  name: string;
-  bin: string;
-  platform: Platform;
-  arch: Arch;
-  isBundle: boolean;
-  url: string;
-  size: number;
-  sigUrl: string | null;
+function formatSize(bytes: number) {
+  return `${(bytes / (1024 * 1024)).toFixed(bytes > 100 * 1024 * 1024 ? 0 : 1)} MB`;
 }
 
-const CACHE_KEY = "pulsar-release-cache";
-const CACHE_TTL = 60 * 60 * 1000; // 1 hour
-
-const PLATFORM_INFO: Record<Platform, { label: string }> = {
-  macos: { label: "macOS" },
-  windows: { label: "Windows" },
-  linux: { label: "Linux" },
-};
-
-const BIN_LABELS: Record<string, string> = {
-  "pulsar-relay": "Pulsar Relay",
-  pulsar_engine: "Pulsar Engine",
-};
-
-const BIN_DESCRIPTIONS: Record<string, string> = {
-  "pulsar-relay": "Lightweight relay service for Pulsar Native",
-  pulsar_engine: "Full game engine with editor and runtime",
-};
-
-function formatSize(bytes: number): string {
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+function checksum(asset: Asset) {
+  return asset.digest?.replace(/^sha256:/i, "") ?? null;
 }
 
-function parseAssetName(
-  name: string
-): { bin: string; platform: Platform; arch: Arch; isBundle: boolean } | null {
-  let n = name;
-  let isBundle = false;
-  if (n.endsWith(".app.zip")) {
-    n = n.slice(0, -8);
-    isBundle = true;
-  } else if (n.endsWith(".exe")) {
-    n = n.slice(0, -4);
-  }
-  const parts = n.split("-");
-  if (parts.length < 3) return null;
-  const archStr = parts[parts.length - 1];
-  const platformStr = parts[parts.length - 2];
-  if (!["x86_64", "arm64"].includes(archStr)) return null;
-  if (!["macos", "windows", "linux"].includes(platformStr)) return null;
-  const bin = parts.slice(0, -2).join("-");
-  if (bin !== "pulsar-relay" && bin !== "pulsar_engine") return null;
-  return {
-    bin,
-    platform: platformStr as Platform,
-    arch: archStr as Arch,
-    isBundle,
-  };
+function assetArch(name: string): Arch | null {
+  if (/arm64|aarch64/i.test(name)) return "arm64";
+  if (/x86_64|amd64|x64/i.test(name)) return "x86_64";
+  return null;
 }
 
-function groupAssets(assets: Asset[]) {
-  const parsed: ParsedAsset[] = [];
-  const sigCandidates: Record<string, string> = {};
-
-  for (const a of assets) {
-    if (a.name.endsWith(".sig")) {
-      sigCandidates[a.name.slice(0, -4)] = a.browserDownloadUrl;
-    }
-  }
-
-  for (const a of assets) {
-    if (a.name.endsWith(".sig")) continue;
-    const p = parseAssetName(a.name);
-    if (!p) continue;
-    parsed.push({
-      name: a.name,
-      ...p,
-      url: a.browserDownloadUrl,
-      size: a.size,
-      sigUrl: sigCandidates[a.name] ?? null,
-    });
-  }
-
-  return parsed;
+function kind(asset: Asset): "setup" | "standalone" | "appimage" | "deb" | null {
+  const n = asset.name.toLowerCase();
+  if (n.endsWith(".sha256")) return null;
+  if (n.includes("setup.exe")) return "setup";
+  if (n.endsWith(".appimage")) return "appimage";
+  if (n.endsWith(".deb")) return "deb";
+  if (n.includes("pulsar-installer-windows-") || n.includes("pulsar-installer-linux-")) return "standalone";
+  return null;
 }
 
-function detectPlatform() {
-  if (typeof window === "undefined") return { platform: "macos" as Platform, arch: "arm64" as Arch };
-  const ua = navigator.userAgent;
-  if (/mac/i.test(ua)) return { platform: "macos" as Platform, arch: "arm64" as Arch };
-  if (/win/i.test(ua))
-    return {
-      platform: "windows" as Platform,
-      arch: (/arm64|aarch64/i.test(ua) ? "arm64" : "x86_64") as Arch,
-    };
-  return { platform: "linux" as Platform, arch: "x86_64" as Arch };
+function kindLabel(value: ReturnType<typeof kind>) {
+  if (value === "setup") return "Setup executable";
+  if (value === "standalone") return "Standalone";
+  if (value === "appimage") return "AppImage · standalone";
+  return "Debian package";
 }
 
-function AppleIcon() {
-  return (
-    <svg viewBox="0 0 814 1000" className="w-full h-full" fill="currentColor">
-      <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76.5 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-194.3 126.4-297.5 250.8-297.5 66.1 0 121.2 43.4 162.7 43.4 39.5 0 101.1-46 176.3-46 28.5 0 130.9 2.6 198.3 99.2zm-234-181.5c31.1-36.9 53.1-88.1 53.1-139.3 0-7.1-.6-14.3-1.9-20.1-50.6 1.9-110.8 33.7-147.1 75.8-28.5 32.4-55.1 83.6-55.1 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 45.4 0 102.5-30.4 135.5-71.3z"/>
-    </svg>
-  );
-}
-
-function PlatformLogo({ platform }: { platform: Platform }) {
-  if (platform === "macos")
-    return (
-      <div className="w-8 h-8">
-        <AppleIcon />
-      </div>
-    );
-  return (
-    <Image
-      src={platform === "windows" ? "/logos/windows.png" : "/logos/linux.png"}
-      alt={PLATFORM_INFO[platform].label}
-      width={32}
-      height={32}
-      className="object-contain w-8 h-8 opacity-90"
-    />
-  );
-}
-
-function DownloadPage() {
-  const [releaseData, setReleaseData] = useState<ReleaseData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [cacheInfo, setCacheInfo] = useState<string | null>(null);
-  const [detected, setDetected] = useState({ platform: "macos" as Platform, arch: "arm64" as Arch });
-  const [selectedPlatform, setSelectedPlatform] = useState<Platform>("macos");
-  const [selectedArch, setSelectedArch] = useState<Arch>("arm64");
-  const [selectedBin, setSelectedBin] = useState("pulsar_engine");
+function DownloadOption({ asset, title, description }: { asset: Asset; title: string; description: string }) {
   const [copied, setCopied] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
+  const hash = checksum(asset);
+  const copyHash = async () => {
+    if (!hash) return;
+    await navigator.clipboard.writeText(hash);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1600);
+  };
+
+  return (
+    <article className="group rounded-xl border border-white/[0.09] bg-[#101010] p-4 transition-colors hover:border-[#0ea5e9]/35 hover:bg-[#111] sm:p-5">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="min-w-0">
+          <div className="mb-1.5 flex items-center gap-2">
+            <h3 className="font-medium text-white">{title}</h3>
+            <span className="rounded-full border border-white/10 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-white/40">{kindLabel(kind(asset))}</span>
+          </div>
+          <p className="text-sm text-white/45">{description}</p>
+          <p className="mt-2 break-all font-mono text-[11px] text-white/25">{asset.name} <span className="px-1 text-white/15">·</span> {formatSize(asset.size)}</p>
+        </div>
+        <a href={asset.browser_download_url} className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-[#0ea5e9] px-3.5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#0284c7]" download>
+          <Download className="h-4 w-4" /> Download
+        </a>
+      </div>
+      <div className="mt-4 border-t border-white/[0.07] pt-3">
+        <div className="mb-1 text-[10px] font-semibold uppercase tracking-[.16em] text-white/35">SHA-256</div>
+        {hash ? (
+          <div className="flex items-center gap-2">
+            <code className="min-w-0 flex-1 break-all font-mono text-[11px] leading-relaxed text-white/55">{hash}</code>
+            <button onClick={copyHash} aria-label="Copy SHA-256" title="Copy SHA-256" className="shrink-0 rounded-md p-2 text-white/45 transition-colors hover:bg-white/10 hover:text-white">
+              {copied ? <Check className="h-4 w-4 text-emerald-400" /> : <Clipboard className="h-4 w-4" />}
+            </button>
+          </div>
+        ) : (
+          <p className="text-xs text-white/35">Checksum is not published for this file.</p>
+        )}
+      </div>
+    </article>
+  );
+}
+
+export default function DownloadPage() {
+  const [release, setRelease] = useState<Release | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [platform, setPlatform] = useState<Platform | null>(null);
+  const [detectedPlatform, setDetectedPlatform] = useState<DetectedPlatform | null>(null);
+  const [arch, setArch] = useState<Arch | null>(null);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
-    const d = detectPlatform();
-    setDetected(d);
-    setSelectedPlatform(d.platform);
-    setSelectedArch(d.arch);
+    const detected = detectPlatform();
+    setDetectedPlatform(detected);
+    if (detected !== "macos") setPlatform(detected);
+    setArch(detectArch());
   }, []);
 
-  const fetchRelease = useCallback(async (forceRefresh = false) => {
+  const loadRelease = async (forceRefresh = false) => {
+    setLoading(true);
+    setError(null);
     if (!forceRefresh) {
       try {
         const cached = localStorage.getItem(CACHE_KEY);
         if (cached) {
           const { data, timestamp } = JSON.parse(cached);
           if (Date.now() - timestamp < CACHE_TTL) {
-            setReleaseData(data);
-            setCacheInfo(`Cached ${Math.round((Date.now() - timestamp) / 60000)}m ago`);
+            setRelease(data);
             setLoading(false);
             return;
           }
         }
-      } catch {}
+      } catch {
+        try { localStorage.removeItem(CACHE_KEY); } catch {}
+      }
     }
-
     try {
-      const res = await fetch(
-        "https://api.github.com/repos/Far-Beyond-Pulsar/Pulsar-Native/releases/latest",
-        {
-          headers: { Accept: "application/vnd.github.v3+json" },
-        }
-      );
-      if (!res.ok) throw new Error(`GitHub API: ${res.status}`);
-      const json = await res.json();
-      const data: ReleaseData = {
-        tagName: json.tag_name,
-        name: json.name,
-        publishedAt: json.published_at,
-        body: json.body,
-        assets: json.assets.map((a: any) => ({
-          name: a.name,
-          browserDownloadUrl: a.browser_download_url,
-          size: a.size,
-        })),
-      };
-      setReleaseData(data);
-      setCacheInfo("Fetched just now");
-      setError(null);
+      const response = await fetch(`${REPO}/releases/latest`, { headers: { Accept: "application/vnd.github+json" }, cache: "no-store" });
+      if (!response.ok) throw new Error(`GitHub returned ${response.status}.`);
+      const data: Release = await response.json();
+      setRelease(data);
       try {
-        localStorage.setItem(
-          CACHE_KEY,
-          JSON.stringify({ data, timestamp: Date.now() })
-        );
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() }));
       } catch {}
-    } catch (e: any) {
-      setError(e.message ?? "Failed to load release data");
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "Could not load the latest release.");
     } finally {
       setLoading(false);
     }
-  }, []);
-
-  useEffect(() => {
-    fetchRelease();
-  }, [fetchRelease]);
-
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    setLoading(true);
-    await fetchRelease(true);
-    setRefreshing(false);
   };
 
-  const parsedAssets = useMemo(() => {
-    if (!releaseData) return [] as ParsedAsset[];
-    return groupAssets(releaseData.assets);
-  }, [releaseData]);
+  useEffect(() => { loadRelease(); }, []);
 
-  const currentVariants = useMemo(() => {
-    if (!parsedAssets.length) return [] as ParsedAsset[];
-    const key = `${selectedPlatform}-${selectedArch}`;
-    return parsedAssets
-      .filter((a) => a.bin === selectedBin && `${a.platform}-${a.arch}` === key)
-      .sort((a, b) => (a.isBundle ? 1 : -1));
-  }, [parsedAssets, selectedPlatform, selectedArch, selectedBin]);
+  const assets = useMemo(() => (release?.assets ?? []).flatMap((asset) => {
+    const fileKind = kind(asset);
+    if (!fileKind) return [];
+    const platform: Platform | null = /windows/i.test(asset.name) || /\.exe$/i.test(asset.name) ? "windows" : /linux/i.test(asset.name) || /\.(appimage|deb)$/i.test(asset.name) ? "linux" : null;
+    const arch = assetArch(asset.name);
+    return platform && arch ? [{ asset, fileKind, platform, arch }] : [];
+  }), [release]);
 
-  const currentAsset = currentVariants[0] ?? null;
-
-  const availablePlatforms = useMemo(() => {
-    if (!parsedAssets.length) return [] as Platform[];
-    const seen = new Set<Platform>();
-    for (const a of parsedAssets) {
-      if (a.bin === selectedBin) seen.add(a.platform);
-    }
-    return Array.from(seen);
-  }, [parsedAssets, selectedBin]);
-
-  const availableArches = useMemo(() => {
-    if (!parsedAssets.length) return [] as Arch[];
-    const seen = new Set<Arch>();
-    for (const a of parsedAssets) {
-      if (a.bin === selectedBin && a.platform === selectedPlatform)
-        seen.add(a.arch);
-    }
-    return Array.from(seen);
-  }, [parsedAssets, selectedPlatform, selectedBin]);
-
-  const availableBins = useMemo(() => {
-    if (!parsedAssets.length) return [] as string[];
-    const bins = new Set<string>();
-    for (const a of parsedAssets) {
-      if (a.bin === "pulsar_engine" || a.bin === "pulsar-relay")
-        bins.add(a.bin);
-    }
-    return Array.from(bins);
-  }, [parsedAssets]);
-
-  const downloadUrl = currentAsset?.url ?? null;
-
-  const sha256 = useMemo(() => {
-    if (!releaseData || !currentAsset) return null;
-    const escaped = currentAsset.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const re = new RegExp(
-      `${escaped}\\s*\\nsha256:([a-f0-9]{64})`,
-      "i"
-    );
-    const match = releaseData.body.match(re);
-    return match ? match[1] : null;
-  }, [releaseData, currentAsset]);
-
-  const handleCopySha = async () => {
-    if (!sha256) return;
-    try {
-      await navigator.clipboard.writeText(sha256);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {}
-  };
-
-  const handleDownload = () => {
-    if (!downloadUrl) return;
-    const a = document.createElement("a");
-    a.href = downloadUrl;
-    a.download = currentAsset!.name;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  };
-
-  const pageKey = `${selectedPlatform}-${selectedArch}-${selectedBin}`;
-  const isAutoDetected =
-    selectedPlatform === detected.platform && selectedArch === detected.arch;
+  const platforms = Array.from(new Set(assets.map((item) => item.platform)));
+  const currentPlatform = platform && platforms.includes(platform) ? platform : platforms[0] ?? "windows";
+  const architectures = Array.from(new Set(assets.filter((item) => item.platform === currentPlatform).map((item) => item.arch)));
+  const currentArch = arch && architectures.includes(arch) ? arch : architectures[0] ?? "x86_64";
+  const selected = assets.filter((item) => item.platform === currentPlatform && item.arch === currentArch);
+  const orderedKinds: Array<"setup" | "standalone" | "appimage" | "deb"> = currentPlatform === "windows" ? ["setup", "standalone"] : ["appimage", "deb", "standalone"];
 
   return (
-    <main className="min-h-screen bg-black text-white pt-24 pb-20 px-5">
-      <div className="max-w-2xl mx-auto">
-        <div className="mb-8 rounded-xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-center">
-          <p className="text-sm text-amber-300/80 font-medium">
-            Pulsar is in early development &mdash; not yet ready for production game development.
-          </p>
+    <main className="min-h-screen bg-black px-5 pb-20 pt-24 text-white sm:pt-28">
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-7 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[.18em] text-[#38bdf8]/70"><span className="h-px w-8 bg-[#0ea5e9]/60" /> Pulsar Hub <span className="text-white/20">/</span> Downloads</div>
+        <div className="grid gap-8 md:grid-cols-[1fr_300px] md:items-end">
+          <div>
+            <h1 className="max-w-2xl text-4xl font-semibold tracking-[-.04em] sm:text-5xl">Get Pulsar Hub</h1>
+            <p className="mt-4 max-w-xl text-base leading-7 text-white/55 sm:text-lg">Install and manage the Pulsar engine, projects, and updates from one place.</p>
+          </div>
+          <div className="rounded-xl border border-[#0ea5e9]/20 bg-[#0ea5e9]/[0.06] p-4 text-sm leading-6 text-white/55">
+            <div className="mb-1 flex items-center gap-2 text-[#7dd3fc]"><MonitorDown className="h-4 w-4" /> Detected system</div>
+            {detectedPlatform ? <span className="text-white">{detectedPlatform === "macos" ? "macOS · no build currently published" : `${PLATFORM_LABEL[detectedPlatform]} · ${ARCH_LABEL[currentArch]}`}</span> : <span>Detecting your system…</span>}
+            <span className="text-white/40"> — {detectedPlatform === "macos" ? "showing available downloads." : "you can change this below."}</span>
+          </div>
         </div>
 
-        <motion.div
-          className="text-center mb-10"
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className="flex justify-center mb-5">
-            <div className="flex items-center justify-center">
-              <Image
-                src="/logos/pulsar.png"
-                alt="Pulsar"
-                width={56}
-                height={56}
-                className="opacity-90"
-              />
-            </div>
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">
-            Download Pulsar
-          </h1>
-          <p className="text-white/45 text-base">
-            {loading
-              ? "Fetching the latest release..."
-              : releaseData
-                ? `Latest: ${releaseData.tagName} — ${new Date(releaseData.publishedAt).toLocaleDateString()}`
-                : "Select your platform and download"}
-          </p>
-          {cacheInfo && !loading && (
-            <p className="text-xs text-white/20 mt-1.5">{cacheInfo}</p>
-          )}
-        </motion.div>
-
-        <motion.div
-          className="rounded-xl bg-[#0c0c0c] border border-white/[0.07] p-6 mb-4"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className="flex items-center gap-4 mb-4">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedPlatform}
-                className="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/[0.07] flex items-center justify-center text-white/70 shrink-0"
-                initial={{ opacity: 0, rotate: -10, scale: 0.8 }}
-                animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                exit={{ opacity: 0, rotate: 10, scale: 0.8 }}
-                transition={{ duration: 0.3 }}
-              >
-                <PlatformLogo platform={selectedPlatform} />
-              </motion.div>
-            </AnimatePresence>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-white font-semibold text-lg">
-                  {PLATFORM_INFO[selectedPlatform].label}
-                </span>
-                <span className="text-white/35 text-sm font-mono">
-                  {selectedArch}
-                </span>
-                <span
-                  className={`inline-flex items-center px-2 py-0.5 text-[11px] font-medium rounded-full ${
-                    isAutoDetected
-                      ? "text-[#0ea5e9] bg-[#0ea5e9]/15"
-                      : "text-white/40 bg-white/[0.06]"
-                  }`}
-                >
-                  {isAutoDetected ? "Auto-detected" : "Selected"}
-                </span>
-              </div>
-              <p className="text-white/40 text-sm mt-0.5">
-                {BIN_DESCRIPTIONS[selectedBin] ?? ""}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex gap-2">
-            {(["macos", "windows", "linux"] as Platform[]).map((p) => {
-              const isAvail = availablePlatforms.includes(p);
-              return (
-                <button
-                  key={p}
-                  onClick={() => {
-                    setSelectedPlatform(p);
-                    const arches = parsedAssets
-                      .filter(
-                        (a) => a.bin === selectedBin && a.platform === p
-                      )
-                      .map((a) => a.arch);
-                    const deduped = [...new Set(arches)];
-                    if (deduped.length && !deduped.includes(selectedArch)) {
-                      setSelectedArch(deduped[0]);
-                    }
-                  }}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-medium transition-all ${
-                    selectedPlatform === p
-                      ? "bg-[#0ea5e9] text-white shadow-lg shadow-[#0ea5e9]/20"
-                      : isAvail
-                        ? "bg-white/[0.04] text-white/50 hover:text-white hover:bg-white/[0.08]"
-                        : "bg-white/[0.02] text-white/20 cursor-not-allowed"
-                  }`}
-                >
-                  <PlatformLogo platform={p} />
-                  {PLATFORM_INFO[p].label}
-                </button>
-              );
-            })}
-          </div>
-
-          {availableArches.length > 1 && (
-            <div className="flex gap-2 mt-3">
-              {availableArches.map((arch) => (
-                <button
-                  key={arch}
-                  onClick={() => setSelectedArch(arch)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${
-                    selectedArch === arch
-                      ? "bg-white/10 text-white"
-                      : "bg-white/[0.03] text-white/40 hover:text-white/70"
-                  }`}
-                >
-                  {arch}
-                </button>
-              ))}
-            </div>
-          )}
-        </motion.div>
-
-        <motion.div
-          className="rounded-xl bg-[#0c0c0c] border border-white/[0.07] p-6 mb-4"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <section className="mt-10 rounded-2xl border border-white/[0.09] bg-[#0c0c0c] p-4 sm:p-6">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/[0.08] pb-5">
             <div>
-              <label className="block text-xs font-medium text-white/40 uppercase tracking-wider mb-2">
-                Binary
-              </label>
-              <div className="relative">
-                <select
-                  value={selectedBin}
-                  onChange={(e) => setSelectedBin(e.target.value)}
-                  className="w-full appearance-none bg-white/[0.04] border border-white/[0.07] rounded-lg px-3.5 py-2.5 pr-10 text-white text-sm focus:outline-none focus:border-[#0ea5e9]/50 focus:ring-1 focus:ring-[#0ea5e9]/20 transition-colors cursor-pointer"
-                >
-                  {availableBins.map((bin) => {
-                    const variant = parsedAssets.find(
-                      (a) =>
-                        a.bin === bin &&
-                        a.platform === selectedPlatform &&
-                        a.arch === selectedArch &&
-                        !a.isBundle
-                    );
-                    return (
-                      <option key={bin} value={bin} className="bg-[#0c0c0c]">
-                        {BIN_LABELS[bin] ?? bin}
-                        {variant ? ` (${formatSize(variant.size)})` : ""}
-                      </option>
-                    );
-                  })}
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30 pointer-events-none" />
-              </div>
+              <h2 className="text-lg font-medium">Choose your download</h2>
+              <p className="mt-1 text-sm text-white/40">Latest Pulsar Hub release</p>
             </div>
-
-            <div>
-              <label className="block text-xs font-medium text-white/40 uppercase tracking-wider mb-2">
-                Release
-              </label>
-              <div className="relative">
-                <select
-                  disabled
-                  className="w-full appearance-none bg-white/[0.04] border border-white/[0.07] rounded-lg px-3.5 py-2.5 pr-10 text-white/60 text-sm cursor-not-allowed"
-                >
-                  {releaseData && (
-                    <option className="bg-[#0c0c0c]">
-                      {releaseData.tagName}
-                    </option>
-                  )}
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30 pointer-events-none" />
-              </div>
+            <div className="flex items-center gap-2">
+              {release && <span className="rounded-full border border-[#0ea5e9]/25 bg-[#0ea5e9]/[0.08] px-3 py-1 font-mono text-xs text-[#7dd3fc]">{release.tag_name}</span>}
+              <button onClick={() => loadRelease(true)} disabled={loading} aria-label="Force refresh release data" title="Force refresh" className="rounded-lg border border-white/10 p-2 text-white/45 transition-colors hover:border-[#0ea5e9]/35 hover:text-white disabled:opacity-40"><RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} /></button>
             </div>
           </div>
 
-          {currentAsset?.isBundle && (
-            <p className="mt-3 text-xs text-white/40 flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#0ea5e9]/60" />
-              macOS .app bundle &mdash; drag to Applications folder
-            </p>
+          {loading ? <div className="flex min-h-44 items-center justify-center gap-3 text-sm text-white/45"><LoaderCircle className="h-4 w-4 animate-spin" /> Loading the latest release…</div> : error ? (
+            <div className="py-8 text-center"><p className="text-sm text-rose-200">{error}</p><button onClick={() => loadRelease()} className="mt-4 inline-flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-sm text-white/70 hover:bg-white/5"><RefreshCw className="h-4 w-4" /> Try again</button></div>
+          ) : (
+            <>
+              <div className="flex flex-wrap gap-2 py-5">
+                {platforms.map((item) => <button key={item} onClick={() => setPlatform(item)} className={`rounded-lg px-4 py-2 text-sm transition-colors ${currentPlatform === item ? "bg-white text-black" : "border border-white/10 text-white/55 hover:text-white"}`}>{PLATFORM_LABEL[item]}{item === detectedPlatform ? " · detected" : ""}</button>)}
+                <span className="mx-1 hidden w-px self-stretch bg-white/10 sm:block" />
+                {architectures.map((item) => <button key={item} onClick={() => setArch(item)} className={`rounded-lg border px-3 py-2 font-mono text-xs transition-colors ${currentArch === item ? "border-[#0ea5e9]/40 bg-[#0ea5e9]/10 text-[#bae6fd]" : "border-white/10 text-white/45 hover:text-white"}`}>{ARCH_LABEL[item]}</button>)}
+              </div>
+              <div className="space-y-3">
+                {orderedKinds.map((fileKind) => selected.filter((item) => item.fileKind === fileKind).map(({ asset }) => {
+                  const labels: Record<string, [string, string]> = {
+                    setup: ["Install Pulsar Hub", "Recommended · guided setup and shortcuts"],
+                    standalone: ["Standalone executable", "Run directly without a setup wizard"],
+                    appimage: ["Pulsar Hub AppImage", "Portable Linux app · no package installation required"],
+                    deb: ["Pulsar Hub for Debian / Ubuntu", "Install using your system package manager"],
+                  };
+                  const [title, description] = labels[fileKind];
+                  return <DownloadOption key={asset.id} asset={asset} title={title} description={description} />;
+                }))}
+                {!selected.length && <p className="rounded-xl border border-white/10 p-5 text-sm text-white/45">No downloads are available for this system yet. Check the GitHub release for all published files.</p>}
+              </div>
+              {release && <div className="mt-5 flex flex-wrap items-center justify-between gap-3 text-xs text-white/35"><span>Released {new Date(release.published_at).toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })}</span><button onClick={() => setShowAll(!showAll)} className="inline-flex items-center gap-1.5 hover:text-white/65"><ChevronDown className={`h-3.5 w-3.5 transition-transform ${showAll ? "rotate-180" : ""}`} /> All release files</button></div>}
+              {showAll && <div className="mt-3 space-y-1 rounded-xl border border-white/[0.07] bg-black/20 p-3">{release?.assets.filter((a) => !a.name.endsWith(".sha256")).map((asset) => <a key={asset.id} href={asset.browser_download_url} className="flex items-center justify-between gap-3 rounded-md px-2 py-2 text-xs text-white/55 hover:bg-white/5 hover:text-white"><span className="break-all font-mono">{asset.name}</span><span className="shrink-0">{formatSize(asset.size)} <Download className="ml-1 inline h-3 w-3" /></span></a>)}</div>}
+            </>
           )}
-        </motion.div>
+        </section>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={pageKey}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.35 }}
-          >
-            {loading ? (
-              <div className="rounded-xl bg-[#0c0c0c] border border-white/[0.07] p-8 text-center">
-                <div className="w-8 h-8 border-2 border-[#0ea5e9]/30 border-t-[#0ea5e9] rounded-full animate-spin mx-auto" />
-                <p className="text-white/40 text-sm mt-3">
-                  Fetching release data...
-                </p>
-              </div>
-            ) : error ? (
-              <div className="rounded-xl bg-[#0c0c0c] border border-white/[0.07] p-8 text-center">
-                <p className="text-red-400/80 text-sm mb-3">{error}</p>
-                <button
-                  onClick={handleRefresh}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 text-white/70 text-sm rounded-lg transition-colors"
-                >
-                  <RefreshCw
-                    className={`w-4 h-4 ${refreshing ? "animate-spin" : ""}`}
-                  />
-                  Retry
-                </button>
-              </div>
-            ) : !downloadUrl ? (
-              <div className="rounded-xl bg-[#0c0c0c] border border-white/[0.07] p-8 text-center">
-                <p className="text-white/40 text-sm">
-                  No download available for{" "}
-                  {PLATFORM_INFO[selectedPlatform].label} ({selectedArch})
-                </p>
-              </div>
-            ) : (
-              <button
-                onClick={handleDownload}
-                className="group relative w-full overflow-hidden rounded-xl bg-[#0ea5e9] hover:bg-[#0284c7] transition-all duration-300"
-              >
-                <div className="relative px-6 py-5 flex items-center justify-center gap-3">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-                  <motion.div
-                    animate={{ y: [0, -3, 0] }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                    className="relative"
-                  >
-                    <Download className="w-6 h-6 text-white" />
-                  </motion.div>
-                  <span className="relative text-white font-semibold text-lg">
-                    Download {BIN_LABELS[selectedBin] ?? selectedBin}
-                  </span>
-                  <span className="relative text-white/60 text-sm font-medium">
-                    {currentAsset ? formatSize(currentAsset.size) : ""}
-                  </span>
-                </div>
-              </button>
-            )}
-          </motion.div>
-        </AnimatePresence>
-
-        <AnimatePresence>
-          {sha256 && (
-            <motion.div
-              className="mt-4 rounded-xl bg-[#0c0c0c] border border-white/[0.07] p-4"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.3 }}
-            >
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-white/30 uppercase tracking-wider shrink-0">
-                  SHA-256
-                </span>
-                <code className="flex-1 text-xs font-mono text-white/50 truncate">
-                  {sha256}
-                </code>
-                <button
-                  onClick={handleCopySha}
-                  className="shrink-0 p-1.5 rounded-md hover:bg-white/[0.06] text-white/40 hover:text-white transition-colors"
-                  title="Copy SHA-256"
-                >
-                  {copied ? (
-                    <Check className="w-4 h-4 text-green-400" />
-                  ) : (
-                    <Copy className="w-4 h-4" />
-                  )}
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <motion.div
-          className="mt-6 flex items-center justify-center gap-4 flex-wrap"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-        >
-          {currentAsset?.sigUrl && (
-            <a
-              href={currentAsset.sigUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs text-white/30 hover:text-white/60 transition-colors"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-              Signature file
-            </a>
-          )}
-          <button
-            onClick={handleRefresh}
-            disabled={refreshing}
-            className="inline-flex items-center gap-1.5 text-xs text-white/30 hover:text-white/60 transition-colors disabled:opacity-50"
-          >
-            <RefreshCw
-              className={`w-3.5 h-3.5 ${refreshing ? "animate-spin" : ""}`}
-            />
-            {refreshing ? "Checking..." : "Check for updates"}
-          </button>
-          <a
-            href={`https://github.com/Far-Beyond-Pulsar/Pulsar-Native/releases/tag/${releaseData?.tagName ?? ""}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs text-white/30 hover:text-white/60 transition-colors"
-          >
-            <ExternalLink className="w-3.5 h-3.5" />
-            GitHub release
-          </a>
-        </motion.div>
-
-        {releaseData && (
-          <motion.div
-            className="mt-10"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            <details className="group cursor-pointer">
-              <summary className="text-xs text-white/30 hover:text-white/50 transition-colors flex items-center gap-1.5">
-                <ChevronDown className="w-3.5 h-3.5 group-open:rotate-180 transition-transform" />
-                All assets ({releaseData.assets.length})
-              </summary>
-              <div className="mt-3 space-y-1">
-                {releaseData.assets
-                  .filter((a) => !a.name.endsWith(".sig"))
-                  .map((asset) => (
-                    <a
-                      key={asset.name}
-                      href={asset.browserDownloadUrl}
-                      className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/[0.03] transition-colors group/asset"
-                    >
-                      <span className="text-xs text-white/40 font-mono group-hover/asset:text-white/60 transition-colors">
-                        {asset.name}
-                      </span>
-                      <span className="text-[11px] text-white/20 font-mono">
-                        {formatSize(asset.size)}
-                      </span>
-                    </a>
-                  ))}
-              </div>
-            </details>
-          </motion.div>
-        )}
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-white/35">
+          <a href={RELEASES} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-white/70">View releases on GitHub <ExternalLink className="h-3 w-3" /></a>
+          <span>SHA-256 hashes are provided by GitHub for each release asset.</span>
+        </div>
+        <p className="mt-8 text-center text-xs leading-5 text-white/25">Pulsar is in early development and is not yet recommended for production game development.</p>
       </div>
     </main>
   );
 }
-
-export default DownloadPage;
