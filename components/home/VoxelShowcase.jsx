@@ -19,6 +19,15 @@ const SPECS = [
   ["One world, two consumers", "CPU (collision, ray casts, edits) and GPU (generation, drawing) evaluate the same integer field, bit for bit."],
 ];
 
+const GALLERY = [
+  ["/screenshots/render-planet.webp", "A voxel planet seen from orbit, with clouds"],
+  ["/screenshots/editor-terrain.webp", "Snow-capped voxel mountains from above"],
+  ["/screenshots/editor-voxel.webp", "Terraced voxel hillside with pines"],
+  ["/screenshots/editor-desert.webp", "Desert dunes and rock outcrops"],
+  ["/screenshots/editor-hillside.webp", "Pine-covered voxel slopes"],
+  ["/screenshots/editor-valley.webp", "A voxel valley below distant peaks"],
+];
+
 function Shot({ src, alt, className = "", delay = 0 }) {
   return (
     <motion.div
@@ -62,9 +71,9 @@ export default function VoxelShowcase() {
 
         <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-10 items-start">
           <div className="grid grid-cols-2 gap-3">
-            <Shot src="/screenshots/render-planet.webp" alt="A voxel planet seen from orbit with clouds" className="col-span-2 aspect-[16/9]" />
+            <Shot src="/screenshots/render-mountains.webp" alt="Voxel mountains under a cloudy sky" className="col-span-2 aspect-[16/10]" />
             <Shot src="/screenshots/editor-forest.webp" alt="Voxel forest and mountains in the editor" className="aspect-[4/3]" delay={0.06} />
-            <Shot src="/screenshots/editor-terrain.webp" alt="Snow-capped voxel mountains from above" className="aspect-[4/3]" delay={0.12} />
+            <Shot src="/screenshots/render-ridges.webp" alt="Eroded voxel ridgelines in low sun" className="aspect-[4/3]" delay={0.12} />
           </div>
 
           <div>
@@ -85,6 +94,12 @@ export default function VoxelShowcase() {
               ))}
             </dl>
           </div>
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-3">
+          {GALLERY.map(([src, alt], i) => (
+            <Shot key={src} src={src} alt={alt} className="aspect-[16/10]" delay={(i % 3) * 0.06} />
+          ))}
         </div>
       </div>
     </section>
