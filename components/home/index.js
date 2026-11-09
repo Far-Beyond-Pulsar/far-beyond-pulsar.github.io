@@ -8,3 +8,6 @@ export { default as BlogPreview } from "./BlogPreview";
 export { default as CommunitySection } from "./CommunitySection";
 export { default as CTASection } from "./CTASection";
 export { default as HelioShowcase } from "./HelioShowcase";
+export { default as VoxelShowcase } from "./VoxelShowcase";
+export { default as AtmosphereShowcase } from "./AtmosphereShowcase";
+export { default as PluginArchitecture } from "./PluginArchitecture";

@@ -81,7 +81,7 @@ export default function HeroSection() {
           >
             An open-source game engine written entirely in Rust. Virtual-geometry renderer,
             ECS core, visual blueprint scripting, voxel terrain, and a crash-isolated editor —
-            built to compete at the highest level.
+            aiming to compete at the highest level.
           </motion.p>
 
           {/* CTAs — mono, squared */}
@@ -112,7 +112,7 @@ export default function HeroSection() {
               className="inline-flex items-center gap-2 px-5 py-2.5 font-mono text-[12px] uppercase tracking-[0.12em] text-white/45 hover:text-white/70 transition-colors"
             >
               <Download className="w-3.5 h-3.5" />
-              Download
+              Download Hub (preview)
             </Link>
           </motion.div>
 

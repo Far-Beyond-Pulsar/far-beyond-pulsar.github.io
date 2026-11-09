@@ -21,7 +21,7 @@ export default function CTASection() {
           className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40 mb-10"
         >
           <span className="w-8 h-px bg-[#38bdf8]/70" />
-          09 / Get Involved
+          12 / Get Involved
           <span className="h-3 w-px bg-white/15 ml-1" />
           <span className="text-amber-300/70 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse-dot" />

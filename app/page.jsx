@@ -4,6 +4,9 @@ import {
   EditorPreview,
   BlueprintsShowcase,
   HelioShowcase,
+  VoxelShowcase,
+  AtmosphereShowcase,
+  PluginArchitecture,
   DemoSection,
   PlatformBar,
   BlogPreview,
@@ -40,6 +43,14 @@ export default function Page() {
       <BlueprintsShowcase />
 
       <HelioShowcase />
+
+      <div className="divider mx-auto max-w-4xl" />
+
+      <VoxelShowcase />
+
+      <AtmosphereShowcase />
+
+      <PluginArchitecture />
 
       <div className="divider mx-auto max-w-4xl" />
 

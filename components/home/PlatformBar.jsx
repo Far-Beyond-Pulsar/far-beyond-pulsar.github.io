@@ -103,10 +103,10 @@ export default function PlatformBar() {
       <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-5 pt-6 pb-4">
         <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40">
           <span className="w-8 h-px bg-[#38bdf8]/70" />
-          Deployment targets
+          Target platforms
         </div>
         <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/20">
-          desktop · web · xr — one codebase
+          goal: one codebase · not every target ships yet
         </span>
       </div>
 
