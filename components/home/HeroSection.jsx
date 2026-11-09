@@ -8,13 +8,13 @@ import { Github, ArrowRight, Download } from "lucide-react";
 import OutlineText from "../OutlineText";
 
 const SLIDES = [
-  { src: "/sample_pics/level_editor.png", label: "Level Editor" },
-  { src: "/sample_pics/panels1.png", label: "Multi-Panel Layout" },
-  { src: "/sample_pics/engine_bps.png", label: "Visual Blueprints" },
-  { src: "/sample_pics/profiler.png", label: "Performance Profiler" },
-  { src: "/sample_pics/level_editor(file_drawer).png", label: "Asset Browser" },
-  { src: "/sample_pics/db_editor.png", label: "Database Editor" },
-  { src: "/sample_pics/terminal.png", label: "Integrated Terminal" },
+  { src: "/screenshots/editor-ocean.webp", label: "Level Editor" },
+  { src: "/screenshots/editor-terrain.webp", label: "Voxel Terrain" },
+  { src: "/screenshots/editor-blueprints.webp", label: "Visual Blueprints" },
+  { src: "/screenshots/editor-materials.webp", label: "Material Graph" },
+  { src: "/screenshots/editor-interior.webp", label: "Scene Authoring" },
+  { src: "/screenshots/editor-assets.webp", label: "Asset Browser" },
+  { src: "/screenshots/editor-nebula.webp", label: "Viewport" },
 ];
 
 export default function HeroSection() {
@@ -79,9 +79,9 @@ export default function HeroSection() {
             transition={{ delay: 0.4 }}
             className="text-base sm:text-lg text-white/50 max-w-xl leading-relaxed font-light mb-10"
           >
-            An open-source game engine written entirely in Rust. Custom GPU-driven renderer,
-            ECS core, visual blueprint scripting, and a crash-isolated editor — built to compete
-            at the highest level.
+            An open-source game engine written entirely in Rust. Virtual-geometry renderer,
+            ECS core, visual blueprint scripting, voxel terrain, and a crash-isolated editor —
+            built to compete at the highest level.
           </motion.p>
 
           {/* CTAs — mono, squared */}
@@ -189,7 +189,7 @@ export default function HeroSection() {
                     src={SLIDES[current].src}
                     alt={SLIDES[current].label}
                     fill
-                    className="object-cover"
+                    className="object-contain"
                     priority={current === 0}
                   />
                 </motion.div>

@@ -28,11 +28,11 @@ export default function BlueprintsShowcase() {
                 <span className="ml-3 text-[11px] text-white/25 font-mono">Blueprint Editor — player_controller.bp</span>
               </div>
               <Image
-                src="/sample_pics/engine_bps.png"
+                src="/screenshots/editor-blueprints.webp"
                 alt="Visual Blueprints"
-                width={900}
-                height={540}
-                className="w-full object-cover"
+                width={2200}
+                height={1078}
+                className="w-full h-auto"
               />
               <div className="flex items-center justify-between px-4 py-2 border-t border-white/[0.07] bg-[#111]">
                 <span className="text-[10px] text-white/25 font-mono tracking-[0.16em] uppercase">node graph</span>

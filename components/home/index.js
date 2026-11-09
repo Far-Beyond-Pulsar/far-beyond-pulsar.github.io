@@ -7,3 +7,4 @@ export { default as PlatformBar } from "./PlatformBar";
 export { default as BlogPreview } from "./BlogPreview";
 export { default as CommunitySection } from "./CommunitySection";
 export { default as CTASection } from "./CTASection";
+export { default as HelioShowcase } from "./HelioShowcase";

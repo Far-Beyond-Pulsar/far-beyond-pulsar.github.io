@@ -77,11 +77,11 @@ export default function EditorPreview() {
                 <span className="ml-3 text-[11px] text-white/25 font-mono">Pulsar Editor — default.scene</span>
               </div>
               <Image
-                src="/sample_pics/panels1.png"
+                src="/screenshots/editor-forest.webp"
                 alt="Pulsar Editor"
-                width={900}
-                height={540}
-                className="w-full object-cover"
+                width={2200}
+                height={934}
+                className="w-full h-auto"
               />
               <div className="flex items-center justify-between px-4 py-2 border-t border-white/[0.07] bg-[#111]">
                 <span className="text-[10px] text-white/25 font-mono tracking-[0.16em] uppercase">live scene</span>

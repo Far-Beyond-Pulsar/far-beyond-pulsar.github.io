@@ -15,7 +15,7 @@ const PILLARS = [
   {
     logo: "/logos/wgpu.png",
     title: "Helio — GPU-driven renderer",
-    body: "Helio is Pulsar's custom wgpu renderer built from scratch. A GPU-driven pipeline with compute-shader frustum culling means the CPU hot path is O(1) regardless of scene size. Zero-copy texture sharing keeps pixel data in VRAM through the full compositor stack.",
+    body: "Helio is Pulsar's custom wgpu renderer built from scratch. A GPU-driven pipeline with compute-shader culling and virtual geometry means the CPU hot path is O(1) regardless of scene size — hundreds of millions of source triangles stream through at interactive rates. Zero-copy texture sharing keeps pixel data in VRAM through the full compositor stack.",
     tag: "wgpu · Vulkan · DX12 · Metal",
     border: "hover:border-[#0ea5e9]/20",
     glow: "hover:shadow-[0_0_40px_rgba(14,165,233,0.05)]",
