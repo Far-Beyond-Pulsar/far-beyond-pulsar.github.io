@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 
 const STATS = [
   { value: "400M+", label: "source triangles in the demo scene" },
@@ -18,10 +19,6 @@ const GALLERY = [
   { src: "/screenshots/helio-9.webp", w: 2000, h: 1082, label: "Macro view, no popping", span: "" },
 ];
 
-const WORLDS = [
-  { src: "/screenshots/render-beach.webp", w: 1280, h: 720, label: "Coastal scene" },
-  { src: "/screenshots/render-planet.webp", w: 2200, h: 1193, label: "Planet-scale voxel terrain" },
-];
 
 function Shot({ s, i }) {
   return (
@@ -59,11 +56,11 @@ export default function HelioShowcase() {
         >
           <p className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40 mb-4">
             <span className="w-8 h-px bg-[#38bdf8]/70" />
-            05 / Helio Renderer
+            06 / Helio Renderer
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-5 leading-tight">
             Not enough triangles?
-            <br className="hidden sm:block" />
+            {" "}<br className="hidden sm:block" />
             Not a problem.
           </h2>
           <p className="text-white/45 text-base leading-relaxed">
@@ -71,6 +68,15 @@ export default function HelioShowcase() {
             film-grade assets render at full fidelity without hand-built LODs. Every shot
             below is captured live from Helio's VG Museum demo.
           </p>
+          <a
+            href="https://pulsarnative.com/blog/2026-10-22-virtual-geometry"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 mt-5 text-sm text-[#0ea5e9] hover:text-[#38bdf8] font-medium transition-colors"
+          >
+            Read: Not Enough Triangles
+            <ArrowUpRight className="w-4 h-4" />
+          </a>
         </motion.div>
 
         <div className="grid grid-cols-3 gap-px bg-white/[0.08] border border-white/[0.08] mb-6">
@@ -87,12 +93,6 @@ export default function HelioShowcase() {
         <div className="grid md:grid-cols-3 gap-3">
           {GALLERY.map((s, i) => (
             <Shot key={s.src} s={s} i={i} />
-          ))}
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-3 mt-3">
-          {WORLDS.map((s, i) => (
-            <Shot key={s.src} s={{ ...s, span: "aspect-[16/9]" }} i={i} />
           ))}
         </div>
       </div>

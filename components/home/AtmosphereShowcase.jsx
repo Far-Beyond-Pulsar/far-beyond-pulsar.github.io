@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 
 const CARDS = [
   {
@@ -11,13 +12,15 @@ const CARDS = [
     body: "A planet's air: atmosphere, the sun's colour through it, sun disc, aerial perspective and clouds. Presets give you Earth-like skies, and voxel worlds can tell the sky about the ground they sit on.",
   },
   {
-    src: "/screenshots/editor-ocean.webp",
+    src: "/screenshots/render-ocean.webp",
     tag: "pulsar.water",
     title: "Ocean & water",
     body: "A camera-centred FFT ocean with Fresnel/GGX sun reflection and glints, refraction, Beer–Lambert extinction, foam, caustics and underwater light shafts. Shore waves are driven by a terrain-derived coastline map.",
+    href: "https://pulsarnative.com/blog/2026-11-06-water-is-a-volume",
+    cta: "Read: Water Is a Volume",
   },
   {
-    src: "/screenshots/editor-interior.webp",
+    src: "/screenshots/render-bazaar.webp",
     tag: "lights · fog · gi",
     title: "Lighting that holds together",
     body: "Local and directional lights with shadows and IES profiles, froxel-based volumetric fog, and world-space diffuse global illumination from a camera-centred probe clipmap.",
@@ -25,7 +28,7 @@ const CARDS = [
 ];
 
 const CHIPS = [
-  ["Camera Lens", "Physically based lens, presets and flares"],
+  ["Camera Lens", "Real lens prescriptions, spectral rays, pupil functions"],
   ["Corona", "GPU-native particle system"],
   ["Decals", "Projected onto surfaces"],
   ["Post Volumes", "Blended post-process settings"],
@@ -46,11 +49,11 @@ export default function AtmosphereShowcase() {
         >
           <p className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40 mb-4">
             <span className="w-8 h-px bg-[#38bdf8]/70" />
-            07 / Atmosphere, Water &amp; Light
+            08 / Atmosphere, Water &amp; Light
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-5 leading-tight">
             Worlds that feel
-            <br className="hidden sm:block" />
+            {" "}<br className="hidden sm:block" />
             like places.
           </h2>
           <p className="text-white/45 text-base leading-relaxed">
@@ -76,6 +79,12 @@ export default function AtmosphereShowcase() {
                 <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#38bdf8]/70">{c.tag}</span>
                 <h3 className="text-white font-semibold text-[17px] tracking-tight mt-2 mb-3">{c.title}</h3>
                 <p className="text-white/45 text-sm leading-relaxed">{c.body}</p>
+                {c.href && (
+                  <a href={c.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 mt-4 text-sm text-[#0ea5e9] hover:text-[#38bdf8] transition-colors">
+                    {c.cta}
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                )}
               </div>
             </motion.div>
           ))}

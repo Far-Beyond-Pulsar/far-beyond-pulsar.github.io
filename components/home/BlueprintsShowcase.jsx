@@ -51,11 +51,11 @@ export default function BlueprintsShowcase() {
           >
             <p className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40 mb-4">
               <span className="w-8 h-px bg-[#38bdf8]/70" />
-              04 / Visual Scripting
+              05 / Visual Scripting
             </p>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-5 leading-tight">
               Blueprints that compile
-              <br className="hidden sm:block" />
+              {" "}<br className="hidden sm:block" />
               to native Rust.
             </h2>
             <p className="text-white/45 text-base leading-relaxed mb-6">

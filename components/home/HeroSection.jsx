@@ -20,10 +20,13 @@ const SLIDES = [
 export default function HeroSection() {
   const [current, setCurrent] = useState(0);
 
+  const [paused, setPaused] = useState(false);
+
   useEffect(() => {
+    if (paused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = setInterval(() => setCurrent((p) => (p + 1) % SLIDES.length), 5000);
     return () => clearInterval(id);
-  }, []);
+  }, [paused]);
 
   return (
     <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-black pt-24 pb-20">
@@ -151,6 +154,8 @@ export default function HeroSection() {
             initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.35, duration: 0.6 }}
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
             className="relative border border-white/[0.1] bg-[#0b0d10] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.8)]"
           >
             {/* Corner ticks */}

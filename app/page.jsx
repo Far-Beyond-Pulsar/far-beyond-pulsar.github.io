@@ -12,6 +12,7 @@ import {
   BlogPreview,
   CommunitySection,
   CTASection,
+  FollowBand,
 } from "@/components/home";
 
 export const dynamic = "force-static";
@@ -29,8 +30,7 @@ export default function Page() {
 
       <HeroSection />
 
-      {/* Thin accent rule */}
-      <div className="divider mx-auto max-w-4xl" />
+      <BlogPreview />
 
       <TechPillars />
 
@@ -52,13 +52,9 @@ export default function Page() {
 
       <PluginArchitecture />
 
-      <div className="divider mx-auto max-w-4xl" />
+      <FollowBand />
 
       <DemoSection />
-
-      <div className="divider mx-auto max-w-4xl" />
-
-      <BlogPreview />
 
       <div className="divider mx-auto max-w-4xl" />
 

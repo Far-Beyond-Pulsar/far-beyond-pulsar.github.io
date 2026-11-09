@@ -107,7 +107,7 @@ export default function CommunitySection() {
           </p>
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white leading-tight max-w-md">
-              Built in the open, <br className="hidden sm:block" />
+              Built in the open, {" "}<br className="hidden sm:block" />
               by the community.
             </h2>
             <a

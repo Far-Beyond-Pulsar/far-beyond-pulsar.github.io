@@ -57,6 +57,7 @@ function BlogCard({ post }) {
 
 export default function BlogPreview() {
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(PULSAR_PREVIEW)
@@ -64,13 +65,14 @@ export default function BlogPreview() {
       .then((data) => {
         if (Array.isArray(data)) setPosts(data.slice(0, 3));
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
-  if (posts.length === 0) return null;
+  if (!loading && posts.length === 0) return null;
 
   return (
-    <section className="py-28 px-5 bg-[#030303]">
+    <section className="py-20 px-5 bg-[#030303] border-b border-white/[0.07]">
       <div className="max-w-6xl mx-auto">
         <motion.div
           className="mb-14"
@@ -81,7 +83,7 @@ export default function BlogPreview() {
         >
           <p className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40 mb-4">
             <span className="w-8 h-px bg-[#38bdf8]/70" />
-            10 / Latest Posts
+            02 / Latest Posts
           </p>
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white leading-tight max-w-md">
@@ -100,6 +102,10 @@ export default function BlogPreview() {
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+          {loading && posts.length === 0 &&
+            [0, 1, 2].map((i) => (
+              <div key={i} className="h-72 bg-[#0b0c0e] border border-white/[0.08] animate-pulse" aria-hidden="true" />
+            ))}
           {posts.map((post, i) => (
             <motion.div
               key={post.slug}
