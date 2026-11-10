@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { label: "Blog", href: "/blog" },
   { label: "Docs", href: "/docs" },
   { label: "Studio", href: "/studio" },
+  { label: "Dev", href: "https://dev.pulsarnative.com" },
   { label: "Research", href: "/Research", external: true },
   { label: "WGPUI", href: "/UI", external: true },
 ];

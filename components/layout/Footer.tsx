@@ -20,7 +20,7 @@ const SECTIONS = [
     title: "Community",
     links: [
       { label: "GitHub Discussions", href: "https://github.com/orgs/Far-Beyond-Pulsar/discussions" },
-      { label: "Contribute", href: "https://github.com/Far-Beyond-Pulsar/Pulsar-Native/blob/main/CONTRIBUTING.md" },
+      { label: "Contribute", href: "https://dev.pulsarnative.com" },
       { label: "Roadmap", href: "https://github.com/orgs/Far-Beyond-Pulsar/projects" },
       { label: "Releases", href: "https://github.com/Far-Beyond-Pulsar/Pulsar-Native/releases" },
     ],
