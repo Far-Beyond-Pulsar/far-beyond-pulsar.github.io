@@ -38,3 +38,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# large media served from Cloudflare R2 (see lib/media.config.js)
+/public/video/

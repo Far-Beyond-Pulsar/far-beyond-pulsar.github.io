@@ -13,6 +13,7 @@ import {
   CommunitySection,
   CTASection,
   FollowBand,
+  HubShowcase,
 } from "@/components/home";
 
 export const dynamic = "force-static";
@@ -37,6 +38,8 @@ export default function Page() {
       <div className="divider mx-auto max-w-4xl" />
 
       <EditorPreview />
+
+      <HubShowcase />
 
       <PlatformBar />
 

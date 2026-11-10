@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { videoUrl } from "@/lib/media.config";
 import { motion } from "framer-motion";
 
 const STATS = [
@@ -42,6 +44,54 @@ function Shot({ src, alt, className = "", delay = 0 }) {
   );
 }
 
+/** The pre-rendered flythrough: plays while on screen, falls back to its poster. */
+function Clip({ poster, alt, className = "" }) {
+  const ref = useRef(null);
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || failed) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) el.play().catch(() => {});
+        else el.pause();
+      },
+      { threshold: 0.25 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [failed]);
+
+  return (
+    <div className={`relative overflow-hidden border border-white/[0.09] bg-[#0b0d10] ${className}`}>
+      {failed ? (
+        <Image src={poster} alt={alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
+      ) : (
+        <video
+          ref={ref}
+          className="absolute inset-0 w-full h-full object-cover"
+          poster={poster}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-label={alt}
+        >
+          {/* Tried in order: the browser skips a source whose type it cannot
+              play, or whose file fails to load, and moves to the next. */}
+          <source src={videoUrl("planet-descent.webm")} type='video/webm; codecs="vp9"' />
+          <source src={videoUrl("planet-descent.mp4")} type='video/mp4; codecs="avc1.640028"' onError={() => setFailed(true)} />
+        </video>
+      )}
+      <span className="absolute left-3 bottom-3 px-2 py-1 bg-black/60 backdrop-blur-sm font-mono text-[10px] uppercase tracking-[0.16em] text-white/60">
+        Pre-rendered · orbit to ground
+      </span>
+    </div>
+  );
+}
+
 export default function VoxelShowcase() {
   return (
     <section className="py-28 px-5">
@@ -55,7 +105,7 @@ export default function VoxelShowcase() {
         >
           <p className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40 mb-4">
             <span className="w-8 h-px bg-[#38bdf8]/70" />
-            07 / Voxel Worlds
+            08 / Voxel Worlds
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-5 leading-tight">
             Dig anything,
@@ -71,7 +121,11 @@ export default function VoxelShowcase() {
 
         <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-10 items-start">
           <div className="grid grid-cols-2 gap-3">
-            <Shot src="/screenshots/render-mountains.webp" alt="Voxel mountains under a cloudy sky" className="col-span-2 aspect-[16/10]" />
+            <Clip
+              poster="/screenshots/render-mountains.webp"
+              alt="A flight from orbit down to a voxel planet's mountains"
+              className="col-span-2 aspect-[16/10]"
+            />
             <Shot src="/screenshots/editor-forest.webp" alt="Voxel forest and mountains in the editor" className="aspect-[4/3]" delay={0.06} />
             <Shot src="/screenshots/render-ridges.webp" alt="Eroded voxel ridgelines in low sun" className="aspect-[4/3]" delay={0.12} />
           </div>

@@ -76,7 +76,7 @@ export default function PluginArchitecture() {
           >
             <p className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40 mb-4">
               <span className="w-8 h-px bg-[#38bdf8]/70" />
-              09 / Architecture
+              10 / Architecture
             </p>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-5 leading-tight">
               Every object kind
