@@ -13,3 +13,4 @@ export { default as AtmosphereShowcase } from "./AtmosphereShowcase";
 export { default as PluginArchitecture } from "./PluginArchitecture";
 export { default as FollowBand } from "./FollowBand";
 export { default as HubShowcase } from "./HubShowcase";
+export { default as EnterpriseFAQ } from "./EnterpriseFAQ";

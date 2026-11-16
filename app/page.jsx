@@ -14,6 +14,7 @@ import {
   CTASection,
   FollowBand,
   HubShowcase,
+  EnterpriseFAQ,
 } from "@/components/home";
 
 export const dynamic = "force-static";
@@ -64,6 +65,8 @@ export default function Page() {
       <CommunitySection />
 
       <CTASection />
+
+      <EnterpriseFAQ />
     </main>
   );
 }

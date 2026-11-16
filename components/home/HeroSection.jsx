@@ -117,6 +117,13 @@ export default function HeroSection() {
               <Download className="w-3.5 h-3.5" />
               Download Hub (preview)
             </Link>
+            <a
+              href="#enterprise-licensing"
+              className="inline-flex items-center gap-2 px-2 py-2.5 font-mono text-[12px] uppercase tracking-[0.12em] text-[#38bdf8]/75 hover:text-[#7dd3fc] transition-colors"
+            >
+              AAA licensing
+              <ArrowRight className="w-3.5 h-3.5" />
+            </a>
           </motion.div>
 
           {/* Mono spec row */}
