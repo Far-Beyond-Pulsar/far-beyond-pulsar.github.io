@@ -5,7 +5,7 @@ const QUESTIONS = [
     question: "Can we ship a commercial game on Pulsar without open-sourcing our game code?",
     answer: (
       <p>
-        <strong className="text-white">Yes.</strong> Under MPL-2.0, copyleft obligations only apply to existing MPL-licensed source files that you modify and distribute. All of your game logic, gameplay systems, assets, shaders, and standalone modules written in your own files remain 100% proprietary. You can statically link your proprietary code with Pulsar Engine binaries and sell the resulting game under your own commercial EULA.
+        <strong className="text-white">Yes.</strong> Your independently authored game code, assets, shaders, and modules can remain proprietary, and MPL-2.0 permits combining covered code with a larger proprietary work. If you distribute a game containing Pulsar code, you must make the corresponding MPL-covered source available to recipients and tell them how to obtain it. This includes unmodified covered files as well as covered modifications; preserve the applicable license notices and recipients’ MPL rights. The source does not have to be published for everyone, but your commercial EULA cannot restrict recipients’ rights in the covered source. See Mozilla’s <a className="text-[#38bdf8]/80 underline decoration-white/20 underline-offset-4 hover:text-[#7dd3fc]" href="https://www.mozilla.org/en-US/MPL/2.0/FAQ/" target="_blank" rel="noopener noreferrer">MPL-2.0 FAQ</a> for details.
       </p>
     ),
   },
@@ -16,7 +16,7 @@ const QUESTIONS = [
         <p>Every editor panel, render pass, and data provider component in Pulsar is designed as an isolated plugin.</p>
         <ul>
           <li><strong className="text-white">Custom Editor Tooling:</strong> Because the entire editor is composed of modular extensions, any internal level editors, asset pipelines, or debugging tools you build as standalone plugins live in your own source files and remain completely private.</li>
-          <li><strong className="text-white">Custom Render Passes &amp; Pipelines:</strong> Visual render graphs compile down to native rendering pipelines. You can reorder passes, inject custom effects, or replace entire stages of the pipeline with your own proprietary render pass plugins without modifying a single MPL-licensed file.</li>
+          <li><strong className="text-white">Custom Render Passes &amp; Pipelines:</strong> Visual render graphs compile down to native rendering pipelines. You can reorder passes, inject custom effects, or replace entire stages of the pipeline with your own proprietary render pass plugins. Independently authored plugins and modules that do not incorporate MPL-covered source code may remain proprietary, even when linked into the same executable.</li>
         </ul>
       </>
     ),
@@ -27,29 +27,30 @@ const QUESTIONS = [
       <>
         <p>Your obligations depend on whether you modify our existing files or write your own replacement:</p>
         <ul>
-          <li><strong className="text-white">Modifying a default pass:</strong> If you edit an existing MPL-licensed file (for example, tweaking a few lines in our default Sky Pass) and ship that modified build, MPL-2.0 requires you to make the source code for that modified file available under the MPL. You can submit a pull request upstream or host a public fork of those modified files.</li>
-          <li><strong className="text-white">Building a “secret sauce” pass:</strong> If you want a proprietary atmospheric system, volumetric cloud solver, or bespoke lighting model that remains closed-source, simply implement it from scratch as a new plugin in your own files. You keep your pass 100% proprietary while still using the rest of Pulsar’s default render pipeline untouched.</li>
+          <li><strong className="text-white">Modifying a default pass:</strong> If you edit an existing MPL-licensed file (for example, tweaking our default Sky Pass) and distribute an executable containing it, MPL-2.0 requires you to make that covered source available to the recipients under the MPL and tell them how to obtain it. The license does not itself require publishing those changes to the general public; a public fork or upstream pull request is optional.</li>
+          <li><strong className="text-white">Building a “secret sauce” pass:</strong> A pass independently authored in a new file that does not contain MPL-covered code may remain proprietary, even when linked into the same executable. Simply moving or copying MPL-covered code into a new file does not make it proprietary; that file is also a Modification under MPL-2.0.</li>
         </ul>
       </>
     ),
   },
   {
     question: "Does MPL-2.0 conflict with console SDKs and NDAs (PlayStation, Xbox, Nintendo)?",
-    answer: <p><strong className="text-white">No—provided platform-specific code is kept in separate files.</strong> Because MPL-2.0 operates strictly at the file boundary, console platform backends, proprietary graphics API implementations, and NDA-covered certification code can live inside separate, private crates or plugins. As long as NDA-protected code is not written directly into an existing MPL-licensed file, you will never face a conflict between open-source disclosure rules and platform NDAs.</p>,
+    answer: <p>Pulsar’s file-level copyleft and plugin architecture are designed to accommodate proprietary console SDK integrations. Platform-specific implementations can be maintained in separate proprietary modules without automatically subjecting them to MPL-2.0. Studios should verify compliance with their applicable platform agreements and SDK confidentiality requirements, including how the covered source and binaries are distributed.</p>,
   },
   {
     question: "What if we only use modified engine tools internally and never distribute them?",
-    answer: <p>MPL-2.0’s source-sharing obligations are only triggered upon distribution outside your organization. If your studio modifies core MPL-licensed editor files strictly for internal production use by your own employees and contractors, you are under no obligation to publish those internal changes. <em>(Note: Any modified MPL files compiled into the shipped game client distributed to players must still have their source made available.)</em></p>,
+    answer: <p>MPL-2.0’s distribution obligations are not triggered by use or distribution within your organization. If your studio modifies core MPL-licensed editor files strictly for internal production use, it does not have to provide those internal changes to the public. If you later distribute an executable containing covered code outside your organization, you must make the corresponding covered source available to its recipients, whether the files are modified or unmodified.</p>,
   },
   {
     question: "How does our legal team maintain clean compliance across a large engineering team?",
     answer: (
       <>
-        <p>Because Pulsar separates core engine crates from user plugins at the workspace and architecture level, compliance is straightforward to enforce in CI:</p>
+        <p>Pulsar separates core engine crates from user plugins at the workspace and architecture level, which can help teams track compliance in CI:</p>
         <ul>
           <li><strong className="text-white">Keep the core clean:</strong> Treat the core Pulsar repository as an upstream dependency or submodule.</li>
           <li><strong className="text-white">Isolate proprietary work:</strong> Place all game code, custom render passes, console backends, and internal tools in your studio’s separate plugin crates.</li>
-          <li><strong className="text-white">Audit modified upstream files:</strong> Any pull request in your studio’s repository that touches an existing file carrying an <code>SPDX-License-Identifier: MPL-2.0</code> header is flagged automatically—letting leads decide whether to upstream the fix or move the feature into a standalone proprietary plugin.</li>
+          <li><strong className="text-white">Track covered source and notices:</strong> When distributing an executable with MPL-covered code, provide recipients a reasonable way to obtain the corresponding covered source (including unmodified files) and preserve applicable license notices.</li>
+          <li><strong className="text-white">Audit files containing covered code:</strong> Flag changes to files carrying an <code>SPDX-License-Identifier: MPL-2.0</code> header, as well as new files that contain MPL-covered code. Decide whether to upstream changes or provide the covered source to recipients as required.</li>
         </ul>
       </>
     ),
