@@ -77,8 +77,15 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }} --force
 
+      # The restored cache includes the sitemap sources fetched by the last build
+      - name: Drop cached fetch responses
+        run: rm -rf .next/cache/fetch-cache
+
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
+        env:
+          # Used by app/sitemap.ts to list docs pages without hitting API rate limits
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
